@@ -2,18 +2,25 @@ import { useQuery } from 'react-query';
 import { Button, Table } from 'antd';
 import '../Style.css'
 import { useState } from 'react';
-import {  getAllMatches } from '../API/Api';
+import { getAllMatches } from '../API/Api';
 import NewMatchModal from '../modals/NewMatchModal';
+import MatchRatingModal from '../modals/MatchRatingModal';
 
 function MatchTable() {
   const { isLoading, data, refetch } = useQuery("matches", getAllMatches);
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [modalRatingsVisible, setModalRatingsVisible] = useState(false);
+  const [rowId, setRowId] = useState(NaN);
 
   const handleNewMatchClick = () => {
     setModalVisible(true);
   };
 
+  const handleRowClick = (record: any) => {
+    setModalRatingsVisible(true);
+    setRowId(record.id)
+  };
 
   const columns = [
     {
@@ -62,8 +69,11 @@ function MatchTable() {
           New Match
         </Button>
       </div>
-      <Table dataSource={data} columns={columns} rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''} bordered={true} loading={isLoading} />
+      <Table dataSource={data} columns={columns} rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''} onRow={(record) => ({
+        onClick: () => handleRowClick(record),
+      })} bordered={true} loading={isLoading} />
       <NewMatchModal modalVisible={modalVisible} setModalVisible={setModalVisible} refetch={refetch} />
+      {modalRatingsVisible && <MatchRatingModal modalVisible={modalRatingsVisible} setModalVisible={setModalRatingsVisible} matchId={rowId} />}
     </div>
   );
 }
