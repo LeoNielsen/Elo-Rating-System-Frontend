@@ -2,6 +2,7 @@ import { Button, Form, Input, Modal } from "antd";
 import { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { createPlayer, getAllPlayers } from "../API/Api";
+import { Player } from "../Types/Types";
 
 function NewPlayerModal({ modalVisible, setModalVisible }:
     { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>> }) {
@@ -29,7 +30,7 @@ function NewPlayerModal({ modalVisible, setModalVisible }:
             setHasFeedback(false)
         }
 
-        const isNameTaken = data && data.some((player: { nameTag: string }) => player.nameTag.toUpperCase() === inputValue);
+        const isNameTaken = data && data.some((player: Player) => player.nameTag.toUpperCase() === inputValue);
         setIsNameTaken(isNameTaken);
         setTimeout(() => {
             setIsNameValidated(true);

@@ -1,6 +1,7 @@
 import { Modal, Form, Input, Select, Typography, Button, Row, Col, Tabs } from 'antd';
 import { createMatch, createTeam, getAllPlayers } from '../API/Api';
 import { useMutation, useQuery } from 'react-query'
+import { Player } from '../Types/Types';
 
 function NewMatchModal({ modalVisible, setModalVisible, refetch }:
   { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, refetch: any }) {
@@ -35,7 +36,7 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch }:
     }
   };
 
-  const onFinish = async (values: any) => {
+  const onFinish = async () => {
     const redTeam = await createTeamMutation({
       attackerId: form.getFieldValue("RedAttacker"),
       defenderId: form.getFieldValue("RedDefender")
@@ -56,7 +57,7 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch }:
     setModalVisible(false)
   }
 
-  const options = players.data.map((player: { id: number, nameTag: any; }) => ({
+  const options = players.data.map((player: Player) => ({
     value: player.id,
     label: player.nameTag
   }));

@@ -1,11 +1,12 @@
 import { Modal } from "antd";
 import { useQuery } from "react-query";
 import { getPlayerStatistics } from "../API/Api";
+import { PlayerStatistics } from "../Types/Types";
 
 function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId }:
     { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, playerId: number }) {
 
-    const { data, isLoading } = useQuery("PlayerStatistics", () => getPlayerStatistics(playerId));
+    const { data, isLoading } = useQuery<PlayerStatistics>("PlayerStatistics", () => getPlayerStatistics(playerId));
 
     const handleModalCancel = () => {
         setModalVisible(false);

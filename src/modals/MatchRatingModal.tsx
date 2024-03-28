@@ -2,11 +2,12 @@ import { Modal } from "antd";
 import { useQuery } from "react-query";
 import { getMatchRatings } from "../API/Api";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
+import { MatchRating } from "../Types/Types";
 
 function MatchRatingModal({ modalVisible, setModalVisible, matchId }:
     { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, matchId: number }) {
 
-    const { data, isLoading } = useQuery("matchRatings", () => getMatchRatings(matchId));
+    const { data, isLoading } = useQuery<MatchRating[]>("matchRatings", () => getMatchRatings(matchId));
 
     const handleModalCancel = () => {
         setModalVisible(false);
@@ -19,8 +20,8 @@ function MatchRatingModal({ modalVisible, setModalVisible, matchId }:
         footer={null}
     >
         <div style={{ padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '5px' }}>
-            {data.map((rating: any) => (
-                <div key={rating.id} style={{ marginBottom: '20px', borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
+            {data.map((rating: MatchRating) => (
+                <div style={{ marginBottom: '20px', borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
                     <p style={{ margin: '5px 0', fontSize: '16px', fontWeight: 'bold' }}>
                         Name Tag: {rating.player.nameTag}
                     </p>

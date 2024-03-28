@@ -1,14 +1,15 @@
 import { useQuery } from 'react-query';
 import { Button, Table } from 'antd';
 import '../Style.css'
-import { getAllPlayers, getPlayerStatistics } from '../API/Api';
+import { getAllPlayers } from '../API/Api';
 import { useState } from 'react';
 import NewPlayerModal from '../modals/NewPlayerModal';
 import PlayerStatisticsModal from '../modals/PlayerStatisticsModal';
+import { Player } from '../Types/Types';
 
 function PlayerTable() {
 
-  const { isLoading, data } = useQuery("Players", getAllPlayers);
+  const { isLoading, data } = useQuery<Player[]>("Players", getAllPlayers);
 
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -19,7 +20,7 @@ function PlayerTable() {
     setModalVisible(true);
   };
 
-  const handleRowClick = (record: any) => {
+  const handleRowClick = (record: Player) => {
     setModalStatisticsVisible(true);
     setRowId(record.id)
   };
@@ -29,13 +30,13 @@ function PlayerTable() {
       title: 'Name',
       dataIndex: 'nameTag',
       key: 'name',
-      sorter: (a: any, b: any) => a.nameTag.localeCompare(b.nameTag),
+      sorter: (a: Player, b: Player) => a.nameTag.localeCompare(b.nameTag),
     },
     {
       title: 'Rating',
       dataIndex: 'rating',
       key: 'rating',
-      sorter: (a: { rating: number; }, b: { rating: number; }) => a.rating - b.rating,
+      sorter: (a: Player, b: Player) => a.rating - b.rating,
     }
   ];
 
