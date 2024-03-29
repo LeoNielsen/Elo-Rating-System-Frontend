@@ -28,6 +28,7 @@ interface MatchRating {
 }
 
 interface PlayerStatistics {
+    id: number
     nameTag: string,
     rating: number,
     totalWins: number,

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Layout, Menu, theme, Typography } from 'antd';
-import { CalendarOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
+import { CalendarOutlined, TeamOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons';
 import PlayerTable from './tables/PlayerTable';
 import MatchTable from './tables/MatchTable';
 import TeamTable from './tables/TeamTable';
+import PlayerRankingTable from './tables/PlayerRankingTable';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -19,9 +20,10 @@ const App: React.FC = () => {
     };
 
     const menuItems = [
-        { key: '1', icon: <UserOutlined />, label: 'Players' },
+        { key: '1', icon: <TrophyOutlined />, label: 'Player Ranking' },
         { key: '2', icon: <CalendarOutlined />, label: 'Matches' },
         { key: '3', icon: <TeamOutlined />, label: 'Teams' },
+        { key: '4', icon: <UserOutlined />, label: 'Players' },
     ];
 
     const siderStyle = {
@@ -39,7 +41,7 @@ const App: React.FC = () => {
     let pageTitle: string;
     switch (selectedMenuItem) {
         case '1':
-            contentComponent = <PlayerTable />;
+            contentComponent = <PlayerRankingTable />;
             pageTitle = 'Players'
             break;
         case '2':
@@ -49,6 +51,10 @@ const App: React.FC = () => {
         case '3':
             contentComponent = <TeamTable />;
             pageTitle = 'Teams'
+            break;
+        case '4':
+            contentComponent = <PlayerTable />;
+            pageTitle = 'Players'
             break;
         default:
             contentComponent = null;
@@ -76,7 +82,7 @@ const App: React.FC = () => {
                     defaultSelectedKeys={['1']}
                     selectedKeys={[selectedMenuItem]}
                     onClick={({ key }) => handleMenuClick(key.toString())}
-                    
+
                 >
                     {menuItems.map((menuItem) => (
                         <Menu.Item key={menuItem.key} icon={menuItem.icon}>

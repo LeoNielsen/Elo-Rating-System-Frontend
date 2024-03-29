@@ -6,7 +6,7 @@ import { Player } from '../Types/Types';
 function NewMatchModal({ modalVisible, setModalVisible, refetch }:
   { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, refetch: any }) {
 
-  const players = useQuery("Players", getAllPlayers);
+  const { data, isLoading } = useQuery("Players", getAllPlayers);
 
   const { mutateAsync: createTeamMutation } = useMutation(createTeam);
   const { mutateAsync: createMatchMutation } = useMutation(createMatch);
@@ -57,12 +57,14 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch }:
     setModalVisible(false)
   }
 
-  const options = players.data.map((player: Player) => ({
+  if (isLoading) {
+    return <></>
+  }
+
+  const options = data.map((player: Player) => ({
     value: player.id,
     label: player.nameTag
   }));
-
-
 
   return (
     <Modal

@@ -20,6 +20,15 @@ const getPlayerStatistics = async (id: number) => {
     }
 };
 
+const getAllPlayerStatistics = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/player/statistics/all`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const getAllTeams = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/team/all`);
@@ -85,6 +94,7 @@ const createPlayer = async (playerData: {
 export {
     getAllPlayers,
     getPlayerStatistics,
+    getAllPlayerStatistics,
     getAllTeams,
     getAllMatches,
     getMatchRatings,

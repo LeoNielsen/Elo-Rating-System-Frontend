@@ -12,6 +12,10 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId }:
         setModalVisible(false);
     };
 
+    if (isLoading) {
+        return <></>
+    }
+
     return data ? (<Modal
         title="Player Statistics"
         open={modalVisible}

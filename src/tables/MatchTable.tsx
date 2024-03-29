@@ -99,7 +99,7 @@ function MatchTable() {
         style={{ position: 'absolute', top: '0', right: '0', zIndex: '1' }}>
         New Match
       </Button>
-      <NewMatchModal modalVisible={modalVisible} setModalVisible={setModalVisible} refetch={refetch} />
+      {modalVisible && <NewMatchModal modalVisible={modalVisible} setModalVisible={setModalVisible} refetch={refetch} />}
       {modalRatingsVisible && <MatchRatingModal modalVisible={modalRatingsVisible} setModalVisible={setModalRatingsVisible} matchId={rowId} />}
     </div>
   );
