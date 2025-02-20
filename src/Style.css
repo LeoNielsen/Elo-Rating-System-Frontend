@@ -2,3 +2,21 @@
     background-color: #fcfcfc;
     /* Adjust the color as needed */
 }
+
+.player-stats {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 10px;
+    max-width: 400px;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+}
+
+.player-stats p {
+    margin: 5px 0;
+}
+
+.player-stats strong {
+    font-weight: bold;
+}

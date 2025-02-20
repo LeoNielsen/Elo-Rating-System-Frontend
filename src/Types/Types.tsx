@@ -31,8 +31,10 @@ interface PlayerStatistics {
     id: number
     nameTag: string,
     rating: number,
-    totalWins: number,
-    totalLost: number,
+    attackerWins: number,
+    defenderWins: number,
+    attackerLost: number,
+    defenderLost: number,
     totalGoals: number
 }
 

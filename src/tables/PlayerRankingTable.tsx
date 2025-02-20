@@ -19,13 +19,13 @@ function PlayerRankingTable() {
     setRowId(record.id)
   };
 
-  const columns : ColumnType<PlayerStatistics>[] = [
+  const columns: ColumnType<PlayerStatistics>[] = [
     {
       title: 'Rank',
       dataIndex: 'rank',
       key: 'rank',
       fixed: 'left',
-      width: 15,
+      width: 65,
       align: 'center',
       render: (_, __, index) => index + 1,
     },
@@ -43,11 +43,13 @@ function PlayerRankingTable() {
       title: 'Total Wins',
       dataIndex: 'totalWins',
       key: 'totalWins',
+      render: (_, a: PlayerStatistics) => a.attackerWins + a.defenderWins
     },
     {
       title: 'Total Lost',
       dataIndex: 'totalLost',
       key: 'totalLost',
+      render: (_, a: PlayerStatistics) => a.attackerLost + a.defenderLost
     },
   ];
 
@@ -55,7 +57,7 @@ function PlayerRankingTable() {
 
   return (
     <div className="App">
-      <Table dataSource={sortedData} columns={columns} onRow={(record) => ({
+      <Table dataSource={sortedData} columns={columns} scroll={{ x: 350 }} onRow={(record) => ({
         onClick: () => handleRowClick(record),
       })} rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''} bordered={true} loading={isLoading} />
       {modalStatisticsVisible && <PlayerStatisticsModal modalVisible={modalStatisticsVisible} setModalVisible={setModalStatisticsVisible} playerId={rowId} />}
