@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Layout, Menu, theme, Typography } from 'antd';
-import { CalendarOutlined, TeamOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons';
+import { CalendarOutlined, LineChartOutlined, TeamOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons';
 import PlayerTable from './tables/PlayerTable';
 import MatchTable from './tables/MatchTable';
 import TeamTable from './tables/TeamTable';
 import PlayerRankingTable from './tables/PlayerRankingTable';
+import Chart from './Charts/Chart';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -24,6 +25,7 @@ const App: React.FC = () => {
         { key: '2', icon: <CalendarOutlined />, label: 'Matches' },
         { key: '3', icon: <TeamOutlined />, label: 'Teams' },
         { key: '4', icon: <UserOutlined />, label: 'Players' },
+        { key: '5', icon: <LineChartOutlined/>, label: 'Stats' },
     ];
 
     const siderStyle = {
@@ -55,6 +57,10 @@ const App: React.FC = () => {
         case '4':
             contentComponent = <PlayerTable />;
             pageTitle = 'Players'
+            break;
+        case '5':
+            contentComponent = <Chart />;
+            pageTitle = 'Stats'
             break;
         default:
             contentComponent = null;

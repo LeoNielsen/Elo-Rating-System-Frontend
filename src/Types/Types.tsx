@@ -1,5 +1,6 @@
 interface Match {
     id: number;
+    date: Date; 
     redTeam: Team;
     blueTeam: Team;
     redTeamScore: number;

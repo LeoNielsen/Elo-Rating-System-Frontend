@@ -55,6 +55,15 @@ const getMatchRatings = async (id: number) => {
     }
 };
 
+const getAllRatings = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/rating/all`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const createTeam = async (teamData: {
     attackerId: number,
     defenderId: number
@@ -98,6 +107,7 @@ export {
     getAllTeams,
     getAllMatches,
     getMatchRatings,
+    getAllRatings,
     createTeam,
     createMatch,
     createPlayer
