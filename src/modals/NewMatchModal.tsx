@@ -1,7 +1,8 @@
-import { Modal, Form, Input, Select, Typography, Button, Row, Col, Tabs } from 'antd';
+import { Modal, Form, Input, Select, Typography, Button, Row, Col, Tabs, TabsProps } from 'antd';
 import { createMatch, createTeam, getAllPlayers } from '../API/Api';
 import { useMutation, useQuery } from 'react-query'
 import { Player } from '../Types/Types';
+import { useState } from 'react';
 
 function NewMatchModal({ modalVisible, setModalVisible, refetch }:
   { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, refetch: any }) {
@@ -12,10 +13,34 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch }:
   const { mutateAsync: createMatchMutation } = useMutation(createMatch);
 
   const [form] = Form.useForm();
+  const [filteredOptions, setFilteredOptions] = useState<{ [key: string]: Player[] }>({});
 
   const handleModalCancel = () => {
     setModalVisible(false);
   };
+
+  const handleSearch = (value: string, field: string) => {
+    setFilteredOptions((prev) => ({
+      ...prev,
+      [field]: data.filter((player: Player) => player.nameTag.toLowerCase().includes(value.toLowerCase()))
+    }));
+  };
+
+  // Handle selection of a player
+  const handleSelect = (value: number, field: string) => {
+    setFilteredOptions((prev) => ({
+      ...prev,
+      [field]: data.filter((player: Player) => player.id === value)
+    }));
+  };
+
+  // Automatically select the top result on blur
+  const handleBlur = (field: string) => {
+    if (filteredOptions[field]?.length > 0) {
+      form.setFieldValue(field, filteredOptions[field][0].id);
+    }
+  };
+
 
   const scoreHandler = (values: any) => {
     if (values.target.id === "RedGoalScore") {
@@ -45,7 +70,7 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch }:
       attackerId: form.getFieldValue("BlueAttacker"),
       defenderId: form.getFieldValue("BlueDefender")
     });
-    const match = await createMatchMutation({
+      await createMatchMutation({
       redTeamId: redTeam.id,
       blueTeamId: blueTeam.id,
       redTeamScore: form.getFieldValue("RedGoalScore"),
@@ -66,6 +91,89 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch }:
     label: player.nameTag
   }));
 
+  const tabs: TabsProps['items'] = [
+    {
+      key: '1',
+      label: '2v2',
+      children: <Form form={form} layout="vertical" onFinish={onFinish}>
+      <Row gutter={[16, 16]}>
+        <Col span={12}>
+          <Typography.Title level={5}>Red Team</Typography.Title>
+          <Form.Item label="Attacker" name="RedAttacker" rules={[{ required: true, message: 'Please input!' }]}>
+            <Select showSearch optionFilterProp="label" options={options}
+            onSearch={(value) => handleSearch(value, "RedAttacker")}
+            onBlur={() => handleBlur("RedAttacker")}
+            onSelect={(value => handleSelect(value, "RedAttacker"))}
+            placeholder="Red Attacker" />
+          </Form.Item>
+          <Form.Item label="Defender" name="RedDefender" rules={[{ required: true, message: 'Please input!' }]}>
+            <Select showSearch optionFilterProp="label" options={options} 
+              onSearch={(value) => handleSearch(value, "RedDefender")}
+              onBlur={() => handleBlur("RedDefender")}
+              onSelect={(value => handleSelect(value, "RedDefender"))}
+              placeholder="Red Defender" />
+          </Form.Item>
+          <Form.Item label="Goal Score" name="RedGoalScore" rules={[{ required: true, message: 'Please input!' }]}>
+            <Input type="number" min={0} max={10} onChange={scoreHandler} placeholder='Red Score' />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Typography.Title level={5}>Blue Team</Typography.Title>
+          <Form.Item label="Attacker" name="BlueAttacker" rules={[{ required: true, message: 'Please input!' }]}>
+            <Select showSearch optionFilterProp="label" options={options}
+            onSearch={(value) => handleSearch(value, "BlueAttacker")}
+            onBlur={() => handleBlur("BlueAttacker")}
+            onSelect={(value => handleSelect(value, "BlueAttacker"))}
+            placeholder="Blue Attacker" />
+          </Form.Item>
+          <Form.Item label="Defender" name="BlueDefender" rules={[{ required: true, message: 'Please input!' }]}>
+            <Select showSearch optionFilterProp="label" options={options}
+            onSearch={(value) => handleSearch(value, "BlueDefender")}
+            onBlur={() => handleBlur("BlueDefender")}
+            onSelect={(value => handleSelect(value, "BlueDefender"))}
+            placeholder="Blue Defender" />
+          </Form.Item>
+          <Form.Item id='BlueGoalScore' label="Goal Score" name="BlueGoalScore" rules={[{ required: true, message: 'Please input!' }]}>
+            <Input type="number" min={0} max={10} onChange={scoreHandler} placeholder='Blue Score' />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Form.Item>
+        <Button type="primary" htmlType="submit">Submit</Button>
+      </Form.Item>
+    </Form>,
+    },{
+      key: '2',
+      label: '1v1',
+      disabled: true,
+      children: <Form form={form} layout="vertical" onFinish={onFinish}>
+      <Row gutter={[16, 16]}>
+        <Col span={12}>
+          <Typography.Title level={5}>Red Team</Typography.Title>
+          <Form.Item label="Red" name="Red" rules={[{ required: true, message: 'Please input!' }]}>
+            <Select showSearch optionFilterProp="label" options={options} placeholder="Red Player" />
+          </Form.Item>
+          <Form.Item label="Goal Score" name="RedGoalScore" rules={[{ required: true, message: 'Please input!' }]}>
+            <Input type="number" min={0} max={10} onChange={scoreHandler} placeholder='Red Score' />
+          </Form.Item>
+        </Col>
+        <Col span={12}>
+          <Typography.Title level={5}>Blue Team</Typography.Title>
+          <Form.Item label="Blue" name="Blue" rules={[{ required: true, message: 'Please input!' }]}>
+            <Select showSearch optionFilterProp="label" options={options} placeholder="Blue Player" />
+          </Form.Item>
+          <Form.Item id='BlueGoalScore' label="Goal Score" name="BlueGoalScore" rules={[{ required: true, message: 'Please input!' }]}>
+            <Input type="number" min={0} max={10} onChange={scoreHandler} placeholder='Blue Score' />
+          </Form.Item>
+        </Col>
+      </Row>
+      <Form.Item>
+        <Button type="primary" htmlType="submit">Submit</Button>
+      </Form.Item>
+    </Form>
+    }
+  ]
+
   return (
     <Modal
       title="New Match"
@@ -73,68 +181,7 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch }:
       onCancel={handleModalCancel}
       footer={null}
     >
-      <Tabs defaultActiveKey="1">
-        <Tabs.TabPane tab="2v2" key="1">
-          <Form form={form} layout="vertical" onFinish={onFinish}>
-            <Row gutter={[16, 16]}>
-              <Col span={12}>
-                <Typography.Title level={5}>Red Team</Typography.Title>
-                <Form.Item label="Attacker" name="RedAttacker" rules={[{ required: true, message: 'Please input!' }]}>
-                  <Select showSearch optionFilterProp="label" options={options} placeholder="Red Attacker" />
-                </Form.Item>
-                <Form.Item label="Defender" name="RedDefender" rules={[{ required: true, message: 'Please input!' }]}>
-                  <Select showSearch optionFilterProp="label" options={options} placeholder="Red Defender" />
-                </Form.Item>
-                <Form.Item label="Goal Score" name="RedGoalScore" rules={[{ required: true, message: 'Please input!' }]}>
-                  <Input type="number" min={0} max={10} onChange={scoreHandler} placeholder='Red Score' />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Typography.Title level={5}>Blue Team</Typography.Title>
-                <Form.Item label="Attacker" name="BlueAttacker" rules={[{ required: true, message: 'Please input!' }]}>
-                  <Select showSearch optionFilterProp="label" options={options} placeholder="Blue Attacker" />
-                </Form.Item>
-                <Form.Item label="Defender" name="BlueDefender" rules={[{ required: true, message: 'Please input!' }]}>
-                  <Select showSearch optionFilterProp="label" options={options} placeholder="Blue Defender" />
-                </Form.Item>
-                <Form.Item id='BlueGoalScore' label="Goal Score" name="BlueGoalScore" rules={[{ required: true, message: 'Please input!' }]}>
-                  <Input type="number" min={0} max={10} onChange={scoreHandler} placeholder='Blue Score' />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Form.Item>
-              <Button type="primary" htmlType="submit">Submit</Button>
-            </Form.Item>
-          </Form>
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="1v1" key="2">
-          <Form form={form} layout="vertical" onFinish={onFinish}>
-            <Row gutter={[16, 16]}>
-              <Col span={12}>
-                <Typography.Title level={5}>Red Team</Typography.Title>
-                <Form.Item label="Red" name="Red" rules={[{ required: true, message: 'Please input!' }]}>
-                  <Select showSearch optionFilterProp="label" options={options} placeholder="Red Player" />
-                </Form.Item>
-                <Form.Item label="Goal Score" name="RedGoalScore" rules={[{ required: true, message: 'Please input!' }]}>
-                  <Input type="number" min={0} max={10} onChange={scoreHandler} placeholder='Red Score' />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Typography.Title level={5}>Blue Team</Typography.Title>
-                <Form.Item label="Blue" name="Blue" rules={[{ required: true, message: 'Please input!' }]}>
-                  <Select showSearch optionFilterProp="label" options={options} placeholder="Blue Player" />
-                </Form.Item>
-                <Form.Item id='BlueGoalScore' label="Goal Score" name="BlueGoalScore" rules={[{ required: true, message: 'Please input!' }]}>
-                  <Input type="number" min={0} max={10} onChange={scoreHandler} placeholder='Blue Score' />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Form.Item>
-              <Button type="primary" htmlType="submit">Submit</Button>
-            </Form.Item>
-          </Form>
-        </Tabs.TabPane>
-      </Tabs>
+      <Tabs items={tabs} defaultActiveKey="1"/>
     </Modal>
   );
 }

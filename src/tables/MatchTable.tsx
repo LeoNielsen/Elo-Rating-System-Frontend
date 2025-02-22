@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { Button, Col, Row, Table, Tabs } from 'antd';
+import { Button, Col, Row, Table, Tabs, TabsProps } from 'antd';
 import '../Style.css'
 import { useState } from 'react';
 import { getAllMatches } from '../API/Api';
@@ -64,35 +64,42 @@ function MatchTable() {
     }
   ];
 
+  const tabs: TabsProps['items'] = [
+      {
+        key: '1',
+        label: '2v2',
+        children: <Table style={{ marginTop: '-15px' }}
+        dataSource={data}
+        columns={columns}
+        rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''}
+        onRow={(record) => ({
+          onClick: () => handleRowClick(record),
+        })}
+        bordered={true}
+        loading={isLoading}
+        
+      />
+      },{
+        key: '2',
+        label: '1v1',
+        disabled: true,
+        children:<Table style={{ marginTop: '-15px' }}
+        dataSource={data}
+        columns={columns}
+        rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''}
+        onRow={(record) => ({
+          onClick: () => handleRowClick(record),
+        })}
+        bordered={true}
+        loading={isLoading}
+      />
+      }
+  ]
+
 
   return (
     <div className="App" style={{ position: 'relative' }}>
-      <Tabs defaultActiveKey='1' >
-        <Tabs.TabPane tab="2v2" key="1">
-          <Table style={{ marginTop: '-15px' }}
-            dataSource={data}
-            columns={columns}
-            rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''}
-            onRow={(record) => ({
-              onClick: () => handleRowClick(record),
-            })}
-            bordered={true}
-            loading={isLoading}
-          />
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="1v1" key="2">
-          <Table style={{ marginTop: '-15px' }}
-            dataSource={data}
-            columns={columns}
-            rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''}
-            onRow={(record) => ({
-              onClick: () => handleRowClick(record),
-            })}
-            bordered={true}
-            loading={isLoading}
-          />
-        </Tabs.TabPane>
-      </Tabs>
+      <Tabs items={tabs} defaultActiveKey='1' />
       <Button
         type="primary"
         onClick={handleNewMatchClick}
