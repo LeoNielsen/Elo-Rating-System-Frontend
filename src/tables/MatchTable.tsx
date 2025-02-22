@@ -27,6 +27,24 @@ function MatchTable() {
 
   const columns: ColumnType<Match>[] = [
     {
+      title: 'Date',
+      dataIndex: 'date',
+      key: 'date'
+    },
+    {
+      title: 'Red Score',
+      dataIndex: 'redTeamScore',
+      key: 'redTeamScore',
+      sorter: (a: Match, b: Match) => a.redTeamScore - b.redTeamScore,
+    },
+    {
+      title: 'Blue Score',
+      dataIndex: 'blueTeamScore',
+      key: 'blueTeamScore',
+      sorter: (a: Match, b: Match) => a.blueTeamScore - b.blueTeamScore,
+    }
+    ,
+    {
       title: 'Red Attacker',
       dataIndex: ['redTeam', "attacker", "nameTag"],
       key: 'redTeamId',
@@ -49,18 +67,6 @@ function MatchTable() {
       dataIndex: ['blueTeam', "defender", "nameTag"],
       key: 'blueTeamId',
       sorter: (a: Match, b: Match) => a.blueTeam.defender.nameTag.localeCompare(b.blueTeam.defender.nameTag),
-    },
-    {
-      title: 'Red Score',
-      dataIndex: 'redTeamScore',
-      key: 'redTeamScore',
-      sorter: (a: Match, b: Match) => a.redTeamScore - b.redTeamScore,
-    },
-    {
-      title: 'Blue Score',
-      dataIndex: 'blueTeamScore',
-      key: 'blueTeamScore',
-      sorter: (a: Match, b: Match) => a.blueTeamScore - b.blueTeamScore,
     }
   ];
 
