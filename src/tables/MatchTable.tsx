@@ -64,12 +64,14 @@ function MatchTable() {
     }
   ];
 
+  const sortedData = data ? [...data].sort((a, b) => b.id - a.id) : [];
+
   const tabs: TabsProps['items'] = [
       {
         key: '1',
         label: '2v2',
         children: <Table style={{ marginTop: '-15px' }}
-        dataSource={data}
+        dataSource={sortedData}
         columns={columns}
         rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''}
         onRow={(record) => ({
