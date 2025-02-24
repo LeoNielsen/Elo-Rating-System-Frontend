@@ -25,7 +25,7 @@ const App: React.FC = () => {
         { key: '2', icon: <CalendarOutlined />, label: 'Matches' },
         { key: '3', icon: <TeamOutlined />, label: 'Teams' },
         { key: '4', icon: <UserOutlined />, label: 'Players' },
-        { key: '5', icon: <LineChartOutlined/>, label: 'Stats' },
+        { key: '5', icon: <LineChartOutlined/>, label: 'Statstest' },
     ];
 
     const siderStyle = {
