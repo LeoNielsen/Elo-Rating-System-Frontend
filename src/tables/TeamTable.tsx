@@ -38,7 +38,7 @@ function TeamTable() {
 
   return (
     <div className="App">
-      <Table dataSource={data} columns={columns} rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''} bordered={true} loading={isLoading} />
+      <Table dataSource={data} columns={columns} scroll={{ x: 350 }} rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''} bordered={true} loading={isLoading} />
     </div>
   );
 }

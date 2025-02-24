@@ -48,7 +48,7 @@ function PlayerTable() {
           New Player
         </Button>
       </div>
-      <Table dataSource={data} columns={columns} onRow={(record) => ({
+      <Table dataSource={data} columns={columns} scroll={{ x: 350 }} onRow={(record) => ({
         onClick: () => handleRowClick(record),
       })} rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''} bordered={true} loading={isLoading} />
       <NewPlayerModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
