@@ -77,6 +77,7 @@ function MatchTable() {
         key: '1',
         label: '2v2',
         children: <Table style={{ marginTop: '-15px' }}
+        scroll={{ x: 350 }}
         dataSource={sortedData}
         columns={columns}
         rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''}
@@ -92,6 +93,7 @@ function MatchTable() {
         label: '1v1',
         disabled: true,
         children:<Table style={{ marginTop: '-15px' }}
+        scroll={{ x: 350 }}
         dataSource={data}
         columns={columns}
         rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''}
