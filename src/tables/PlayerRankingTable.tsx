@@ -53,6 +53,7 @@ function PlayerRankingTable() {
     },
   ];
 
+  console.log(data)
   const sortedData = data?.slice().sort((a, b) => b.rating - a.rating);
 
   return (
