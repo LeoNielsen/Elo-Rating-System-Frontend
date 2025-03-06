@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Layout, Menu, theme, Typography } from 'antd';
 import { CalendarOutlined, LineChartOutlined, TeamOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons';
 import PlayerTable from './tables/PlayerTable';
@@ -15,10 +15,34 @@ const App: React.FC = () => {
     } = theme.useToken();
 
     const [selectedMenuItem, setSelectedMenuItem] = useState('1');
+    const [collapsed, setCollapsed] = useState(false);
+    const [broken, setBroken] = useState(false);
+    const siderRef = useRef<HTMLDivElement | null>(null);
 
     const handleMenuClick = (menuItem: string) => {
         setSelectedMenuItem(menuItem);
     };
+
+    const handleClickOutside = (event: MouseEvent) => {
+        if(!broken) {
+            setCollapsed(false);
+            return;
+        }
+        if (siderRef.current && !siderRef.current.contains(event.target as Node)) {
+            if (!collapsed) {
+                setCollapsed(true);
+            }
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutside);
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, [collapsed]);
+
 
     const menuItems = [
         { key: '1', icon: <TrophyOutlined />, label: 'Player Ranking' },
@@ -72,12 +96,15 @@ const App: React.FC = () => {
             <Sider
                 breakpoint="lg"
                 collapsedWidth="0"
-                onBreakpoint={(broken) => {
-                    console.log(broken);
+                onBreakpoint={(broken) =>{
+                    setBroken(broken)
                 }}
-                onCollapse={(collapsed, type) => {
-                    console.log(collapsed, type);
+                collapsed={collapsed}
+                onCollapse={(collapsed) => {
+                    setCollapsed(collapsed);
                 }}
+                ref={siderRef}
+
                 style={siderStyle}
             >
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -115,7 +142,7 @@ const App: React.FC = () => {
                     Foosball Elo Rating System ©2024 Created by Leo
                 </Footer>
             </Layout>
-        </Layout>
+        </Layout >
     );
 };
 
