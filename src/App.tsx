@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Layout, Menu, theme, Typography } from 'antd';
-import { CalendarOutlined, LineChartOutlined, TeamOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons';
+import { CalendarOutlined, LineChartOutlined, SmileOutlined, TeamOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons';
 import PlayerTable from './tables/PlayerTable';
 import MatchTables from './tables/MatchTables/MatchTables';
 import TeamTable from './tables/TeamTable';
 import PlayerRankingTables from './tables/PlayerRankingTables/PlayerRankingTables';
 import Chart from './Charts/Chart';
+import MatchRandomizer from './MatchRandomizer/MatchRandomizer';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -23,25 +24,28 @@ const App: React.FC = () => {
         setSelectedMenuItem(menuItem);
     };
 
-    const handleClickOutside = (event: MouseEvent) => {
-        if(!broken) {
-            setCollapsed(false);
-            return;
-        }
-        if (siderRef.current && !siderRef.current.contains(event.target as Node)) {
-            if (!collapsed) {
-                setCollapsed(true);
-            }
-        }
-    };
-
     useEffect(() => {
-        document.addEventListener('click', handleClickOutside);
+        const handleClickOutside = (event: MouseEvent) => {
+            if (!broken) {
+                setCollapsed(false);
+                return;
+            }
 
-        return () => {
-            document.removeEventListener('click', handleClickOutside);
+            if (siderRef.current && !siderRef.current.contains(event.target as Node)) {
+                if (!collapsed) {
+                    setCollapsed(true);
+                }
+            }
         };
-    }, [collapsed]);
+
+        // Add event listener for mousedown
+        document.addEventListener('mousedown', handleClickOutside);
+
+        // Clean up the event listener when the component unmounts or dependencies change
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [collapsed, broken]);
 
 
     const menuItems = [
@@ -50,6 +54,7 @@ const App: React.FC = () => {
         { key: '3', icon: <TeamOutlined />, label: 'Teams' },
         { key: '4', icon: <UserOutlined />, label: 'Players' },
         { key: '5', icon: <LineChartOutlined />, label: 'Stats' },
+        { key: '6', icon: <SmileOutlined />, label: 'Match Randomizer' },
     ];
 
     const siderStyle = {
@@ -86,6 +91,10 @@ const App: React.FC = () => {
             contentComponent = <Chart />;
             pageTitle = 'Stats'
             break;
+        case '6':
+            contentComponent = <MatchRandomizer />;
+            pageTitle = 'Match Randomizer'
+            break;
         default:
             contentComponent = null;
             pageTitle = ''
@@ -96,7 +105,7 @@ const App: React.FC = () => {
             <Sider
                 breakpoint="lg"
                 collapsedWidth="0"
-                onBreakpoint={(broken) =>{
+                onBreakpoint={(broken) => {
                     setBroken(broken)
                 }}
                 collapsed={collapsed}

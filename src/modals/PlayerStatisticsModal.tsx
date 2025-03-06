@@ -1,4 +1,4 @@
-import { Card, Modal } from "antd";
+import { Modal } from "antd";
 import { useQuery } from "react-query";
 import { getPlayerSoloStatistics, getPlayerStatistics } from "../API/Api";
 import { PlayerSoloStatistics, PlayerStatistics } from "../Types/Types";
