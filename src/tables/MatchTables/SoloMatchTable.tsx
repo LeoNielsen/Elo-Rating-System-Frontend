@@ -49,8 +49,6 @@ function SoloMatchTable({ isLoading, data }: { isLoading: boolean, data: SoloMat
 
     const sortedData = data ? [...data].sort((a, b) => b.id - a.id) : [];
 
-
-
     return (
         <>
             <Table style={{ marginTop: '-15px' }}

@@ -4,7 +4,7 @@ import { CalendarOutlined, LineChartOutlined, TeamOutlined, TrophyOutlined, User
 import PlayerTable from './tables/PlayerTable';
 import MatchTables from './tables/MatchTables/MatchTables';
 import TeamTable from './tables/TeamTable';
-import PlayerRankingTable from './tables/PlayerRankingTable';
+import PlayerRankingTables from './tables/PlayerRankingTables/PlayerRankingTables';
 import Chart from './Charts/Chart';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -43,7 +43,7 @@ const App: React.FC = () => {
     let pageTitle: string;
     switch (selectedMenuItem) {
         case '1':
-            contentComponent = <PlayerRankingTable />;
+            contentComponent = <PlayerRankingTables />;
             pageTitle = 'Players'
             break;
         case '2':

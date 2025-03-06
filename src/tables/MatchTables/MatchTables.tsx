@@ -20,7 +20,7 @@ function MatchTables() {
   const handleNewMatchClick = () => {
     setModalVisible(true);
   };
-  const handleActiveTab = (key:string) => {
+  const handleActiveTab = (key: string) => {
     setActiveTab(key);
   };
 

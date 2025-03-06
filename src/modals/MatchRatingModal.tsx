@@ -13,10 +13,14 @@ function MatchRatingModal({ modalVisible, setModalVisible, matchId, soloMatch }:
         "matchRatings",
         () => fetchMatchRatings(matchId)
     );
-    
+
     const handleModalCancel = () => {
         setModalVisible(false);
     };
+
+    if (isLoading) {
+        return <></>
+    }
 
     return data ? (<Modal
         title="Match Ratings"

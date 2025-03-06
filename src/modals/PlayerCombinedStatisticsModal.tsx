@@ -3,22 +3,17 @@ import { useQuery } from "react-query";
 import { getPlayerSoloStatistics, getPlayerStatistics } from "../API/Api";
 import { PlayerSoloStatistics, PlayerStatistics } from "../Types/Types";
 
-function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo }:
-    { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, playerId: number, solo: boolean }) {
+function PlayerCombinedStatisticsModal({ modalVisible, setModalVisible, playerId }:
+    { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, playerId: number }) {
 
-    const fetchPlayerStatistics = solo ? getPlayerSoloStatistics : getPlayerStatistics;
-
-    const { data, isLoading } = useQuery<PlayerStatistics | PlayerSoloStatistics>(
-        "PlayerStatistics",
-        () => fetchPlayerStatistics(playerId)
-    );
-
+    const playerStats = useQuery<PlayerStatistics>("PlayersStats", () => getPlayerStatistics(playerId));
+    const soloStats = useQuery<PlayerSoloStatistics>("PlayersSoloStats", () => getPlayerSoloStatistics(playerId));
 
     const handleModalCancel = () => {
         setModalVisible(false);
     };
 
-    if (isLoading) {
+    if (playerStats.isLoading || soloStats.isLoading) {
         return <></>
     }
     const soloContent = (player: PlayerSoloStatistics) => {
@@ -39,11 +34,14 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo }
         )
     }
 
-    const content = (player: PlayerStatistics) => {
+    const content = (player: PlayerStatistics,solo: PlayerSoloStatistics) => {
 
-        const totalWins = player.attackerWins + player.defenderWins
-        const totalLost = player.attackerLost + player.defenderLost
+        const wins2v2 = player.attackerWins + player.defenderWins
+        const lost2v2 = player.attackerLost + player.defenderLost
+        const totalWins = wins2v2 + solo.wins
+        const totalLost = lost2v2 + solo.lost
         const totalGames = totalLost + totalWins
+        const totalGoals = player.totalGoals + solo.totalGoals
 
         return (
             <Card title="Player Stats" style={{ width: 400, margin: '10px' }}>
@@ -52,30 +50,34 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo }
                 <p><strong>Total Games:</strong> {totalGames}</p>
                 <p><strong>Total Wins:</strong> {totalWins}</p>
                 <div style={{ marginLeft: '20px' }}>
-                    <p><strong>Attacker Wins:</strong> {player.attackerWins}</p>
-                    <p><strong>Defender Wins:</strong> {player.defenderWins}</p>
+                    <p><strong>Wins 2v2:</strong> {wins2v2}</p>
+                    <p><strong>Wins 1v1:</strong> {solo.wins}</p>
                 </div>
                 <p><strong>Total Lost:</strong> {totalLost}</p>
                 <div style={{ marginLeft: '20px' }}>
-                    <p><strong>Attacker Lost:</strong> {player.attackerLost}</p>
-                    <p><strong>Defender Lost:</strong> {player.defenderLost}</p>
+                    <p><strong>Lost 2v2:</strong> {lost2v2}</p>
+                    <p><strong>Lost 1v1:</strong> {solo.lost}</p>
                 </div>
                 <p><strong>Winning Percentage:</strong> {((totalWins / totalGames) * 100).toFixed(0)}%</p>
-                <p><strong>Total Goals:</strong> {player.totalGoals}</p>
-                <p><strong>Goals Per Game:</strong> {(player.totalGoals / totalGames).toFixed(2)}</p>
+                <p><strong>Total Goals:</strong> {totalGoals}</p>
+                <div style={{ marginLeft: '20px' }}>
+                    <p><strong>Goals 2v2:</strong> {player.totalGoals}</p>
+                    <p><strong>Goals 1v1:</strong> {solo.totalGoals}</p>
+                </div>
+                <p><strong>Goals Per Game:</strong> {(totalGoals / totalGames).toFixed(2)}</p>
             </Card>
         )
     }
 
-    return data ? (<Modal
+    return playerStats.data && soloStats.data ? (<Modal
         title="Player Statistics"
         open={modalVisible}
         onCancel={handleModalCancel}
         footer={null}
     >
-        {solo ? soloContent(data as PlayerSoloStatistics) : content(data as PlayerStatistics)}
+        {content(playerStats.data, soloStats.data)}
     </Modal>) : (<></>);
 
 }
 
-export default PlayerStatisticsModal;
+export default PlayerCombinedStatisticsModal;

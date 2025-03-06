@@ -29,6 +29,25 @@ const getAllPlayerStatistics = async () => {
     }
 };
 
+
+const getPlayerSoloStatistics = async (id: number) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/player/statistics/solo/${id}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const getAllPlayerSoloStatistics = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/player/statistics/solo/all`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const getAllTeams = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/team/all`);
@@ -135,6 +154,8 @@ export {
     getAllPlayers,
     getPlayerStatistics,
     getAllPlayerStatistics,
+    getPlayerSoloStatistics,
+    getAllPlayerSoloStatistics,
     getAllTeams,
     getAllMatches,
     getAllSoloMatches,

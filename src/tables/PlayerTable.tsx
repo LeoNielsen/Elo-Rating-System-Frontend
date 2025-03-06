@@ -4,8 +4,8 @@ import '../Style.css'
 import { getAllPlayers } from '../API/Api';
 import { useState } from 'react';
 import NewPlayerModal from '../modals/NewPlayerModal';
-import PlayerStatisticsModal from '../modals/PlayerStatisticsModal';
 import { Player } from '../Types/Types';
+import PlayerCombinedStatisticsModal from '../modals/PlayerCombinedStatisticsModal';
 
 function PlayerTable() {
 
@@ -33,10 +33,16 @@ function PlayerTable() {
       sorter: (a: Player, b: Player) => a.nameTag.localeCompare(b.nameTag),
     },
     {
-      title: 'Rating',
+      title: 'Rating 2v2',
       dataIndex: 'rating',
       key: 'rating',
       sorter: (a: Player, b: Player) => a.rating - b.rating,
+    },
+    {
+      title: 'Rating 1v1',
+      dataIndex: 'soloRating',
+      key: 'soloRating',
+      sorter: (a: Player, b: Player) => a.soloRating - b.soloRating,
     }
   ];
 
@@ -52,7 +58,7 @@ function PlayerTable() {
         onClick: () => handleRowClick(record),
       })} rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''} bordered={true} loading={isLoading} />
       <NewPlayerModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
-      {modalStatisticsVisible && <PlayerStatisticsModal modalVisible={modalStatisticsVisible} setModalVisible={setModalStatisticsVisible} playerId={rowId} />}
+      {modalStatisticsVisible && <PlayerCombinedStatisticsModal modalVisible={modalStatisticsVisible} setModalVisible={setModalStatisticsVisible} playerId={rowId} />}
     </div>
 
   );

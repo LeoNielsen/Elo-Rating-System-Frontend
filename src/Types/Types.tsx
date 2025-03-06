@@ -20,6 +20,7 @@ interface Player {
     id: number;
     nameTag: string;
     rating: number;
+    soloRating: number;
 }
 
 interface Team {
@@ -48,11 +49,21 @@ interface PlayerStatistics {
     totalGoals: number
 }
 
+interface PlayerSoloStatistics {
+    id: number
+    nameTag: string,
+    rating: number,
+    wins: number,
+    lost: number,
+    totalGoals: number
+}
+
 export type {
     Match,
     SoloMatch,
     Player,
     Team,
     MatchRating,
-    PlayerStatistics
+    PlayerStatistics,
+    PlayerSoloStatistics
 }

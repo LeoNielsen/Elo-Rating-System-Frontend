@@ -5,7 +5,7 @@ import { Player } from '../Types/Types';
 import { useState } from 'react';
 
 function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, activeTab }:
-  { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, refetch: any, soloRefetch: any, activeTab:string }) {
+  { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, refetch: any, soloRefetch: any, activeTab: string }) {
 
   const { data, isLoading } = useQuery("Players", getAllPlayers);
 
@@ -131,19 +131,19 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, ac
             <Form.Item label="Attacker" name="RedAttacker" rules={[{ required: true, message: 'Please input!' }]}>
               <Select showSearch optionFilterProp="label" options={options}
                 onSearch={(value) => handleSearch(value, "RedAttacker")}
-                onBlur={() => handleBlur("RedAttacker",false)}
+                onBlur={() => handleBlur("RedAttacker", false)}
                 onSelect={(value => handleSelect(value, "RedAttacker"))}
                 placeholder="Red Attacker" />
             </Form.Item>
             <Form.Item label="Defender" name="RedDefender" rules={[{ required: true, message: 'Please input!' }]}>
               <Select showSearch optionFilterProp="label" options={options}
                 onSearch={(value) => handleSearch(value, "RedDefender")}
-                onBlur={() => handleBlur("RedDefender",false)}
+                onBlur={() => handleBlur("RedDefender", false)}
                 onSelect={(value => handleSelect(value, "RedDefender"))}
                 placeholder="Red Defender" />
             </Form.Item>
             <Form.Item label="Goal Score" name="RedGoalScore" rules={[{ required: true, message: 'Please input!' }]}>
-              <Input type="number" min={0} max={10} onChange={(value) => scoreHandler(value,false)} placeholder='Red Score' />
+              <Input type="number" min={0} max={10} onChange={(value) => scoreHandler(value, false)} placeholder='Red Score' />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -151,19 +151,19 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, ac
             <Form.Item label="Attacker" name="BlueAttacker" rules={[{ required: true, message: 'Please input!' }]}>
               <Select showSearch optionFilterProp="label" options={options}
                 onSearch={(value) => handleSearch(value, "BlueAttacker")}
-                onBlur={() => handleBlur("BlueAttacker",false)}
+                onBlur={() => handleBlur("BlueAttacker", false)}
                 onSelect={(value => handleSelect(value, "BlueAttacker"))}
                 placeholder="Blue Attacker" />
             </Form.Item>
             <Form.Item label="Defender" name="BlueDefender" rules={[{ required: true, message: 'Please input!' }]}>
               <Select showSearch optionFilterProp="label" options={options}
                 onSearch={(value) => handleSearch(value, "BlueDefender")}
-                onBlur={() => handleBlur("BlueDefender",false)}
+                onBlur={() => handleBlur("BlueDefender", false)}
                 onSelect={(value => handleSelect(value, "BlueDefender"))}
                 placeholder="Blue Defender" />
             </Form.Item>
             <Form.Item id='BlueGoalScore' label="Goal Score" name="BlueGoalScore" rules={[{ required: true, message: 'Please input!' }]}>
-              <Input type="number" min={0} max={10} onChange={(value) => scoreHandler(value,false)} placeholder='Blue Score' />
+              <Input type="number" min={0} max={10} onChange={(value) => scoreHandler(value, false)} placeholder='Blue Score' />
             </Form.Item>
           </Col>
         </Row>
@@ -181,12 +181,12 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, ac
             <Form.Item label="Red Player" name="Red" rules={[{ required: true, message: 'Please input!' }]}>
               <Select showSearch optionFilterProp="label" options={options}
                 onSearch={(value) => handleSearch(value, "Red")}
-                onBlur={() => handleBlur("Red",true)}
+                onBlur={() => handleBlur("Red", true)}
                 onSelect={(value => handleSelect(value, "Red"))}
                 placeholder="Red Player" />
             </Form.Item>
             <Form.Item label="Goal Score" name="RedGoalScore" rules={[{ required: true, message: 'Please input!' }]}>
-              <Input type="number" min={0} max={10} onChange={(value) => scoreHandler(value,true)} placeholder='Red Score' />
+              <Input type="number" min={0} max={10} onChange={(value) => scoreHandler(value, true)} placeholder='Red Score' />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -194,12 +194,12 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, ac
             <Form.Item label="Blue Player" name="Blue" rules={[{ required: true, message: 'Please input!' }]}>
               <Select showSearch optionFilterProp="label" options={options}
                 onSearch={(value) => handleSearch(value, "Blue")}
-                onBlur={() => handleBlur("Blue",true)}
+                onBlur={() => handleBlur("Blue", true)}
                 onSelect={(value => handleSelect(value, "Blue"))}
                 placeholder="Blue Player" />
             </Form.Item>
             <Form.Item id='BlueGoalScore' label="Goal Score" name="BlueGoalScore" rules={[{ required: true, message: 'Please input!' }]}>
-              <Input type="number" min={0} max={10} onChange={(value) => scoreHandler(value,true)} placeholder='Blue Score' />
+              <Input type="number" min={0} max={10} onChange={(value) => scoreHandler(value, true)} placeholder='Blue Score' />
             </Form.Item>
           </Col>
         </Row>
