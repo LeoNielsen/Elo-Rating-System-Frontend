@@ -65,7 +65,7 @@ function PlayerSoloRakingTable() {
         },
     ];
 
-    const sortedData = data?.slice().sort((a, b) => b.rating - a.rating);
+    const sortedData = data?.filter((player) => player.lost+player.wins > 0).slice().sort((a, b) => b.rating - a.rating);
 
 
     return (

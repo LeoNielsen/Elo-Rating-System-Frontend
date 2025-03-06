@@ -68,7 +68,7 @@ function PlayerRankingTable() {
         },
     ];
 
-    const sortedData = data?.slice().sort((a, b) => b.rating - a.rating);
+    const sortedData = data?.filter((player) => player.attackerLost+player.attackerWins+player.defenderLost+player.defenderWins > 0).slice().sort((a, b) => b.rating - a.rating);
 
     return (
         <>

@@ -1,5 +1,5 @@
 import { Tabs, TabsProps } from 'antd';
-import PlayerSoloRakingTable from './PlayerSoloRakingTable';
+import PlayerSoloRakingTable from './PlayerSoloRankingTable';
 import PlayerRankingTable from './PlayerRankingTable';
 
 function PlayerRankingTables() {
