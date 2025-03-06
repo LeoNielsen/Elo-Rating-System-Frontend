@@ -98,6 +98,14 @@ const getAllRatings = async () => {
         throw error;
     }
 };
+const getAllSoloRatings = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/rating/solo/all`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 
 const createTeam = async (teamData: {
     attackerId: number,
@@ -162,6 +170,7 @@ export {
     getMatchRatings,
     getSoloMatchRatings,
     getAllRatings,
+    getAllSoloRatings,
     createTeam,
     createMatch,
     createSoloMatch,
