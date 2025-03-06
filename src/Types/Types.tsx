@@ -38,6 +38,13 @@ interface MatchRating {
     newRating: number
 }
 
+interface chartData {
+    matchId: number,
+    player: Player,
+    newRating: number,
+    date: string
+}
+
 interface PlayerStatistics {
     id: number
     nameTag: string,
@@ -67,5 +74,6 @@ export type {
     Team,
     MatchRating,
     PlayerStatistics,
-    PlayerSoloStatistics
+    PlayerSoloStatistics,
+    chartData
 }

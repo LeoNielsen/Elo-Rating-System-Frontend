@@ -1,35 +1,45 @@
 
 import { Line } from '@ant-design/plots';
-import { MatchRating } from '../Types/Types';
+import { chartData } from '../Types/Types';
 import { useQuery } from 'react-query';
-import { getAllRatings, getAllSoloRatings } from '../API/Api';
+import { getChartData, getSoloChartData } from '../API/Api';
 import { Card } from 'antd';
 
+const calculateLastRatingPerDay = (data: chartData[]) => {
+  if (!data) return [];
+
+  const groupedData: Record<string, { matchId: number; date: string; player: string; rating: number }> = {};
+
+  data.forEach((rating) => {
+    const key = `${rating.date}-${rating.player.nameTag}`;
+
+    // If this is the first match for the day, or if the new match has a higher matchId, update the record
+    if (!groupedData[key] || rating.matchId > groupedData[key].matchId) {
+      groupedData[key] = {
+        matchId: rating.matchId,
+        date: rating.date,
+        player: rating.player.nameTag,
+        rating: rating.newRating,
+      };
+    }
+  });
+
+  // Convert the object values to an array
+  return Object.values(groupedData);
+};
 
 function Chart() {
 
-  const ratings = useQuery<MatchRating[]>("ratings", getAllRatings);
-  const ratingsSolo = useQuery<MatchRating[]>("ratingsSolo", getAllSoloRatings);
+  const ratings = useQuery<chartData[]>("ratings", getChartData);
+  const ratingsSolo = useQuery<chartData[]>("ratingsSolo", getSoloChartData);
 
-
-
-  // Transform data
-  const matchData = ratings.data?.map((rating: MatchRating) => ({
-    matchId: rating.matchId,
-    rating: rating.newRating,
-    player: rating.player.nameTag
-  })).sort((a, b) => a.matchId - b.matchId) || [];
-
-  const matchDataSolo = ratingsSolo.data?.map((rating: MatchRating) => ({
-    matchId: rating.matchId,
-    rating: rating.newRating,
-    player: rating.player.nameTag
-  })).sort((a, b) => a.matchId - b.matchId) || [];
+  const matchData = calculateLastRatingPerDay(ratings.data || []);
+  const matchDataSolo = calculateLastRatingPerDay(ratingsSolo.data || []);
 
   // Chart configuration
   const config = {
     data: matchData,
-    xField: 'matchId',
+    xField: 'date',
     yField: 'rating',
     seriesField: 'player',
     lineStyle: {
@@ -42,12 +52,13 @@ function Chart() {
   };
   const configSolo = {
     data: matchDataSolo,
-    xField: 'matchId',
+    xField: 'date',
     yField: 'rating',
     seriesField: 'player',
     lineStyle: {
       lineWidth: 2,
     },
+
     yAxis: {
       min: 800,
       max: 1500,

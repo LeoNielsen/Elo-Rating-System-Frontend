@@ -158,6 +158,24 @@ const createPlayer = async (playerData: {
     }
 };
 
+const getChartData = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/rating/chart`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const getSoloChartData = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/rating/solo/chart`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 export {
     getAllPlayers,
     getPlayerStatistics,
@@ -174,5 +192,7 @@ export {
     createTeam,
     createMatch,
     createSoloMatch,
-    createPlayer
+    createPlayer,
+    getChartData,
+    getSoloChartData
 };
