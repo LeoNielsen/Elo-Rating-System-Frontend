@@ -16,25 +16,8 @@ function PlayerCombinedStatisticsModal({ modalVisible, setModalVisible, playerId
     if (playerStats.isLoading || soloStats.isLoading) {
         return <></>
     }
-    const soloContent = (player: PlayerSoloStatistics) => {
 
-        const totalGames = player.wins + player.lost
-
-        return (
-            <Card title="Player Stats" style={{ width: 400, margin: '10px' }}>
-                <p><strong>Name Tag:</strong> {player.nameTag}</p>
-                <p><strong>Rating:</strong> {player.rating}</p>
-                <p><strong>Total Games:</strong> {totalGames}</p>
-                <p><strong>Total Wins:</strong> {player.wins}</p>
-                <p><strong>Total Lost:</strong> {player.lost}</p>
-                <p><strong>Winning Percentage:</strong> {((player.wins / totalGames) * 100).toFixed(0)}%</p>
-                <p><strong>Total Goals:</strong> {player.totalGoals}</p>
-                <p><strong>Goals Per Game:</strong> {(player.totalGoals / totalGames).toFixed(2)}</p>
-            </Card>
-        )
-    }
-
-    const content = (player: PlayerStatistics,solo: PlayerSoloStatistics) => {
+    const content = (player: PlayerStatistics, solo: PlayerSoloStatistics) => {
 
         const wins2v2 = player.attackerWins + player.defenderWins
         const lost2v2 = player.attackerLost + player.defenderLost

@@ -1,6 +1,6 @@
 interface Match {
     id: number;
-    date: Date; 
+    date: Date;
     redTeam: Team;
     blueTeam: Team;
     redTeamScore: number;
@@ -9,7 +9,7 @@ interface Match {
 
 interface SoloMatch {
     id: number;
-    date: Date; 
+    date: Date;
     redPlayer: Player;
     bluePlayer: Player;
     redTeamScore: number;

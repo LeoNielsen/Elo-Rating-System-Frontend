@@ -25,7 +25,7 @@ const App: React.FC = () => {
         { key: '2', icon: <CalendarOutlined />, label: 'Matches' },
         { key: '3', icon: <TeamOutlined />, label: 'Teams' },
         { key: '4', icon: <UserOutlined />, label: 'Players' },
-        { key: '5', icon: <LineChartOutlined/>, label: 'Stats' },
+        { key: '5', icon: <LineChartOutlined />, label: 'Stats' },
     ];
 
     const siderStyle = {
@@ -80,8 +80,15 @@ const App: React.FC = () => {
                 }}
                 style={siderStyle}
             >
-                <div className="demo-logo-vertical">
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <img
+                        src="/JNbold.png"
+                        alt="Logo"
+                        style={{ width: '100px', height: '100px' }}
+                    />
                 </div>
+
+
                 <Menu
                     theme="dark"
                     mode="inline"
