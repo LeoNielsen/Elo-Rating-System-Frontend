@@ -1,13 +1,13 @@
 
 import { Line } from '@ant-design/plots';
-import { Match, MatchRating } from '../Types/Types';
+import { MatchRating } from '../Types/Types';
 import { useQuery } from 'react-query';
-import { getAllMatches, getAllRatings } from '../API/Api';
+import { getAllRatings } from '../API/Api';
 
 
 function Chart() {
 
-    const { isLoading, data, refetch } = useQuery<MatchRating[]>("ratings", getAllRatings);
+    const { data, } = useQuery<MatchRating[]>("ratings", getAllRatings);
 
     // Transform data
     const matchData = data?.map((rating: MatchRating) => ({
