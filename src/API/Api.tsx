@@ -46,9 +46,25 @@ const getAllMatches = async () => {
         throw error;
     }
 };
+const getAllSoloMatches = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/match/solo/all`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 const getMatchRatings = async (id: number) => {
     try {
         const response = await axios.get(`${BASE_URL}/rating/match/${id}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+const getSoloMatchRatings = async (id: number) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/rating/solo/match/${id}`);
         return response.data;
     } catch (error) {
         throw error;
@@ -89,6 +105,21 @@ const createMatch = async (matchData: {
         throw error;
     }
 };
+
+const createSoloMatch = async (matchData: {
+    redPlayerId: number,
+    bluePlayerId: number,
+    redScore: number,
+    blueScore: number
+}) => {
+    try {
+        const response = await axios.post(`${BASE_URL}/match/solo/new`, matchData);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const createPlayer = async (playerData: {
     nameTag: string
 }) => {
@@ -106,9 +137,12 @@ export {
     getAllPlayerStatistics,
     getAllTeams,
     getAllMatches,
+    getAllSoloMatches,
     getMatchRatings,
+    getSoloMatchRatings,
     getAllRatings,
     createTeam,
     createMatch,
+    createSoloMatch,
     createPlayer
 };

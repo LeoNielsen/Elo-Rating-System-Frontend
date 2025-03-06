@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Layout, Menu, theme, Typography } from 'antd';
 import { CalendarOutlined, LineChartOutlined, TeamOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons';
 import PlayerTable from './tables/PlayerTable';
-import MatchTable from './tables/MatchTable';
+import MatchTables from './tables/MatchTables/MatchTables';
 import TeamTable from './tables/TeamTable';
 import PlayerRankingTable from './tables/PlayerRankingTable';
 import Chart from './Charts/Chart';
@@ -47,7 +47,7 @@ const App: React.FC = () => {
             pageTitle = 'Players'
             break;
         case '2':
-            contentComponent = <MatchTable />;
+            contentComponent = <MatchTables />;
             pageTitle = 'Matches'
             break;
         case '3':

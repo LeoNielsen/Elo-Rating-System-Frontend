@@ -7,6 +7,15 @@ interface Match {
     blueTeamScore: number;
 }
 
+interface SoloMatch {
+    id: number;
+    date: Date; 
+    redPlayer: Player;
+    bluePlayer: Player;
+    redTeamScore: number;
+    blueTeamScore: number;
+}
+
 interface Player {
     id: number;
     nameTag: string;
@@ -41,6 +50,7 @@ interface PlayerStatistics {
 
 export type {
     Match,
+    SoloMatch,
     Player,
     Team,
     MatchRating,

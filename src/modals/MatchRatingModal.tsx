@@ -1,14 +1,19 @@
 import { Modal } from "antd";
 import { useQuery } from "react-query";
-import { getMatchRatings } from "../API/Api";
+import { getMatchRatings, getSoloMatchRatings } from "../API/Api";
 import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
 import { MatchRating } from "../Types/Types";
 
-function MatchRatingModal({ modalVisible, setModalVisible, matchId }:
-    { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, matchId: number }) {
+function MatchRatingModal({ modalVisible, setModalVisible, matchId, soloMatch }:
+    { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, matchId: number, soloMatch: boolean, }) {
 
-    const { data, isLoading } = useQuery<MatchRating[]>("matchRatings", () => getMatchRatings(matchId));
+    const fetchMatchRatings = soloMatch ? getSoloMatchRatings : getMatchRatings;
 
+    const { data, isLoading } = useQuery<MatchRating[]>(
+        "matchRatings",
+        () => fetchMatchRatings(matchId)
+    );
+    
     const handleModalCancel = () => {
         setModalVisible(false);
     };
