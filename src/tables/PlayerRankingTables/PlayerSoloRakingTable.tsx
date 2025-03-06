@@ -4,6 +4,8 @@ import { PlayerSoloStatistics } from "../../Types/Types";
 import { useState } from "react";
 import Table, { ColumnType } from "antd/es/table";
 import PlayerStatisticsModal from "../../modals/PlayerStatisticsModal";
+import { Typography } from "antd";
+import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
 
 function PlayerSoloRakingTable() {
 
@@ -36,6 +38,20 @@ function PlayerSoloRakingTable() {
             title: 'Rating',
             dataIndex: 'rating',
             key: 'rating',
+            render: (_, player: PlayerSoloStatistics) => (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                    <span>{player.rating}</span>
+
+                    {player.todayRatingChance !== 0 && (
+                        <Typography.Text
+                            type={player.todayRatingChance > 0 ? 'success' : 'danger'}
+                            className="rating-change"
+                        >
+                            {player.todayRatingChance > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />} {Math.abs(player.todayRatingChance)}
+                        </Typography.Text>
+                    )}
+                </div>
+            )
         },
         {
             title: 'Total Wins',

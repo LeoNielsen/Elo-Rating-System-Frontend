@@ -25,17 +25,16 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo }
 
         const totalGames = player.wins + player.lost
 
-        return (
-            <Card title="Player Stats" style={{ width: 400, margin: '10px' }}>
-                <p><strong>Name Tag:</strong> {player.nameTag}</p>
-                <p><strong>Rating:</strong> {player.rating}</p>
-                <p><strong>Total Games:</strong> {totalGames}</p>
-                <p><strong>Total Wins:</strong> {player.wins}</p>
-                <p><strong>Total Lost:</strong> {player.lost}</p>
-                <p><strong>Winning Percentage:</strong> {((player.wins / totalGames) * 100).toFixed(0)}%</p>
-                <p><strong>Total Goals:</strong> {player.totalGoals}</p>
-                <p><strong>Goals Per Game:</strong> {(player.totalGoals / totalGames).toFixed(2)}</p>
-            </Card>
+        return (<>
+            <p><strong>Name Tag:</strong> {player.nameTag}</p>
+            <p><strong>Rating:</strong> {player.rating}</p>
+            <p><strong>Total Games:</strong> {totalGames}</p>
+            <p><strong>Total Wins:</strong> {player.wins}</p>
+            <p><strong>Total Lost:</strong> {player.lost}</p>
+            <p><strong>Winning Percentage:</strong> {((player.wins / totalGames) * 100).toFixed(0)}%</p>
+            <p><strong>Total Goals:</strong> {player.totalGoals}</p>
+            <p><strong>Goals Per Game:</strong> {(player.totalGoals / totalGames).toFixed(2)}</p>
+        </>
         )
     }
 
@@ -46,7 +45,7 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo }
         const totalGames = totalLost + totalWins
 
         return (
-            <Card title="Player Stats" style={{ width: 400, margin: '10px' }}>
+            <>
                 <p><strong>Name Tag:</strong> {player.nameTag}</p>
                 <p><strong>Rating:</strong> {player.rating}</p>
                 <p><strong>Total Games:</strong> {totalGames}</p>
@@ -63,7 +62,7 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo }
                 <p><strong>Winning Percentage:</strong> {((totalWins / totalGames) * 100).toFixed(0)}%</p>
                 <p><strong>Total Goals:</strong> {player.totalGoals}</p>
                 <p><strong>Goals Per Game:</strong> {(player.totalGoals / totalGames).toFixed(2)}</p>
-            </Card>
+            </>
         )
     }
 

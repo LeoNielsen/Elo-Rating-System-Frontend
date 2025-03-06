@@ -46,7 +46,8 @@ interface PlayerStatistics {
     defenderWins: number,
     attackerLost: number,
     defenderLost: number,
-    totalGoals: number
+    totalGoals: number,
+    todayRatingChance: number
 }
 
 interface PlayerSoloStatistics {
@@ -55,7 +56,8 @@ interface PlayerSoloStatistics {
     rating: number,
     wins: number,
     lost: number,
-    totalGoals: number
+    totalGoals: number,
+    todayRatingChance: number
 }
 
 export type {

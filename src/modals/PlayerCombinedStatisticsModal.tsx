@@ -27,7 +27,7 @@ function PlayerCombinedStatisticsModal({ modalVisible, setModalVisible, playerId
         const totalGoals = player.totalGoals + solo.totalGoals
 
         return (
-            <Card title="Player Stats" style={{ width: 400, margin: '10px' }}>
+            <>
                 <p><strong>Name Tag:</strong> {player.nameTag}</p>
                 <p><strong>Rating:</strong> {player.rating}</p>
                 <p><strong>Total Games:</strong> {totalGames}</p>
@@ -48,7 +48,7 @@ function PlayerCombinedStatisticsModal({ modalVisible, setModalVisible, playerId
                     <p><strong>Goals 1v1:</strong> {solo.totalGoals}</p>
                 </div>
                 <p><strong>Goals Per Game:</strong> {(totalGoals / totalGames).toFixed(2)}</p>
-            </Card>
+            </>
         )
     }
 
