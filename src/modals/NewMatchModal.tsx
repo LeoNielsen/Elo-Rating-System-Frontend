@@ -97,7 +97,6 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, ac
   }
 
   const onFinishSolo = async () => {
-    console.log("bbbb")
     await createSoloMatchMutation({
       redPlayerId: soloForm.getFieldValue("Red"),
       bluePlayerId: soloForm.getFieldValue("Blue"),
