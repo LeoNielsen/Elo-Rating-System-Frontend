@@ -4,7 +4,7 @@ import { PlayerSoloStatistics } from "../../Types/Types";
 import { useState } from "react";
 import Table, { ColumnType } from "antd/es/table";
 import PlayerStatisticsModal from "../../modals/PlayerStatisticsModal";
-import { Typography } from "antd";
+import { Grid, Typography } from "antd";
 import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
 
 function PlayerSoloRakingTable() {
@@ -13,6 +13,10 @@ function PlayerSoloRakingTable() {
 
     const [modalStatisticsVisible, setModalStatisticsVisible] = useState(false);
     const [rowId, setRowId] = useState(NaN);
+
+    const { useBreakpoint } = Grid;
+    const screens = useBreakpoint();
+    const isSmallScreen = !screens.md;
 
     const handleRowClick = (record: PlayerSoloStatistics) => {
         setModalStatisticsVisible(true);
@@ -35,7 +39,11 @@ function PlayerSoloRakingTable() {
             key: 'name',
         },
         {
-            title: 'Rating',
+            title: (
+                <div style={{ whiteSpace: 'nowrap' }}>
+                    Rating
+                </div>
+            ),
             dataIndex: 'rating',
             key: 'rating',
             render: (_, player: PlayerSoloStatistics) => (
@@ -43,11 +51,9 @@ function PlayerSoloRakingTable() {
                     <span>{player.rating}</span>
 
                     {player.todayRatingChance !== 0 && (
-                        <Typography.Text
-                            type={player.todayRatingChance > 0 ? 'success' : 'danger'}
-                            className="rating-change"
-                        >
-                            {player.todayRatingChance > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />} {Math.abs(player.todayRatingChance)}
+                        <Typography.Text type={player.todayRatingChance > 0 ? 'success' : 'danger'}>
+                            {player.todayRatingChance > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
+                            {!isSmallScreen && ` ${Math.abs(player.todayRatingChance)}`}
                         </Typography.Text>
                     )}
                 </div>
@@ -65,7 +71,7 @@ function PlayerSoloRakingTable() {
         },
     ];
 
-    const sortedData = data?.filter((player) => player.lost+player.wins > 0).slice().sort((a, b) => b.rating - a.rating);
+    const sortedData = data?.filter((player) => player.lost + player.wins > 0).slice().sort((a, b) => b.rating - a.rating);
 
 
     return (

@@ -103,7 +103,7 @@ const App: React.FC = () => {
     return (
         <Layout>
             <Sider
-                breakpoint="lg"
+                breakpoint="sm"
                 collapsedWidth="0"
                 onBreakpoint={(broken) => {
                     setBroken(broken)
@@ -114,7 +114,10 @@ const App: React.FC = () => {
                 }}
                 ref={siderRef}
 
-                style={siderStyle}
+                style={{...siderStyle,
+                    zIndex: broken ? 1000 : 'auto',
+                    position: broken ? 'absolute' : 'relative',
+                }}
             >
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <img

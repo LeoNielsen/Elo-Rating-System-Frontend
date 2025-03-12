@@ -70,7 +70,7 @@ function MatchRandomizer() {
                 <Row gutter={[16, 16]}>
                     <Col span={24}>
                         <Row gutter={[16, 16]}>
-                            <Col span={6}>
+                            <Col xs={12} sm={12} md={6}>
                                 <Form.Item name="player1" rules={[{ required: true, message: "Please select!" }]}>
                                     <Select showSearch optionFilterProp="label" options={options}
                                         onSearch={(value) => handleSearch(value, "player1")}
@@ -79,7 +79,7 @@ function MatchRandomizer() {
                                         placeholder="player 1" />
                                 </Form.Item>
                             </Col>
-                            <Col span={6}>
+                            <Col xs={12} sm={12} md={6}>
                                 <Form.Item name="player2" rules={[{ required: true, message: "Please select!" }]}>
                                     <Select showSearch optionFilterProp="label" options={options}
                                         onSearch={(value) => handleSearch(value, "player2")}
@@ -88,7 +88,7 @@ function MatchRandomizer() {
                                         placeholder="player 2" />
                                 </Form.Item>
                             </Col>
-                            <Col span={6}>
+                            <Col xs={12} sm={12} md={6}>
                                 <Form.Item name="player3" rules={[{ required: true, message: "Please select!" }]}>
                                     <Select showSearch optionFilterProp="label" options={options}
                                         onSearch={(value) => handleSearch(value, "player3")}
@@ -97,7 +97,7 @@ function MatchRandomizer() {
                                         placeholder="player 3" />
                                 </Form.Item>
                             </Col>
-                            <Col span={6}>
+                            <Col xs={12} sm={12} md={6}>
                                 <Form.Item name="player4" rules={[{ required: true, message: "Please select!" }]}>
                                     <Select showSearch optionFilterProp="label" options={options}
                                         onSearch={(value) => handleSearch(value, "player4")}
@@ -109,6 +109,7 @@ function MatchRandomizer() {
                         </Row>
                     </Col>
                 </Row>
+
                 <Form.Item>
                     <Button type="primary" htmlType="submit">Randomize</Button>
                 </Form.Item>

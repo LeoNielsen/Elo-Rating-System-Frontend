@@ -1,7 +1,8 @@
-import { Modal } from "antd";
+import { Modal, Typography } from "antd";
 import { useQuery } from "react-query";
 import { getPlayerSoloStatistics, getPlayerStatistics } from "../API/Api";
 import { PlayerSoloStatistics, PlayerStatistics } from "../Types/Types";
+import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
 
 function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo }:
     { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, playerId: number, solo: boolean }) {
@@ -27,7 +28,12 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo }
 
         return (<>
             <p><strong>Name Tag:</strong> {player.nameTag}</p>
-            <p><strong>Rating:</strong> {player.rating}</p>
+            <p><strong>Rating:</strong> {player.rating} {player.todayRatingChance !== 0 && (
+                <Typography.Text type={player.todayRatingChance > 0 ? 'success' : 'danger'}>
+                    {player.todayRatingChance > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
+                    {Math.abs(player.todayRatingChance)}
+                </Typography.Text>
+            )}</p>
             <p><strong>Total Games:</strong> {totalGames}</p>
             <p><strong>Total Wins:</strong> {player.wins}</p>
             <p><strong>Total Lost:</strong> {player.lost}</p>
@@ -47,7 +53,12 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo }
         return (
             <>
                 <p><strong>Name Tag:</strong> {player.nameTag}</p>
-                <p><strong>Rating:</strong> {player.rating}</p>
+                <p><strong>Rating:</strong> {player.rating} {player.todayRatingChance !== 0 && (
+                    <Typography.Text type={player.todayRatingChance > 0 ? 'success' : 'danger'}>
+                        {player.todayRatingChance > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
+                        {Math.abs(player.todayRatingChance)}
+                    </Typography.Text>
+                )}</p>
                 <p><strong>Total Games:</strong> {totalGames}</p>
                 <p><strong>Total Wins:</strong> {totalWins}</p>
                 <div style={{ marginLeft: '20px' }}>
