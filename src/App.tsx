@@ -7,6 +7,7 @@ import TeamTable from './tables/TeamTable';
 import PlayerRankingTables from './tables/PlayerRankingTables/PlayerRankingTables';
 import Chart from './Charts/Chart';
 import MatchRandomizer from './MatchRandomizer/MatchRandomizer';
+import Admin from './Admin/Admin';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -55,6 +56,7 @@ const App: React.FC = () => {
         { key: '4', icon: <UserOutlined />, label: 'Players' },
         { key: '5', icon: <LineChartOutlined />, label: 'Stats' },
         { key: '6', icon: <SmileOutlined />, label: 'Match Randomizer' },
+        { key: '7', icon: <SmileOutlined />, label: 'admin' },
     ];
 
     const siderStyle = {
@@ -94,6 +96,10 @@ const App: React.FC = () => {
         case '6':
             contentComponent = <MatchRandomizer />;
             pageTitle = 'Match Randomizer'
+            break;
+        case '7':
+            contentComponent = <Admin />;
+            pageTitle = 'admin'
             break;
         default:
             contentComponent = null;
