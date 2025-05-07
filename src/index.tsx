@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools"
 import App from './App';
+import UserService from './Keycloak/UserService';
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,8 @@ root.render(
     </QueryClientProvider>
   </React.StrictMode>
 );
+
+UserService.initKeycloak(root);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

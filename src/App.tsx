@@ -8,6 +8,7 @@ import PlayerRankingTables from './tables/PlayerRankingTables/PlayerRankingTable
 import Chart from './Charts/Chart';
 import MatchRandomizer from './MatchRandomizer/MatchRandomizer';
 import Admin from './Admin/Admin';
+import PRoute from './Admin/PRoute';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -98,7 +99,7 @@ const App: React.FC = () => {
             pageTitle = 'Match Randomizer'
             break;
         case '7':
-            contentComponent = <Admin />;
+            contentComponent = <PRoute children={<Admin />}/>;
             pageTitle = 'admin'
             break;
         default:

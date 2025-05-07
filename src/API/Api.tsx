@@ -1,4 +1,5 @@
 import axios from 'axios';
+import UserService from '../Keycloak/UserService';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -176,6 +177,21 @@ const getSoloChartData = async () => {
     }
 };
 
+const getHelloAdmin = async () => {
+    const token = UserService.getToken();
+
+    try {
+        const response = await axios.get(`${BASE_URL}/api/admin`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 export {
     getAllPlayers,
     getPlayerStatistics,
@@ -194,5 +210,6 @@ export {
     createSoloMatch,
     createPlayer,
     getChartData,
-    getSoloChartData
+    getSoloChartData,
+    getHelloAdmin
 };
