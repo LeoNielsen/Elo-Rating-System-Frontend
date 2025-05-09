@@ -177,11 +177,11 @@ const getSoloChartData = async () => {
     }
 };
 
-const getHelloAdmin = async () => {
+const getAdminTest = async () => {
     const token = UserService.getToken();
 
     try {
-        const response = await axios.get(`${BASE_URL}/api/admin`, {
+        const response = await axios.get(`${BASE_URL}/admin/test`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -191,6 +191,38 @@ const getHelloAdmin = async () => {
         throw error;
     }
 };
+
+const deleteLatestMatch = async () => {
+    const token = UserService.getToken();
+
+    try {
+        const response = await axios.delete(`${BASE_URL}/admin/match/latest`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const deleteLatestSoloMatch = async () => {
+    const token = UserService.getToken();
+
+    try {
+        const response = await axios.delete(`${BASE_URL}/admin/match/solo/latest`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
 
 export {
     getAllPlayers,
@@ -211,5 +243,7 @@ export {
     createPlayer,
     getChartData,
     getSoloChartData,
-    getHelloAdmin
+    getAdminTest,
+    deleteLatestMatch,
+    deleteLatestSoloMatch
 };

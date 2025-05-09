@@ -8,7 +8,6 @@ import PlayerRankingTables from './tables/PlayerRankingTables/PlayerRankingTable
 import Chart from './Charts/Chart';
 import MatchRandomizer from './MatchRandomizer/MatchRandomizer';
 import Admin from './Admin/Admin';
-import ProtectedRoute from './ProtectedRoutes/ProtectedRoute';
 import UserService from './Keycloak/UserService';
 import AdminProtectedRoute from './ProtectedRoutes/AdminProtectedRoute';
 
