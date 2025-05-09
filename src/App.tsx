@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Layout, Menu, theme, Typography } from 'antd';
-import { CalendarOutlined, LineChartOutlined, SmileOutlined, TeamOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Button, Dropdown, Layout, Menu, MenuProps, theme, Typography } from 'antd';
+import { CalendarOutlined, LineChartOutlined, LockOutlined, SmileOutlined, TeamOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons';
 import PlayerTable from './tables/PlayerTable';
 import MatchTables from './tables/MatchTables/MatchTables';
 import TeamTable from './tables/TeamTable';
@@ -8,7 +8,9 @@ import PlayerRankingTables from './tables/PlayerRankingTables/PlayerRankingTable
 import Chart from './Charts/Chart';
 import MatchRandomizer from './MatchRandomizer/MatchRandomizer';
 import Admin from './Admin/Admin';
-import PRoute from './Admin/PRoute';
+import ProtectedRoute from './ProtectedRoutes/ProtectedRoute';
+import UserService from './Keycloak/UserService';
+import AdminProtectedRoute from './ProtectedRoutes/AdminProtectedRoute';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -18,6 +20,10 @@ const App: React.FC = () => {
     } = theme.useToken();
 
     const [selectedMenuItem, setSelectedMenuItem] = useState('1');
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+    const [isKeycloakReady, setIsKeycloakReady] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [userName, setUserName] = useState('');
     const [collapsed, setCollapsed] = useState(false);
     const [broken, setBroken] = useState(false);
     const siderRef = useRef<HTMLDivElement | null>(null);
@@ -25,6 +31,35 @@ const App: React.FC = () => {
     const handleMenuClick = (menuItem: string) => {
         setSelectedMenuItem(menuItem);
     };
+
+    const handleLogin = () => {
+        UserService.doLogin()
+    }
+
+    const handleLogout = () => {
+        UserService.doLogout()
+        setIsLoggedIn(UserService.isLoggedIn());
+        setIsAdmin(UserService.hasRole(false));
+        setUserName('')
+    }
+
+    useEffect(() => {
+        const initialize = async () => {
+            if (!UserService.isKeycloakInitialized) {
+                await UserService.initKeycloak();
+                const loggedIn = UserService.isLoggedIn();
+                setIsLoggedIn(loggedIn);
+                setIsKeycloakReady(true);
+                if(loggedIn){
+                    setIsAdmin(UserService.hasRole('admin'));
+                    setUserName(UserService.getUsername);
+                    console.log(isAdmin)
+                }
+            }
+        };
+    
+        initialize();
+    }, []);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -49,7 +84,6 @@ const App: React.FC = () => {
         };
     }, [collapsed, broken]);
 
-
     const menuItems = [
         { key: '1', icon: <TrophyOutlined />, label: 'Player Ranking' },
         { key: '2', icon: <CalendarOutlined />, label: 'Matches' },
@@ -57,7 +91,12 @@ const App: React.FC = () => {
         { key: '4', icon: <UserOutlined />, label: 'Players' },
         { key: '5', icon: <LineChartOutlined />, label: 'Stats' },
         { key: '6', icon: <SmileOutlined />, label: 'Match Randomizer' },
-        { key: '7', icon: <SmileOutlined />, label: 'admin' },
+        ...(isAdmin ? [{ key: '7', icon: <LockOutlined />, label: 'Admin' }] : []),
+    ];
+
+    const profilDropdownItems: MenuProps['items'] = [
+        { key: '0', label: "Profile" },
+        { key: '1', label: <div onClick={handleLogout}>Log Out</div> },
     ];
 
     const siderStyle = {
@@ -99,7 +138,7 @@ const App: React.FC = () => {
             pageTitle = 'Match Randomizer'
             break;
         case '7':
-            contentComponent = <PRoute children={<Admin />}/>;
+            contentComponent = <AdminProtectedRoute children={<Admin />} />;
             pageTitle = 'admin'
             break;
         default:
@@ -121,7 +160,8 @@ const App: React.FC = () => {
                 }}
                 ref={siderRef}
 
-                style={{...siderStyle,
+                style={{
+                    ...siderStyle,
                     zIndex: broken ? 1000 : 'auto',
                     position: broken ? 'absolute' : 'relative',
                 }}
@@ -153,6 +193,31 @@ const App: React.FC = () => {
             <Layout style={{ backgroundColor: '#eaf2f8' }}>
                 <Header style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 0, background: colorBgContainer }}>
                     <Typography.Title>{pageTitle}</Typography.Title>
+                    {(isKeycloakReady && (isLoggedIn ? (
+                        <Dropdown menu={{ items: profilDropdownItems }} trigger={['click']}>
+                            <Avatar
+                                size="large"
+                                style={{
+                                    backgroundColor: '#1890ff',
+                                    position: 'absolute',
+                                    right: 24,
+                                    cursor: 'pointer',
+                                }}
+                                icon={<UserOutlined />}
+                            />
+                        </Dropdown>
+                    ) : (
+                        <Button
+                            style={{
+                                backgroundColor: '#1890ff',
+                                position: 'absolute',
+                                right: 24,
+                            }}
+                            type="primary"
+                            onClick={handleLogin}>
+                            Login
+                        </Button>
+                    )))}
                 </Header>
                 <Content style={{ margin: '24px 16px 0' }}>
                     <div style={contentStyle}>{contentComponent}</div>
