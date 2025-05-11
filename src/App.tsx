@@ -62,10 +62,10 @@ const App: React.FC = () => {
                 const loggedIn = UserService.isLoggedIn();
                 setIsLoggedIn(loggedIn);
                 setIsKeycloakReady(true);
+                console.log(isKeycloakReady)
                 if (loggedIn) {
                     setIsAdmin(UserService.hasRole('admin'));
                     setUserName(UserService.getUsername);
-
                 }
             }
         };
