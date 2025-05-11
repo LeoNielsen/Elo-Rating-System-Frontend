@@ -10,6 +10,11 @@ import MatchRandomizer from './MatchRandomizer/MatchRandomizer';
 import Admin from './Admin/Admin';
 import UserService from './Keycloak/UserService';
 import AdminProtectedRoute from './ProtectedRoutes/AdminProtectedRoute';
+import { useMutation, useQuery } from 'react-query';
+import { createPlayer, getAllPlayers } from './API/Api';
+import { Player } from './Types/Types';
+import UserProfilModal from './modals/UserProfilModal';
+
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -23,9 +28,17 @@ const App: React.FC = () => {
     const [isKeycloakReady, setIsKeycloakReady] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [userName, setUserName] = useState('');
+    const [showUserProfile, setShowUserProfile] = useState(false)
     const [collapsed, setCollapsed] = useState(false);
     const [broken, setBroken] = useState(false);
     const siderRef = useRef<HTMLDivElement | null>(null);
+
+    const { data, refetch } = useQuery("Players", getAllPlayers);
+    const { mutateAsync: createPlayerMutation } = useMutation(createPlayer);
+
+    const checkIfPlayerExists = (input: string) => {
+        return data && data.some((player: Player) => player.nameTag.toUpperCase() === input.toUpperCase());
+    }
 
     const handleMenuClick = (menuItem: string) => {
         setSelectedMenuItem(menuItem);
@@ -49,16 +62,28 @@ const App: React.FC = () => {
                 const loggedIn = UserService.isLoggedIn();
                 setIsLoggedIn(loggedIn);
                 setIsKeycloakReady(true);
-                if(loggedIn){
+                if (loggedIn) {
                     setIsAdmin(UserService.hasRole('admin'));
                     setUserName(UserService.getUsername);
-                    console.log(isAdmin)
+
                 }
             }
         };
-    
+
         initialize();
     }, []);
+
+    useEffect(() => {
+        if (userName !== '') {
+            if (!checkIfPlayerExists(userName)) {
+                console.log(checkIfPlayerExists(userName))
+                createPlayerMutation(
+                    { nameTag: userName }
+                )
+                refetch()
+            }
+        }
+    }, [userName])
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -94,8 +119,8 @@ const App: React.FC = () => {
     ];
 
     const profilDropdownItems: MenuProps['items'] = [
-        { key: '0', label: "Profile" },
-        { key: '1', label: <div onClick={handleLogout}>Log Out</div> },
+        { key: '0', label: <div onClick={() => setShowUserProfile(true)}>Profile</div> },
+        { key: '1', label: <div onClick={handleLogout}>Logout</div> },
     ];
 
     const siderStyle = {
@@ -220,6 +245,7 @@ const App: React.FC = () => {
                 </Header>
                 <Content style={{ margin: '24px 16px 0' }}>
                     <div style={contentStyle}>{contentComponent}</div>
+                    <UserProfilModal setModalVisible={setShowUserProfile} modalVisible={showUserProfile} userName={userName}></UserProfilModal>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>
                     Foosball Elo Rating System ©2024 Created by Leo

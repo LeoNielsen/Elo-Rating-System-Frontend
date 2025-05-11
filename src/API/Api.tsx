@@ -222,8 +222,6 @@ const deleteLatestSoloMatch = async () => {
     }
 };
 
-
-
 export {
     getAllPlayers,
     getPlayerStatistics,
@@ -245,5 +243,5 @@ export {
     getSoloChartData,
     getAdminTest,
     deleteLatestMatch,
-    deleteLatestSoloMatch
+    deleteLatestSoloMatch,
 };
