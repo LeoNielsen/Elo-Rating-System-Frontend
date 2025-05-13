@@ -58,17 +58,17 @@ const getAllTeams = async () => {
     }
 };
 
-const getAllMatches = async () => {
+const getRecentMatches = async () => {
     try {
-        const response = await axios.get(`${BASE_URL}/match/all`);
+        const response = await axios.get(`${BASE_URL}/match`);
         return response.data;
     } catch (error) {
         throw error;
     }
 };
-const getAllSoloMatches = async () => {
+const getRecentSoloMatches = async () => {
     try {
-        const response = await axios.get(`${BASE_URL}/match/solo/all`);
+        const response = await axios.get(`${BASE_URL}/match/solo`);
         return response.data;
     } catch (error) {
         throw error;
@@ -85,23 +85,6 @@ const getMatchRatings = async (id: number) => {
 const getSoloMatchRatings = async (id: number) => {
     try {
         const response = await axios.get(`${BASE_URL}/rating/solo/match/${id}`);
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-};
-
-const getAllRatings = async () => {
-    try {
-        const response = await axios.get(`${BASE_URL}/rating/all`);
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-};
-const getAllSoloRatings = async () => {
-    try {
-        const response = await axios.get(`${BASE_URL}/rating/solo/all`);
         return response.data;
     } catch (error) {
         throw error;
@@ -229,12 +212,10 @@ export {
     getPlayerSoloStatistics,
     getAllPlayerSoloStatistics,
     getAllTeams,
-    getAllMatches,
-    getAllSoloMatches,
+    getRecentMatches,
+    getRecentSoloMatches,
     getMatchRatings,
     getSoloMatchRatings,
-    getAllRatings,
-    getAllSoloRatings,
     createTeam,
     createMatch,
     createSoloMatch,

@@ -1,4 +1,4 @@
-import { Modal } from "antd";
+import { Descriptions, Modal } from "antd";
 import { useQuery } from "react-query";
 import { getPlayerSoloStatistics, getPlayerStatistics } from "../API/Api";
 import { PlayerSoloStatistics, PlayerStatistics } from "../Types/Types";
@@ -27,28 +27,47 @@ function PlayerCombinedStatisticsModal({ modalVisible, setModalVisible, playerId
         const totalGoals = player.totalGoals + solo.totalGoals
 
         return (
-            <>
-                <p><strong>Name Tag:</strong> {player.nameTag}</p>
-                <p><strong>Rating:</strong> {player.rating}</p>
-                <p><strong>Total Games:</strong> {totalGames}</p>
-                <p><strong>Total Wins:</strong> {totalWins}</p>
-                <div style={{ marginLeft: '20px' }}>
-                    <p><strong>Wins 2v2:</strong> {wins2v2}</p>
-                    <p><strong>Wins 1v1:</strong> {solo.wins}</p>
-                </div>
-                <p><strong>Total Lost:</strong> {totalLost}</p>
-                <div style={{ marginLeft: '20px' }}>
-                    <p><strong>Lost 2v2:</strong> {lost2v2}</p>
-                    <p><strong>Lost 1v1:</strong> {solo.lost}</p>
-                </div>
-                <p><strong>Winning Percentage:</strong> {((totalWins / totalGames) * 100).toFixed(0)}%</p>
-                <p><strong>Total Goals:</strong> {totalGoals}</p>
-                <div style={{ marginLeft: '20px' }}>
-                    <p><strong>Goals 2v2:</strong> {player.totalGoals}</p>
-                    <p><strong>Goals 1v1:</strong> {solo.totalGoals}</p>
-                </div>
-                <p><strong>Goals Per Game:</strong> {(totalGoals / totalGames).toFixed(2)}</p>
-            </>
+            <Descriptions
+                column={1}
+                size="small"
+                bordered
+                labelStyle={{ fontWeight: 'bold', width: 180 }}
+            >
+                <Descriptions.Item label="Name Tag">{player.nameTag}</Descriptions.Item>
+
+                <Descriptions.Item label="Rating">{player.rating}</Descriptions.Item>
+
+                <Descriptions.Item label="Total Games">{totalGames}</Descriptions.Item>
+
+                <Descriptions.Item label="Total Wins">
+                    <div>{totalWins}</div>
+                    <div style={{ color: '#999', fontSize: 12, marginTop: 4 }}>
+                        2v2: {wins2v2} | 1v1: {solo.wins}
+                    </div>
+                </Descriptions.Item>
+
+                <Descriptions.Item label="Total Lost">
+                    <div>{totalLost}</div>
+                    <div style={{ color: '#999', fontSize: 12, marginTop: 4 }}>
+                        2v2: {lost2v2} | 1v1: {solo.lost}
+                    </div>
+                </Descriptions.Item>
+
+                <Descriptions.Item label="Winning Percentage">
+                    {((totalWins / totalGames) * 100).toFixed(0)}%
+                </Descriptions.Item>
+
+                <Descriptions.Item label="Total Goals">
+                    <div>{totalGoals}</div>
+                    <div style={{ color: '#999', fontSize: 12, marginTop: 4 }}>
+                        2v2: {player.totalGoals} | 1v1: {solo.totalGoals}
+                    </div>
+                </Descriptions.Item>
+
+                <Descriptions.Item label="Goals Per Game">
+                    {(totalGoals / totalGames).toFixed(2)}
+                </Descriptions.Item>
+            </Descriptions>
         )
     }
 

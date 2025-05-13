@@ -1,4 +1,4 @@
-import { Modal, Typography } from "antd";
+import { Descriptions, Modal, Typography } from "antd";
 import { useQuery } from "react-query";
 import { getPlayerSoloStatistics, getPlayerStatistics } from "../API/Api";
 import { PlayerSoloStatistics, PlayerStatistics } from "../Types/Types";
@@ -22,25 +22,42 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo }
     if (isLoading) {
         return <></>
     }
+
+    const { Text } = Typography
     const soloContent = (player: PlayerSoloStatistics) => {
 
         const totalGames = player.wins + player.lost
 
-        return (<>
-            <p><strong>Name Tag:</strong> {player.nameTag}</p>
-            <p><strong>Rating:</strong> {player.rating} {player.todayRatingChance !== 0 && (
-                <Typography.Text type={player.todayRatingChance > 0 ? 'success' : 'danger'}>
-                    {player.todayRatingChance > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
-                    {Math.abs(player.todayRatingChance)}
-                </Typography.Text>
-            )}</p>
-            <p><strong>Total Games:</strong> {totalGames}</p>
-            <p><strong>Total Wins:</strong> {player.wins}</p>
-            <p><strong>Total Lost:</strong> {player.lost}</p>
-            <p><strong>Winning Percentage:</strong> {((player.wins / totalGames) * 100).toFixed(0)}%</p>
-            <p><strong>Total Goals:</strong> {player.totalGoals}</p>
-            <p><strong>Goals Per Game:</strong> {(player.totalGoals / totalGames).toFixed(2)}</p>
-        </>
+
+        return (<Descriptions
+            column={1}
+            size="small"
+            bordered
+            labelStyle={{ fontWeight: 'bold', width: 180 }}
+        >
+            <Descriptions.Item label="Name Tag">{player.nameTag}</Descriptions.Item>
+
+            <Descriptions.Item label="Rating">
+                {player.rating}{' '}
+                {player.todayRatingChance !== 0 && (
+                    <Text type={player.todayRatingChance > 0 ? 'success' : 'danger'}>
+                        {player.todayRatingChance > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
+                        {Math.abs(player.todayRatingChance)}
+                    </Text>
+                )}
+            </Descriptions.Item>
+
+            <Descriptions.Item label="Games">{totalGames}</Descriptions.Item>
+            <Descriptions.Item label="Wins">{player.wins}</Descriptions.Item>
+            <Descriptions.Item label="Lost">{player.lost}</Descriptions.Item>
+            <Descriptions.Item label="Winning Percentage">
+                {totalGames > 0 ? ((player.wins / totalGames) * 100).toFixed(0) : '0'}%
+            </Descriptions.Item>
+            <Descriptions.Item label="Goals">{player.totalGoals}</Descriptions.Item>
+            <Descriptions.Item label="Goals Per Game">
+                {totalGames > 0 ? (player.totalGoals / totalGames).toFixed(2) : '0.00'}
+            </Descriptions.Item>
+        </Descriptions>
         )
     }
 
@@ -51,29 +68,50 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo }
         const totalGames = totalLost + totalWins
 
         return (
-            <>
-                <p><strong>Name Tag:</strong> {player.nameTag}</p>
-                <p><strong>Rating:</strong> {player.rating} {player.todayRatingChance !== 0 && (
-                    <Typography.Text type={player.todayRatingChance > 0 ? 'success' : 'danger'}>
-                        {player.todayRatingChance > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
-                        {Math.abs(player.todayRatingChance)}
-                    </Typography.Text>
-                )}</p>
-                <p><strong>Total Games:</strong> {totalGames}</p>
-                <p><strong>Total Wins:</strong> {totalWins}</p>
-                <div style={{ marginLeft: '20px' }}>
-                    <p><strong>Attacker Wins:</strong> {player.attackerWins}</p>
-                    <p><strong>Defender Wins:</strong> {player.defenderWins}</p>
-                </div>
-                <p><strong>Total Lost:</strong> {totalLost}</p>
-                <div style={{ marginLeft: '20px' }}>
-                    <p><strong>Attacker Lost:</strong> {player.attackerLost}</p>
-                    <p><strong>Defender Lost:</strong> {player.defenderLost}</p>
-                </div>
-                <p><strong>Winning Percentage:</strong> {((totalWins / totalGames) * 100).toFixed(0)}%</p>
-                <p><strong>Total Goals:</strong> {player.totalGoals}</p>
-                <p><strong>Goals Per Game:</strong> {(player.totalGoals / totalGames).toFixed(2)}</p>
-            </>
+            <Descriptions
+                column={1}
+                size="small"
+                bordered
+                labelStyle={{ fontWeight: 'bold', width: 180 }}
+            >
+                <Descriptions.Item label="Name Tag">{player.nameTag}</Descriptions.Item>
+
+                <Descriptions.Item label="Rating">
+                    {player.rating}{' '}
+                    {player.todayRatingChance !== 0 && (
+                        <Text type={player.todayRatingChance > 0 ? 'success' : 'danger'}>
+                            {player.todayRatingChance > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
+                            {Math.abs(player.todayRatingChance)}
+                        </Text>
+                    )}
+                </Descriptions.Item>
+
+                <Descriptions.Item label="Games">{totalGames}</Descriptions.Item>
+
+                <Descriptions.Item label="Wins">
+                    <div> {totalWins}</div>
+                    <div style={{ color: '#999', fontSize: 12, marginTop: 4 }}>
+                        Attacker: {player.attackerWins} | Defender: {player.defenderWins}
+                    </div>
+                </Descriptions.Item>
+
+                <Descriptions.Item label="Lost">
+                    <div>{totalLost}</div>
+                    <div style={{ color: '#999', fontSize: 12, marginTop: 4 }}>
+                        Attacker: {player.attackerLost} | Defender: {player.defenderLost}
+                    </div>
+                </Descriptions.Item>
+
+                <Descriptions.Item label="Winning Percentage">
+                    {totalGames > 0 ? ((totalWins / totalGames) * 100).toFixed(0) : '0'}%
+                </Descriptions.Item>
+
+                <Descriptions.Item label="Goals">{player.totalGoals}</Descriptions.Item>
+
+                <Descriptions.Item label="Goals Per Game">
+                    {totalGames > 0 ? (player.totalGoals / totalGames).toFixed(2) : '0.00'}
+                </Descriptions.Item>
+            </Descriptions>
         )
     }
 

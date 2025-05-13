@@ -119,8 +119,12 @@ const App: React.FC = () => {
     ];
 
     const profilDropdownItems: MenuProps['items'] = [
-        { key: '0', label: <div onClick={() => setShowUserProfile(true)}>Profile</div> },
-        { key: '1', label: <div onClick={handleLogout}>Logout</div> },
+        ...isLoggedIn ? [
+            { key: '0', label: <div onClick={() => setShowUserProfile(true)}>Profile</div> },
+            { key: '1', label: <div onClick={handleLogout}>Logout</div> },
+        ] : [
+            { key: '0', label: <div onClick={handleLogin}>Login</div> },
+        ],
     ];
 
     const siderStyle = {
@@ -217,7 +221,7 @@ const App: React.FC = () => {
             <Layout style={{ backgroundColor: '#eaf2f8' }}>
                 <Header style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 0, background: colorBgContainer }}>
                     <Typography.Title>{pageTitle}</Typography.Title>
-                    {(isKeycloakReady && (isLoggedIn ? (
+                    {(isKeycloakReady && (
                         <Dropdown menu={{ items: profilDropdownItems }} trigger={['click']}>
                             <Avatar
                                 size="large"
@@ -230,18 +234,7 @@ const App: React.FC = () => {
                                 icon={<UserOutlined />}
                             />
                         </Dropdown>
-                    ) : (
-                        <Button
-                            style={{
-                                backgroundColor: '#1890ff',
-                                position: 'absolute',
-                                right: 24,
-                            }}
-                            type="primary"
-                            onClick={handleLogin}>
-                            Login
-                        </Button>
-                    )))}
+                    ))}
                 </Header>
                 <Content style={{ margin: '24px 16px 0' }}>
                     <div style={contentStyle}>{contentComponent}</div>

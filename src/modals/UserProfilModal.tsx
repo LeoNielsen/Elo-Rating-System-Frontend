@@ -1,11 +1,9 @@
-import { Button, Modal, Tabs, TabsProps } from 'antd'
+import { Button, Descriptions, Divider, Modal, Tabs, TabsProps } from 'antd'
 import React, { useState } from 'react'
 import UserService from '../Keycloak/UserService';
 
 function UserProfilModal({ modalVisible, setModalVisible, userName }:
     { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, userName: string }) {
-
-
 
     const handleModalCancel = () => {
         setModalVisible(false);
@@ -17,8 +15,15 @@ function UserProfilModal({ modalVisible, setModalVisible, userName }:
             label: 'Generel',
             children:
                 <>
-                    <p><strong>Name:</strong> {userName}</p>
-                    <Button variant='solid' color='danger' onClick={UserService.changePassword}>Change Password</Button>
+                    <Descriptions bordered column={1} size="middle">
+                        <Descriptions.Item label="Name">{userName}</Descriptions.Item>
+                    </Descriptions>
+
+                    <Divider />
+
+                    <Button type="primary" danger onClick={UserService.changePassword}>
+                        Change Password
+                    </Button>
                 </>
         }, {
             key: '2',
