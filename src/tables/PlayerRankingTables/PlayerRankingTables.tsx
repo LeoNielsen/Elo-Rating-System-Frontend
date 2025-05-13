@@ -15,6 +15,10 @@ function PlayerRankingTables() {
       key: '2',
       label: '1v1',
       children: <PlayerSoloRakingTable />
+    }, {
+      key: '3',
+      label: 'Monthly 2v2',
+      disabled: true,
     }
   ]
 

@@ -46,10 +46,13 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo }
                     </Text>
                 )}
             </Descriptions.Item>
-
+            <Descriptions.Item label="Higest Rating">{player.highestELO}</Descriptions.Item>
+            <Descriptions.Item label="Lowest Rating">{player.lowestELO}</Descriptions.Item>
             <Descriptions.Item label="Games">{totalGames}</Descriptions.Item>
             <Descriptions.Item label="Wins">{player.wins}</Descriptions.Item>
             <Descriptions.Item label="Lost">{player.lost}</Descriptions.Item>
+            <Descriptions.Item label="Longest Win Streak">{player.longestWinStreak}</Descriptions.Item>
+            <Descriptions.Item label="Current Win Streak">{player.currentWinStreak}</Descriptions.Item>
             <Descriptions.Item label="Winning Percentage">
                 {totalGames > 0 ? ((player.wins / totalGames) * 100).toFixed(0) : '0'}%
             </Descriptions.Item>
@@ -85,7 +88,8 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo }
                         </Text>
                     )}
                 </Descriptions.Item>
-
+                <Descriptions.Item label="Higest Rating">{player.highestELO}</Descriptions.Item>
+                <Descriptions.Item label="Lowest Rating">{player.lowestELO}</Descriptions.Item>
                 <Descriptions.Item label="Games">{totalGames}</Descriptions.Item>
 
                 <Descriptions.Item label="Wins">
@@ -101,7 +105,8 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo }
                         Attacker: {player.attackerLost} | Defender: {player.defenderLost}
                     </div>
                 </Descriptions.Item>
-
+                <Descriptions.Item label="Longest Win Streak">{player.longestWinStreak}</Descriptions.Item>
+                <Descriptions.Item label="Current Win Streak">{player.currentWinStreak}</Descriptions.Item>
                 <Descriptions.Item label="Winning Percentage">
                     {totalGames > 0 ? ((totalWins / totalGames) * 100).toFixed(0) : '0'}%
                 </Descriptions.Item>

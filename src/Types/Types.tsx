@@ -54,7 +54,11 @@ interface PlayerStatistics {
     attackerLost: number,
     defenderLost: number,
     totalGoals: number,
-    todayRatingChance: number
+    todayRatingChance: number,
+    highestELO: number,
+    lowestELO: number,
+    longestWinStreak: number,
+    currentWinStreak:number,
 }
 
 interface PlayerSoloStatistics {
@@ -64,7 +68,11 @@ interface PlayerSoloStatistics {
     wins: number,
     lost: number,
     totalGoals: number,
-    todayRatingChance: number
+    todayRatingChance: number,
+    highestELO: number,
+    lowestELO: number,
+    longestWinStreak: number,
+    currentWinStreak:number,
 }
 
 export type {
