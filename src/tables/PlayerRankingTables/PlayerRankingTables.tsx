@@ -1,6 +1,7 @@
 import { Tabs, TabsProps } from 'antd';
 import PlayerSoloRakingTable from './PlayerSoloRankingTable';
 import PlayerRankingTable from './PlayerRankingTable';
+import PlayerMonthlyRankingTable from './PlayerMonthlyRankingTable';
 
 function PlayerRankingTables() {
 
@@ -18,7 +19,7 @@ function PlayerRankingTables() {
     }, {
       key: '3',
       label: 'Monthly 2v2',
-      disabled: true,
+      children: <PlayerMonthlyRankingTable />
     }
   ]
 

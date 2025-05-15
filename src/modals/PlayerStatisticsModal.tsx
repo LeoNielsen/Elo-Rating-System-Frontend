@@ -1,15 +1,15 @@
 import { Descriptions, Modal, Typography } from "antd";
 import { useQuery } from "react-query";
-import { getPlayerSoloStatistics, getPlayerStatistics } from "../API/Api";
+import { getMonthlyStatistics, getPlayerSoloStatistics, getPlayerStatistics } from "../API/Api";
 import { PlayerSoloStatistics, PlayerStatistics } from "../Types/Types";
 import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
 
-function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo }:
-    { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, playerId: number, solo: boolean }) {
+function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, monthly }:
+    { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, playerId: number, solo: boolean, monthly: boolean }) {
 
-    const fetchPlayerStatistics = solo ? getPlayerSoloStatistics : getPlayerStatistics;
+    const fetchPlayerStatistics = monthly? getMonthlyStatistics : solo ? getPlayerSoloStatistics : getPlayerStatistics;
 
-    const { data, isLoading } = useQuery<PlayerStatistics | PlayerSoloStatistics>(
+    const { data, isLoading } = useQuery<PlayerStatistics | PlayerSoloStatistics >(
         "PlayerStatistics",
         () => fetchPlayerStatistics(playerId)
     );

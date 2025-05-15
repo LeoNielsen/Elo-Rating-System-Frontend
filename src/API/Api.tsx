@@ -29,7 +29,23 @@ const getAllPlayerStatistics = async () => {
         throw error;
     }
 };
+const getAllMonthlyStatistics = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/player/statistics/monthly/all`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 
+const getMonthlyStatistics = async (id: number) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/player/statistics/monthly/${id}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 
 const getPlayerSoloStatistics = async (id: number) => {
     try {
@@ -209,6 +225,8 @@ export {
     getAllPlayers,
     getPlayerStatistics,
     getAllPlayerStatistics,
+    getAllMonthlyStatistics,
+    getMonthlyStatistics,
     getPlayerSoloStatistics,
     getAllPlayerSoloStatistics,
     getAllTeams,

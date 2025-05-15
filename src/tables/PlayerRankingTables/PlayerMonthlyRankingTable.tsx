@@ -1,29 +1,30 @@
 import { useQuery } from "react-query";
-import { getAllPlayerSoloStatistics } from "../../API/Api";
-import { PlayerSoloStatistics } from "../../Types/Types";
+import { PlayerStatistics } from "../../Types/Types";
+import { getAllMonthlyStatistics } from "../../API/Api";
 import { useState } from "react";
 import Table, { ColumnType } from "antd/es/table";
 import PlayerStatisticsModal from "../../modals/PlayerStatisticsModal";
-import { Grid, Typography } from "antd";
 import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
+import { Grid, Typography } from "antd";
 
-function PlayerSoloRakingTable() {
 
-    const { isLoading, data } = useQuery<PlayerSoloStatistics[]>("allSoloPlayerStatistics", getAllPlayerSoloStatistics);
+function PlayerMonthlyRankingTable() {
+
+    const { isLoading, data } = useQuery<PlayerStatistics[]>("allMonthlyStatistics", getAllMonthlyStatistics);
 
     const [modalStatisticsVisible, setModalStatisticsVisible] = useState(false);
     const [rowId, setRowId] = useState(NaN);
-
+   
     const { useBreakpoint } = Grid;
     const screens = useBreakpoint();
     const isSmallScreen = !screens.md;
 
-    const handleRowClick = (record: PlayerSoloStatistics) => {
+    const handleRowClick = (record: PlayerStatistics) => {
         setModalStatisticsVisible(true);
         setRowId(record.id)
     };
 
-    const columns: ColumnType<PlayerSoloStatistics>[] = [
+    const columns: ColumnType<PlayerStatistics>[] = [
         {
             title: 'Rank',
             dataIndex: 'rank',
@@ -46,7 +47,7 @@ function PlayerSoloRakingTable() {
             ),
             dataIndex: 'rating',
             key: 'rating',
-            render: (_, player: PlayerSoloStatistics) => (
+            render: (_, player: PlayerStatistics) => (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                     <span>{player.rating}</span>
 
@@ -61,27 +62,28 @@ function PlayerSoloRakingTable() {
         },
         {
             title: 'Total Wins',
-            dataIndex: 'wins',
+            dataIndex: 'totalWins',
             key: 'totalWins',
+            render: (_, a: PlayerStatistics) => a.attackerWins + a.defenderWins
         },
         {
             title: 'Total Lost',
-            dataIndex: 'lost',
+            dataIndex: 'totalLost',
             key: 'totalLost',
+            render: (_, a: PlayerStatistics) => a.attackerLost + a.defenderLost
         },
     ];
 
-    const sortedData = data?.filter((player) => player.lost + player.wins > 0).slice().sort((a, b) => b.rating - a.rating);
-
+    const sortedData = data?.filter((player) => player.attackerLost + player.attackerWins + player.defenderLost + player.defenderWins > 0).slice().sort((a, b) => b.rating - a.rating);
 
     return (
         <>
             <Table dataSource={sortedData} columns={columns} scroll={{ x: 350 }} onRow={(record) => ({
                 onClick: () => handleRowClick(record),
             })} rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''} bordered={true} loading={isLoading} />
-            {modalStatisticsVisible && <PlayerStatisticsModal modalVisible={modalStatisticsVisible} setModalVisible={setModalStatisticsVisible} playerId={rowId} monthly={false} solo={true} />}
+            {modalStatisticsVisible && <PlayerStatisticsModal modalVisible={modalStatisticsVisible} setModalVisible={setModalStatisticsVisible} playerId={rowId} monthly={true} solo={false} />}
         </>
     )
 }
 
-export default PlayerSoloRakingTable
+export default PlayerMonthlyRankingTable

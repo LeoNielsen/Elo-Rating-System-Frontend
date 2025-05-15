@@ -81,7 +81,7 @@ function PlayerRankingTable() {
             <Table dataSource={sortedData} columns={columns} scroll={{ x: 350 }} onRow={(record) => ({
                 onClick: () => handleRowClick(record),
             })} rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''} bordered={true} loading={isLoading} />
-            {modalStatisticsVisible && <PlayerStatisticsModal modalVisible={modalStatisticsVisible} setModalVisible={setModalStatisticsVisible} playerId={rowId} solo={false} />}
+            {modalStatisticsVisible && <PlayerStatisticsModal modalVisible={modalStatisticsVisible} setModalVisible={setModalStatisticsVisible} playerId={rowId} monthly={false} solo={false} />}
         </>
     )
 }
