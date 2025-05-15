@@ -1,4 +1,4 @@
-import { Button, Col, Descriptions, Modal, Row, Select, Typography } from "antd";
+import { Button, Col, Descriptions, Form, Modal, Row, Select, Typography } from "antd";
 import { useQuery } from "react-query";
 import { getAllPlayers, getMonthlyStatistics, getPlayerSoloStatistics, getPlayerStatistics } from "../API/Api";
 import { Player, PlayerSoloStatistics, PlayerStatistics } from "../Types/Types";
@@ -10,9 +10,13 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
 
     const [comparedPlayerId, setComparedPlayerId] = useState<number | null>(null);
     const [showCompareSelect, setShowCompareSelect] = useState(false);
+    const [filteredOptions, setFilteredOptions] = useState<{ [key: string]: Player[] }>({});
+
 
     const players = useQuery("Players", getAllPlayers);
     const fetchPlayerStatistics = monthly ? getMonthlyStatistics : solo ? getPlayerSoloStatistics : getPlayerStatistics;
+
+    const [form] = Form.useForm();
 
     const { data, isLoading } = useQuery<PlayerStatistics | PlayerSoloStatistics>(
         "PlayerStatistics",
@@ -23,6 +27,20 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
         value: player.id,
         label: player.nameTag
     }));
+    const handleSearch = (value: string, field: string) => {
+        setFilteredOptions((prev) => ({
+            ...prev,
+            [field]: players.data.filter((player: Player) => player.nameTag.toLowerCase().includes(value.toLowerCase()))
+        }));
+    };
+    // Automatically select the top result on blur
+    const handleBlur = (field: string) => {
+        const options = filteredOptions[field];
+        if (options && options.length > 0) {
+            setComparedPlayerId(options[0].id);
+            form.setFieldValue(field, filteredOptions[field][0].id);
+        }
+    };
 
     const {
         data: comparedData,
@@ -230,20 +248,28 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
                             H2H
                         </Button>
                     ) : (
-                        <Select
-                            placeholder="Select player to compare"
-                            style={{ width: 200 }}
-                            options={options}
-                            onChange={(value) => {
-                                setComparedPlayerId(value);
-                            }}
-                            onClear={() => {
-                                setComparedPlayerId(null);
-                                setShowCompareSelect(false);     
-                            }}
-                            autoFocus
-                            allowClear
-                        />
+                        <Form form={form}>
+                            <Form.Item name="compare">
+                                <Select
+                                    placeholder="Select player to compare"
+                                    style={{ width: 200 }}
+                                    options={options}
+                                    onChange={(value) => {
+                                        setComparedPlayerId(value);
+                                    }}
+                                    onClear={() => {
+                                        setComparedPlayerId(null);
+                                        setShowCompareSelect(false);
+                                    }}
+                                    optionFilterProp="label"
+                                    showSearch
+                                    onSearch={(value) => handleSearch(value, "compare")}
+                                    onBlur={() => handleBlur('compare')}
+                                    autoFocus
+                                    allowClear
+                                />
+                            </Form.Item>
+                        </Form>
                     )}
                 </div>
             </div>
