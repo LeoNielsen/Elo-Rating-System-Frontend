@@ -1,22 +1,45 @@
-import { Descriptions, Modal, Typography } from "antd";
+import { Button, Col, Descriptions, Modal, Row, Select, Typography } from "antd";
 import { useQuery } from "react-query";
-import { getMonthlyStatistics, getPlayerSoloStatistics, getPlayerStatistics } from "../API/Api";
-import { PlayerSoloStatistics, PlayerStatistics } from "../Types/Types";
+import { getAllPlayers, getMonthlyStatistics, getPlayerSoloStatistics, getPlayerStatistics } from "../API/Api";
+import { Player, PlayerSoloStatistics, PlayerStatistics } from "../Types/Types";
 import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
+import { useState } from "react";
 
 function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, monthly }:
     { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, playerId: number, solo: boolean, monthly: boolean }) {
 
-    const fetchPlayerStatistics = monthly? getMonthlyStatistics : solo ? getPlayerSoloStatistics : getPlayerStatistics;
+    const [comparedPlayerId, setComparedPlayerId] = useState<number | null>(null);
+    const [showCompareSelect, setShowCompareSelect] = useState(false);
 
-    const { data, isLoading } = useQuery<PlayerStatistics | PlayerSoloStatistics >(
+    const players = useQuery("Players", getAllPlayers);
+    const fetchPlayerStatistics = monthly ? getMonthlyStatistics : solo ? getPlayerSoloStatistics : getPlayerStatistics;
+
+    const { data, isLoading } = useQuery<PlayerStatistics | PlayerSoloStatistics>(
         "PlayerStatistics",
         () => fetchPlayerStatistics(playerId)
+    );
+
+    const options = players.data.map((player: Player) => ({
+        value: player.id,
+        label: player.nameTag
+    }));
+
+    const {
+        data: comparedData,
+        isLoading: isLoadingCompared
+    } = useQuery<PlayerStatistics | PlayerSoloStatistics>(
+        ['ComparedPlayerStatistics', comparedPlayerId],
+        () => comparedPlayerId ? fetchPlayerStatistics(comparedPlayerId) : Promise.resolve(null),
+        {
+            enabled: !!comparedPlayerId,
+        }
     );
 
 
     const handleModalCancel = () => {
         setModalVisible(false);
+        setComparedPlayerId(null);
+        setShowCompareSelect(false);
     };
 
     if (isLoading) {
@@ -24,51 +47,154 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
     }
 
     const { Text } = Typography
-    const soloContent = (player: PlayerSoloStatistics) => {
+    const content = (
+        player: PlayerStatistics | PlayerSoloStatistics,
+        comparedPlayer?: PlayerStatistics | PlayerSoloStatistics
+    ) => {
+        const isSolo = 'wins' in player;
+        const isComparedSolo = comparedPlayer ? 'wins' in comparedPlayer : isSolo;
 
-        const totalGames = player.wins + player.lost
+        const getStats = (p: PlayerStatistics | PlayerSoloStatistics) => {
+            const solo = 'wins' in p;
+            const totalGames = solo
+                ? p.wins + p.lost
+                : p.attackerWins + p.attackerLost + p.defenderWins + p.defenderLost;
+
+            const wins = solo ? p.wins : p.attackerWins + p.defenderWins;
+            const losses = solo ? p.lost : p.attackerLost + p.defenderLost;
+
+            return {
+                nameTag: p.nameTag,
+                rating: (
+                    <>
+                        {p.rating}{' '}
+                        {p.todayRatingChance !== 0 && (
+                            <Text type={p.todayRatingChance > 0 ? 'success' : 'danger'}>
+                                {p.todayRatingChance > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
+                                {Math.abs(p.todayRatingChance)}
+                            </Text>
+                        )}
+                    </>
+                ),
+                highestELO: p.highestELO,
+                lowestELO: p.lowestELO,
+                totalGames,
+                wins,
+                losses,
+                winDetails: solo ? null : `Attacker: ${(p as PlayerStatistics).attackerWins} | Defender: ${(p as PlayerStatistics).defenderWins}`,
+                lossDetails: solo ? null : `Attacker: ${(p as PlayerStatistics).attackerLost} | Defender: ${(p as PlayerStatistics).defenderLost}`,
+                longestWinStreak: p.longestWinStreak,
+                currentWinStreak: p.currentWinStreak,
+                winPercentage: totalGames > 0 ? ((wins / totalGames) * 100).toFixed(0) + '%' : '0%',
+                goals: p.totalGoals,
+                goalsPerGame: totalGames > 0 ? (p.totalGoals / totalGames).toFixed(2) : '0.00',
+            };
+        };
+
+        const p1 = getStats(player);
+        const p2 = comparedPlayer ? getStats(comparedPlayer) : null;
+
+        const compare = (key: keyof typeof p1, subKey?: keyof typeof p1) => {
+            const val1 = p1[key];
+            const val2 = p2 ? p2[key] : null;
+
+            const diff =
+                val2 !== null && typeof val1 === 'number' && typeof val2 === 'number'
+                    ? val2 - val1
+                    : null;
+
+            return (
+                <div
+                    style={{
+                        display: 'flex',
+                        gap: 16,
+                        alignItems: 'center',
+                    }}
+                >
+                    {/* Player 1 */}
+                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        {val1}
+                        {subKey && p1[subKey] && (
+                            <div
+                                style={{
+                                    color: '#999',
+                                    fontSize: 12,
+                                    marginTop: 4,
+                                    whiteSpace: comparedPlayer ? 'normal' : 'nowrap',
+                                    overflowWrap: comparedPlayer ? 'break-word' : 'normal',
+                                    maxWidth: comparedPlayer ? 100 : 'none',
+                                }}>{p1[subKey]}</div>
+                        )}
+                    </div>
+
+                    {/* Vertical divider */}
+                    {p2 && (
+                        <div
+                            style={{
+                                borderLeft: '2px solid #d9d9d9',
+                                margin: '0 8px',
+                                alignSelf: 'stretch',
+                                height: 'auto',
+                                marginLeft: '-40px'
+                            }}
+                        />
+                    )}
+
+                    {/* Player 2 and diff container */}
+                    {p2 && (
+                        <div
+                            style={{
+                                flex: 1,
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',  // space between player value and diff
+                                gap: 8,
+                                paddingLeft: 0,  // reduce padding to move left more
+                            }}
+                        >
+                            {/* Compared player value + sub */}
+                            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                {val2}
+                                {subKey && p2[subKey] && (
+                                    <div
+                                        style={{
+                                            color: '#999',
+                                            fontSize: 12,
+                                            marginTop: 4,
+                                            whiteSpace: 'normal',    // allow wrapping
+                                            wordBreak: 'break-word', // break long words if needed
+                                            maxWidth: 100,
+                                        }}>{p2[subKey]}</div>
+                                )}
+                            </div>
+
+                            {/* Difference aligned right */}
+                            {diff !== null && diff !== 0 && (
+                                <div
+                                    style={{
+                                        color: diff > 0 ? 'green' : 'red',
+                                        fontSize: 12,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 4,
+                                        whiteSpace: 'nowrap',
+                                        minWidth: 50,
+                                        justifyContent: 'flex-end',
+                                    }}
+                                >
+                                    {diff > 0 ? '+' : ''}
+                                    {diff}
+                                    {diff > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            );
+        };
 
 
-        return (<Descriptions
-            column={1}
-            size="small"
-            bordered
-            labelStyle={{ fontWeight: 'bold', width: 180 }}
-        >
-            <Descriptions.Item label="Name Tag">{player.nameTag}</Descriptions.Item>
-
-            <Descriptions.Item label="Rating">
-                {player.rating}{' '}
-                {player.todayRatingChance !== 0 && (
-                    <Text type={player.todayRatingChance > 0 ? 'success' : 'danger'}>
-                        {player.todayRatingChance > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
-                        {Math.abs(player.todayRatingChance)}
-                    </Text>
-                )}
-            </Descriptions.Item>
-            <Descriptions.Item label="Higest Rating">{player.highestELO}</Descriptions.Item>
-            <Descriptions.Item label="Lowest Rating">{player.lowestELO}</Descriptions.Item>
-            <Descriptions.Item label="Games">{totalGames}</Descriptions.Item>
-            <Descriptions.Item label="Wins">{player.wins}</Descriptions.Item>
-            <Descriptions.Item label="Lost">{player.lost}</Descriptions.Item>
-            <Descriptions.Item label="Longest Win Streak">{player.longestWinStreak}</Descriptions.Item>
-            <Descriptions.Item label="Current Win Streak">{player.currentWinStreak}</Descriptions.Item>
-            <Descriptions.Item label="Winning Percentage">
-                {totalGames > 0 ? ((player.wins / totalGames) * 100).toFixed(0) : '0'}%
-            </Descriptions.Item>
-            <Descriptions.Item label="Goals">{player.totalGoals}</Descriptions.Item>
-            <Descriptions.Item label="Goals Per Game">
-                {totalGames > 0 ? (player.totalGoals / totalGames).toFixed(2) : '0.00'}
-            </Descriptions.Item>
-        </Descriptions>
-        )
-    }
-
-    const content = (player: PlayerStatistics) => {
-
-        const totalWins = player.attackerWins + player.defenderWins
-        const totalLost = player.attackerLost + player.defenderLost
-        const totalGames = totalLost + totalWins
 
         return (
             <Descriptions
@@ -77,56 +203,57 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
                 bordered
                 labelStyle={{ fontWeight: 'bold', width: 180 }}
             >
-                <Descriptions.Item label="Name Tag">{player.nameTag}</Descriptions.Item>
-
-                <Descriptions.Item label="Rating">
-                    {player.rating}{' '}
-                    {player.todayRatingChance !== 0 && (
-                        <Text type={player.todayRatingChance > 0 ? 'success' : 'danger'}>
-                            {player.todayRatingChance > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
-                            {Math.abs(player.todayRatingChance)}
-                        </Text>
-                    )}
-                </Descriptions.Item>
-                <Descriptions.Item label="Higest Rating">{player.highestELO}</Descriptions.Item>
-                <Descriptions.Item label="Lowest Rating">{player.lowestELO}</Descriptions.Item>
-                <Descriptions.Item label="Games">{totalGames}</Descriptions.Item>
-
-                <Descriptions.Item label="Wins">
-                    <div> {totalWins}</div>
-                    <div style={{ color: '#999', fontSize: 12, marginTop: 4 }}>
-                        Attacker: {player.attackerWins} | Defender: {player.defenderWins}
-                    </div>
-                </Descriptions.Item>
-
-                <Descriptions.Item label="Lost">
-                    <div>{totalLost}</div>
-                    <div style={{ color: '#999', fontSize: 12, marginTop: 4 }}>
-                        Attacker: {player.attackerLost} | Defender: {player.defenderLost}
-                    </div>
-                </Descriptions.Item>
-                <Descriptions.Item label="Longest Win Streak">{player.longestWinStreak}</Descriptions.Item>
-                <Descriptions.Item label="Current Win Streak">{player.currentWinStreak}</Descriptions.Item>
-                <Descriptions.Item label="Winning Percentage">
-                    {totalGames > 0 ? ((totalWins / totalGames) * 100).toFixed(0) : '0'}%
-                </Descriptions.Item>
-
-                <Descriptions.Item label="Goals">{player.totalGoals}</Descriptions.Item>
-
-                <Descriptions.Item label="Goals Per Game">
-                    {totalGames > 0 ? (player.totalGoals / totalGames).toFixed(2) : '0.00'}
-                </Descriptions.Item>
+                <Descriptions.Item label="Name Tag">{compare('nameTag')}</Descriptions.Item>
+                <Descriptions.Item label="Rating">{compare('rating')}</Descriptions.Item>
+                <Descriptions.Item label="Highest Rating">{compare('highestELO')}</Descriptions.Item>
+                <Descriptions.Item label="Lowest Rating">{compare('lowestELO')}</Descriptions.Item>
+                <Descriptions.Item label="Games">{compare('totalGames')}</Descriptions.Item>
+                <Descriptions.Item label="Wins">{compare('wins', 'winDetails')}</Descriptions.Item>
+                <Descriptions.Item label="Lost">{compare('losses', 'lossDetails')}</Descriptions.Item>
+                <Descriptions.Item label="Longest Win Streak">{compare('longestWinStreak')}</Descriptions.Item>
+                <Descriptions.Item label="Current Win Streak">{compare('currentWinStreak')}</Descriptions.Item>
+                <Descriptions.Item label="Winning Percentage">{compare('winPercentage')}</Descriptions.Item>
+                <Descriptions.Item label="Goals">{compare('goals')}</Descriptions.Item>
+                <Descriptions.Item label="Goals Per Game">{compare('goalsPerGame')}</Descriptions.Item>
             </Descriptions>
-        )
-    }
+        );
+    };
+
 
     return data ? (<Modal
-        title="Player Statistics"
+        title={
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span>Player Statistics</span>
+                <div style={{ marginRight: 36 }}>
+                    {!showCompareSelect ? (
+                        <Button type="primary" onClick={() => setShowCompareSelect(true)}>
+                            H2H
+                        </Button>
+                    ) : (
+                        <Select
+                            placeholder="Select player to compare"
+                            style={{ width: 200 }}
+                            options={options}
+                            onChange={(value) => {
+                                setComparedPlayerId(value);
+                            }}
+                            onClear={() => {
+                                setComparedPlayerId(null);
+                                setShowCompareSelect(false);     
+                            }}
+                            autoFocus
+                            allowClear
+                        />
+                    )}
+                </div>
+            </div>
+        }
         open={modalVisible}
         onCancel={handleModalCancel}
         footer={null}
     >
-        {solo ? soloContent(data as PlayerSoloStatistics) : content(data as PlayerStatistics)}
+        {content(data, comparedData ?? undefined)}
+
     </Modal>) : (<></>);
 
 }
