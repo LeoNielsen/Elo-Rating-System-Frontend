@@ -84,15 +84,15 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
             return {
                 nameTag: p.nameTag,
                 rating: (
-                    <>
-                        {p.rating}{' '}
+                    <div style={{ display: 'flex', justifyContent: comparedPlayer ? 'flex-start' : 'space-between', alignItems: 'center', width: '100%' }}>
+                        <span>{p.rating}</span>
                         {p.todayRatingChance !== 0 && (
                             <Text type={p.todayRatingChance > 0 ? 'success' : 'danger'}>
                                 {p.todayRatingChance > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
                                 {Math.abs(p.todayRatingChance)}
                             </Text>
                         )}
-                    </>
+                    </div>
                 ),
                 highestELO: p.highestELO,
                 lowestELO: p.lowestELO,
@@ -180,9 +180,9 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
                                             color: '#999',
                                             fontSize: 12,
                                             marginTop: 4,
-                                            whiteSpace: 'normal',    // allow wrapping
-                                            wordBreak: 'break-word', // break long words if needed
-                                            maxWidth: 100,
+                                            whiteSpace: 'normal',
+                                            wordBreak: 'break-word',
+                                            maxWidth: comparedPlayer ? 100 : 'none',
                                         }}>{p2[subKey]}</div>
                                 )}
                             </div>
