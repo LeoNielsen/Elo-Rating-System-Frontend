@@ -166,9 +166,9 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
                                 display: 'flex',
                                 flexDirection: 'row',
                                 alignItems: 'center',
-                                justifyContent: 'space-between',  // space between player value and diff
+                                justifyContent: 'space-between',
                                 gap: 8,
-                                paddingLeft: 0,  // reduce padding to move left more
+                                paddingLeft: 0,  
                             }}
                         >
                             {/* Compared player value + sub */}
@@ -189,9 +189,8 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
 
                             {/* Difference aligned right */}
                             {diff !== null && diff !== 0 && (
-                                <div
+                                <Text type={diff > 0 ? 'success' : 'danger'}
                                     style={{
-                                        color: diff > 0 ? 'green' : 'red',
                                         fontSize: 12,
                                         display: 'flex',
                                         alignItems: 'center',
@@ -204,7 +203,7 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
                                     {diff > 0 ? '+' : ''}
                                     {diff}
                                     {diff > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
-                                </div>
+                                </Text>
                             )}
                         </div>
                     )}
