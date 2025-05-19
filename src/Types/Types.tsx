@@ -75,6 +75,24 @@ interface PlayerSoloStatistics {
     currentWinStreak:number,
 }
 
+interface achievement {
+    id: number,
+    code: string,
+    name: string,
+    description: string,
+    gameType: string,
+    type: string,
+    metric: string,
+    amount: number,
+}
+
+interface playerAchievement {
+    id: number,
+    player: Player,
+    achievement: achievement,
+    unlocked: boolean,
+}
+
 export type {
     Match,
     SoloMatch,
@@ -83,5 +101,7 @@ export type {
     MatchRating,
     PlayerStatistics,
     PlayerSoloStatistics,
-    chartData
+    chartData,
+    achievement,
+    playerAchievement,
 }

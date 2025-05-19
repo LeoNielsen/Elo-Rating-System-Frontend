@@ -230,6 +230,24 @@ const deleteLatestSoloMatch = async () => {
     }
 };
 
+const getAllAchievements = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/achievement/all`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+};
+
+const getPlayerAchievements = async (id: number) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/achievement/${id}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+};
+
 export {
     getAllPlayers,
     getPlayer,
@@ -253,4 +271,6 @@ export {
     getAdminTest,
     deleteLatestMatch,
     deleteLatestSoloMatch,
+    getAllAchievements,
+    getPlayerAchievements,
 };
