@@ -1,9 +1,16 @@
 import { Button, Descriptions, Divider, Modal, Tabs, TabsProps } from 'antd'
-import React, { useState } from 'react'
 import UserService from '../Keycloak/UserService';
+import { useQuery } from 'react-query';
+import { Player } from '../Types/Types';
+import { getPlayer } from '../API/Api';
 
-function UserProfilModal({ modalVisible, setModalVisible, userName }:
-    { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, userName: string }) {
+function UserProfilModal({ modalVisible, setModalVisible }:
+    { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>> }) {
+
+    const { data } = useQuery<Player>("User",
+        () => getPlayer(UserService.getUsername()),
+        { enabled: !!UserService.getUsername() }
+    )
 
     const handleModalCancel = () => {
         setModalVisible(false);
@@ -16,7 +23,9 @@ function UserProfilModal({ modalVisible, setModalVisible, userName }:
             children:
                 <>
                     <Descriptions bordered column={1} size="middle">
-                        <Descriptions.Item label="Name">{userName}</Descriptions.Item>
+                        <Descriptions.Item label="Name">{data?.nameTag.toUpperCase()}</Descriptions.Item>
+                        <Descriptions.Item label="Rating">{data?.rating}</Descriptions.Item>
+                        <Descriptions.Item label="SoloRating">{data?.soloRating}</Descriptions.Item>
                     </Descriptions>
 
                     <Divider />
@@ -34,7 +43,7 @@ function UserProfilModal({ modalVisible, setModalVisible, userName }:
 
     return (
         <Modal
-            title={`Hello ${userName}`}
+            title={`Hello ${data?.nameTag.toUpperCase()}`}
             open={modalVisible}
             onCancel={handleModalCancel}
             footer={null}

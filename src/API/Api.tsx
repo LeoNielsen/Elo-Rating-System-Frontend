@@ -12,6 +12,15 @@ const getAllPlayers = async () => {
     }
 };
 
+const getPlayer = async (name: string) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/player/${name}`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const getPlayerStatistics = async (id: number) => {
     try {
         const response = await axios.get(`${BASE_URL}/player/statistics/${id}`);
@@ -223,6 +232,7 @@ const deleteLatestSoloMatch = async () => {
 
 export {
     getAllPlayers,
+    getPlayer,
     getPlayerStatistics,
     getAllPlayerStatistics,
     getAllMonthlyStatistics,

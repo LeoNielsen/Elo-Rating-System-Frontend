@@ -1,4 +1,4 @@
-import { Button, Col, Descriptions, Form, Modal, Row, Select, Typography } from "antd";
+import { Button, Descriptions, Form, Modal, Select, Typography } from "antd";
 import { useQuery } from "react-query";
 import { getAllPlayers, getMonthlyStatistics, getPlayerSoloStatistics, getPlayerStatistics } from "../API/Api";
 import { Player, PlayerSoloStatistics, PlayerStatistics } from "../Types/Types";
@@ -44,7 +44,6 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
 
     const {
         data: comparedData,
-        isLoading: isLoadingCompared
     } = useQuery<PlayerStatistics | PlayerSoloStatistics>(
         ['ComparedPlayerStatistics', comparedPlayerId],
         () => comparedPlayerId ? fetchPlayerStatistics(comparedPlayerId) : Promise.resolve(null),
@@ -69,8 +68,6 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
         player: PlayerStatistics | PlayerSoloStatistics,
         comparedPlayer?: PlayerStatistics | PlayerSoloStatistics
     ) => {
-        const isSolo = 'wins' in player;
-        const isComparedSolo = comparedPlayer ? 'wins' in comparedPlayer : isSolo;
 
         const getStats = (p: PlayerStatistics | PlayerSoloStatistics) => {
             const solo = 'wins' in p;
@@ -168,7 +165,7 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
                                 gap: 8,
-                                paddingLeft: 0,  
+                                paddingLeft: 0,
                             }}
                         >
                             {/* Compared player value + sub */}

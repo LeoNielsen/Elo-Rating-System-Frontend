@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Avatar, Button, Dropdown, Layout, Menu, MenuProps, theme, Typography } from 'antd';
+import { Avatar, Dropdown, Layout, Menu, MenuProps, theme, Typography } from 'antd';
 import { CalendarOutlined, LineChartOutlined, LockOutlined, SmileOutlined, TeamOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons';
 import PlayerTable from './tables/PlayerTable';
 import MatchTables from './tables/MatchTables/MatchTables';
@@ -62,7 +62,6 @@ const App: React.FC = () => {
                 const loggedIn = UserService.isLoggedIn();
                 setIsLoggedIn(loggedIn);
                 setIsKeycloakReady(true);
-                console.log(isKeycloakReady)
                 if (loggedIn) {
                     setIsAdmin(UserService.hasRole('admin'));
                     setUserName(UserService.getUsername);
@@ -76,9 +75,8 @@ const App: React.FC = () => {
     useEffect(() => {
         if (userName !== '') {
             if (!checkIfPlayerExists(userName)) {
-                console.log(checkIfPlayerExists(userName))
                 createPlayerMutation(
-                    { nameTag: userName }
+                    { nameTag: userName.toUpperCase() }
                 )
                 refetch()
             }
@@ -238,7 +236,7 @@ const App: React.FC = () => {
                 </Header>
                 <Content style={{ margin: '24px 16px 0' }}>
                     <div style={contentStyle}>{contentComponent}</div>
-                    <UserProfilModal setModalVisible={setShowUserProfile} modalVisible={showUserProfile} userName={userName}></UserProfilModal>
+                    <UserProfilModal setModalVisible={setShowUserProfile} modalVisible={showUserProfile} ></UserProfilModal>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>
                     Foosball Elo Rating System ©2024 Created by Leo
