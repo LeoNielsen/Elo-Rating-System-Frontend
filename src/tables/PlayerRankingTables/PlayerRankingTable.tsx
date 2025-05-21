@@ -64,7 +64,18 @@ function PlayerRankingTable() {
             title: 'Total Wins',
             dataIndex: 'totalWins',
             key: 'totalWins',
-            render: (_, a: PlayerStatistics) => a.attackerWins + a.defenderWins
+            render: (_, player: PlayerStatistics) => (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                    <span>{player.attackerWins + player.defenderWins}</span>
+
+                    {player.currentWinStreak > 3 && (
+                        <Typography.Text strong>
+                            {!isSmallScreen && ` ${Math.abs(player.currentWinStreak)}`}
+                            {"🔥"}
+                        </Typography.Text>
+                    )}
+                </div>
+            )
         },
         {
             title: 'Total Lost',

@@ -63,6 +63,19 @@ function PlayerSoloRakingTable() {
             title: 'Total Wins',
             dataIndex: 'wins',
             key: 'totalWins',
+            render: (_, player: PlayerSoloStatistics) => (
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                    <span>{player.wins}</span>
+
+                    {player.currentWinStreak > 3 && (
+                        <Typography.Text strong>
+                            
+                            {!isSmallScreen && ` ${Math.abs(player.currentWinStreak)}`}
+                            {"🔥"}
+                        </Typography.Text>
+                    )}
+                </div>
+            )
         },
         {
             title: 'Total Lost',

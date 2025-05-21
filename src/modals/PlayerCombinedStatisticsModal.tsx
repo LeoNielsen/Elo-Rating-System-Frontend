@@ -1,7 +1,8 @@
-import { Descriptions, Modal } from "antd";
+import { Descriptions, Modal, Tabs, TabsProps } from "antd";
 import { useQuery } from "react-query";
 import { getPlayerSoloStatistics, getPlayerStatistics } from "../API/Api";
 import { PlayerSoloStatistics, PlayerStatistics } from "../Types/Types";
+import PlayerAchievementTabs from "../Tabs/PlayerAchievementTabs";
 
 function PlayerCombinedStatisticsModal({ modalVisible, setModalVisible, playerId }:
     { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, playerId: number }) {
@@ -71,13 +72,25 @@ function PlayerCombinedStatisticsModal({ modalVisible, setModalVisible, playerId
         )
     }
 
+    const tabs: TabsProps['items'] = [
+        {
+            key: '1',
+            label: 'Statistics',
+            children: playerStats.data && soloStats.data ? <>{content(playerStats.data, soloStats.data)}</> : <></>
+        }, {
+            key: '2',
+            label: 'Bagde',
+            children: <PlayerAchievementTabs playerId={playerId} />
+        }
+    ]
+
     return playerStats.data && soloStats.data ? (<Modal
         title="Player Statistics"
         open={modalVisible}
         onCancel={handleModalCancel}
         footer={null}
     >
-        {content(playerStats.data, soloStats.data)}
+        <Tabs items={tabs} />
     </Modal>) : (<></>);
 
 }

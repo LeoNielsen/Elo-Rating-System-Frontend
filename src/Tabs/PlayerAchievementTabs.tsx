@@ -1,27 +1,15 @@
-import { Button, Col, Descriptions, Divider, Modal, Row, Tabs, TabsProps, Tooltip, Typography, Image } from 'antd'
-import UserService from '../Keycloak/UserService';
+import { Col, Row, Tabs, TabsProps, Tooltip, Typography, Image } from 'antd'
 import { useQuery } from 'react-query';
-import { achievement, Player, playerAchievement } from '../Types/Types';
-import { getAllAchievements, getPlayer, getPlayerAchievements } from '../API/Api';
-import PlayerAchievementTabs from '../Tabs/PlayerAchievementTabs';
+import { achievement, playerAchievement } from '../Types/Types';
+import { getAllAchievements, getPlayerAchievements } from '../API/Api';
 
-function UserProfilModal({ modalVisible, setModalVisible }:
-    { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>> }) {
-
-    const { data } = useQuery<Player>("User",
-        () => getPlayer(UserService.getUsername()),
-        { enabled: !!UserService.getUsername() }
-    );
+function PlayerAchievementTabs({ playerId }: { playerId: number }) {
 
     const { data: achievements } = useQuery<achievement[]>("Achievement", () => getAllAchievements());
     const { data: playerAchievement } = useQuery<playerAchievement[]>("PlayerAchievement",
-        () => getPlayerAchievements(data!.id),
-        { enabled: !!data?.id }
+        () => getPlayerAchievements(playerId),
+        { enabled: !!playerId }
     );
-
-    const handleModalCancel = () => {
-        setModalVisible(false);
-    };
 
     const { Text } = Typography;
     const getBadgeTabs = (achievements: achievement[] | undefined): TabsProps['items'] => {
@@ -49,9 +37,23 @@ function UserProfilModal({ modalVisible, setModalVisible }:
             const renderBadgeItem = (achv: achievement) => {
                 const unlocked = isUnlocked(achv.id);
                 return (
-                    <Col key={achv.id} xs={8} sm={6} md={4} lg={4} style={{ textAlign: 'center' }}>
-                        <Tooltip title={unlocked ? achv.description : "Locked"}>
-                            <div style={{ cursor: unlocked ? 'pointer' : 'not-allowed', filter: unlocked ? 'none' : 'grayscale(100%)', opacity: unlocked ? 1 : 0.5 }}>
+                    <Col
+                        key={achv.id}
+                        flex="0 0 auto"
+                        style={{ textAlign: 'center'}}
+                    >
+                        <Tooltip title={unlocked ? achv.description : 'Locked'}>
+                            <div
+                                style={{
+                                    cursor: unlocked ? 'pointer' : 'not-allowed',
+                                    filter: unlocked ? 'none' : 'grayscale(100%)',
+                                    opacity: unlocked ? 1 : 0.5,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    width: 65
+                                }}
+                            >
                                 <Image
                                     src={`/badges/${achv.code}.png`}
                                     alt={achv.name}
@@ -59,7 +61,11 @@ function UserProfilModal({ modalVisible, setModalVisible }:
                                     height={64}
                                     preview={unlocked}
                                 />
-                                <Text strong>{achv.name}</Text>
+                                <Text style={{
+                                    whiteSpace: 'normal',
+                                    wordBreak: 'break-word',
+                                    textAlign: 'center', 
+                                }} strong>{achv.name}</Text>
                             </div>
                         </Tooltip>
                     </Col>
@@ -69,7 +75,7 @@ function UserProfilModal({ modalVisible, setModalVisible }:
             return (
                 <>
                     {multiBadgeGroups.map(([type, achievements]) => (
-                        <div key={type} style={{ marginBottom: 24 }}>
+                        <div key={type} >
                             <Row gutter={[16, 24]}>
                                 {achievements.map(renderBadgeItem)}
                             </Row>
@@ -77,7 +83,7 @@ function UserProfilModal({ modalVisible, setModalVisible }:
                     ))}
 
                     {singleBadgeGroups.length > 0 && (
-                        <div>
+                        <div >
                             <Row gutter={[16, 24]}>
                                 {singleBadgeGroups.flatMap(([, achievements]) => achievements.map(renderBadgeItem))}
                             </Row>
@@ -106,41 +112,10 @@ function UserProfilModal({ modalVisible, setModalVisible }:
         ];
     };
 
-    const tabs: TabsProps['items'] = [
-        {
-            key: '1',
-            label: 'Generel',
-            children:
-                <>
-                    <Descriptions bordered column={1} size="middle">
-                        <Descriptions.Item label="Name">{data?.nameTag.toUpperCase()}</Descriptions.Item>
-                        <Descriptions.Item label="Rating">{data?.rating}</Descriptions.Item>
-                        <Descriptions.Item label="SoloRating">{data?.soloRating}</Descriptions.Item>
-                    </Descriptions>
 
-                    <Divider />
-
-                    <Button type="primary" danger onClick={UserService.changePassword}>
-                        Change Password
-                    </Button>
-                </>
-        }, {
-            key: '2',
-            label: 'Bagde',
-            children: data? <PlayerAchievementTabs playerId={data.id}/>:<></>
-        }
-    ]
-
-    return (
-        <Modal
-            title={`Hello ${data?.nameTag.toUpperCase()}`}
-            open={modalVisible}
-            onCancel={handleModalCancel}
-            footer={null}
-        >
-            <Tabs items={tabs} />
-        </Modal>
+    return (achievements ?
+        <Tabs items={getBadgeTabs(achievements)} /> : (<></>)
     )
 }
 
-export default UserProfilModal
+export default PlayerAchievementTabs

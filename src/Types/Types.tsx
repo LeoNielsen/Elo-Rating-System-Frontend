@@ -58,7 +58,7 @@ interface PlayerStatistics {
     highestELO: number,
     lowestELO: number,
     longestWinStreak: number,
-    currentWinStreak:number,
+    currentWinStreak: number,
 }
 
 interface PlayerSoloStatistics {
