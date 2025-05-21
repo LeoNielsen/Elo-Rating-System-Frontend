@@ -59,6 +59,7 @@ interface PlayerStatistics {
     lowestELO: number,
     longestWinStreak: number,
     currentWinStreak: number,
+    shutouts: number,
 }
 
 interface PlayerSoloStatistics {
@@ -72,7 +73,8 @@ interface PlayerSoloStatistics {
     highestELO: number,
     lowestELO: number,
     longestWinStreak: number,
-    currentWinStreak:number,
+    currentWinStreak: number,
+    shutouts: number
 }
 
 interface achievement {

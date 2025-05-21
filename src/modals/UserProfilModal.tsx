@@ -1,8 +1,8 @@
-import { Button, Col, Descriptions, Divider, Modal, Row, Tabs, TabsProps, Tooltip, Typography, Image } from 'antd'
+import { Button, Descriptions, Divider, Modal, Tabs, TabsProps, } from 'antd'
 import UserService from '../Keycloak/UserService';
 import { useQuery } from 'react-query';
-import { achievement, Player, playerAchievement } from '../Types/Types';
-import { getAllAchievements, getPlayer, getPlayerAchievements } from '../API/Api';
+import { Player } from '../Types/Types';
+import { getPlayer } from '../API/Api';
 import PlayerAchievementTabs from '../Tabs/PlayerAchievementTabs';
 
 function UserProfilModal({ modalVisible, setModalVisible }:
@@ -13,98 +13,10 @@ function UserProfilModal({ modalVisible, setModalVisible }:
         { enabled: !!UserService.getUsername() }
     );
 
-    const { data: achievements } = useQuery<achievement[]>("Achievement", () => getAllAchievements());
-    const { data: playerAchievement } = useQuery<playerAchievement[]>("PlayerAchievement",
-        () => getPlayerAchievements(data!.id),
-        { enabled: !!data?.id }
-    );
-
     const handleModalCancel = () => {
         setModalVisible(false);
     };
 
-    const { Text } = Typography;
-    const getBadgeTabs = (achievements: achievement[] | undefined): TabsProps['items'] => {
-        if (!achievements) return [];
-
-        const renderBadges = (filteredAchievements: achievement[]) => {
-            // Group by type
-            const grouped = filteredAchievements.reduce<Record<string, achievement[]>>((acc, curr) => {
-                if (!acc[curr.type]) acc[curr.type] = [];
-                acc[curr.type].push(curr);
-                return acc;
-            }, {});
-
-            const multiBadgeGroups = Object.entries(grouped).filter(([, achievements]) => achievements.length > 1);
-            const singleBadgeGroups = Object.entries(grouped).filter(([, achievements]) => achievements.length === 1);
-
-            const playerAchievementIds = new Set(
-                playerAchievement
-                    ?.filter(p => p.unlocked)
-                    .map(p => p.achievement.id)
-            );
-
-            const isUnlocked = (achievementId: number) => playerAchievementIds.has(achievementId);
-
-            const renderBadgeItem = (achv: achievement) => {
-                const unlocked = isUnlocked(achv.id);
-                return (
-                    <Col key={achv.id} xs={8} sm={6} md={4} lg={4} style={{ textAlign: 'center' }}>
-                        <Tooltip title={unlocked ? achv.description : "Locked"}>
-                            <div style={{ cursor: unlocked ? 'pointer' : 'not-allowed', filter: unlocked ? 'none' : 'grayscale(100%)', opacity: unlocked ? 1 : 0.5 }}>
-                                <Image
-                                    src={`/badges/${achv.code}.png`}
-                                    alt={achv.name}
-                                    width={64}
-                                    height={64}
-                                    preview={unlocked}
-                                />
-                                <Text strong>{achv.name}</Text>
-                            </div>
-                        </Tooltip>
-                    </Col>
-                );
-            };
-
-            return (
-                <>
-                    {multiBadgeGroups.map(([type, achievements]) => (
-                        <div key={type} style={{ marginBottom: 24 }}>
-                            <Row gutter={[16, 24]}>
-                                {achievements.map(renderBadgeItem)}
-                            </Row>
-                        </div>
-                    ))}
-
-                    {singleBadgeGroups.length > 0 && (
-                        <div>
-                            <Row gutter={[16, 24]}>
-                                {singleBadgeGroups.flatMap(([, achievements]) => achievements.map(renderBadgeItem))}
-                            </Row>
-                        </div>
-                    )}
-                </>
-            );
-        };
-
-        return [
-            {
-                key: '1',
-                label: '2v2',
-                children: renderBadges(achievements.filter(a => a.gameType === 'TEAMS'))
-            },
-            {
-                key: '2',
-                label: '1v1',
-                children: renderBadges(achievements.filter(a => a.gameType === 'SOLO'))
-            },
-            {
-                key: '3',
-                label: 'Generel',
-                children: renderBadges(achievements.filter(a => a.gameType !== 'SOLO' && a.gameType !== 'TEAMS'))
-            }
-        ];
-    };
 
     const tabs: TabsProps['items'] = [
         {
@@ -127,7 +39,7 @@ function UserProfilModal({ modalVisible, setModalVisible }:
         }, {
             key: '2',
             label: 'Bagde',
-            children: data? <PlayerAchievementTabs playerId={data.id}/>:<></>
+            children: data ? <PlayerAchievementTabs playerId={data.id} /> : <></>
         }
     ]
 

@@ -42,7 +42,7 @@ function PlayerAchievementTabs({ playerId }: { playerId: number }) {
                         flex="0 0 auto"
                         style={{ textAlign: 'center'}}
                     >
-                        <Tooltip title={unlocked ? achv.description : 'Locked'}>
+                        <Tooltip title={achv.description}>
                             <div
                                 style={{
                                     cursor: unlocked ? 'pointer' : 'not-allowed',

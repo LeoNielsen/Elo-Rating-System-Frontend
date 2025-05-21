@@ -248,6 +248,51 @@ const getPlayerAchievements = async (id: number) => {
         }
 };
 
+const regeneratePlayerStats = async () => {
+    const token = UserService.getToken();
+
+    try {
+        const response = await axios.post(`${BASE_URL}/admin/player/statgen`,{}, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const regenerateSoloPlayerStats = async () => {
+    const token = UserService.getToken();
+
+    try {
+        const response = await axios.post(`${BASE_URL}/admin/solo/player/statgen`,{}, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const regenerateMonthlyPlayerStats = async () => {
+    const token = UserService.getToken();
+
+    try {
+        const response = await axios.post(`${BASE_URL}/admin/monthly/player/statgen`,{}, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 export {
     getAllPlayers,
     getPlayer,
@@ -273,4 +318,7 @@ export {
     deleteLatestSoloMatch,
     getAllAchievements,
     getPlayerAchievements,
+    regenerateMonthlyPlayerStats,
+    regeneratePlayerStats,
+    regenerateSoloPlayerStats
 };

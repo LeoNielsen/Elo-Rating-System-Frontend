@@ -1,4 +1,4 @@
-import { Button, Descriptions, Form, Modal, Select, Typography } from "antd";
+import { Button, Descriptions, Form, Modal, Select, Tooltip, Typography } from "antd";
 import { useQuery } from "react-query";
 import { getAllPlayers, getMonthlyStatistics, getPlayerSoloStatistics, getPlayerStatistics } from "../API/Api";
 import { Player, PlayerSoloStatistics, PlayerStatistics } from "../Types/Types";
@@ -100,6 +100,7 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
                 lossDetails: solo ? null : `Attacker: ${(p as PlayerStatistics).attackerLost} | Defender: ${(p as PlayerStatistics).defenderLost}`,
                 longestWinStreak: p.longestWinStreak,
                 currentWinStreak: p.currentWinStreak,
+                ...(!monthly ? { shutouts: p.shutouts } : {}),
                 winPercentage: totalGames > 0 ? ((wins / totalGames) * 100).toFixed(0) + '%' : '0%',
                 goals: p.totalGoals,
                 goalsPerGame: totalGames > 0 ? (p.totalGoals / totalGames).toFixed(2) : '0.00',
@@ -224,9 +225,10 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
                 <Descriptions.Item label="Games">{compare('totalGames')}</Descriptions.Item>
                 <Descriptions.Item label="Wins">{compare('wins', 'winDetails')}</Descriptions.Item>
                 <Descriptions.Item label="Lost">{compare('losses', 'lossDetails')}</Descriptions.Item>
+                <Descriptions.Item label="Winning Percentage">{compare('winPercentage')}</Descriptions.Item>
                 <Descriptions.Item label="Longest Win Streak">{compare('longestWinStreak')}</Descriptions.Item>
                 <Descriptions.Item label="Current Win Streak">{compare('currentWinStreak')}</Descriptions.Item>
-                <Descriptions.Item label="Winning Percentage">{compare('winPercentage')}</Descriptions.Item>
+                {!monthly && <Descriptions.Item label={<Tooltip title={"10-0 victories"}>Shutouts</Tooltip>}>{compare('shutouts')}</Descriptions.Item>}
                 <Descriptions.Item label="Goals">{compare('goals')}</Descriptions.Item>
                 <Descriptions.Item label="Goals Per Game">{compare('goalsPerGame')}</Descriptions.Item>
             </Descriptions>
