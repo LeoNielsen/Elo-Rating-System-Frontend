@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Avatar, Dropdown, Layout, Menu, MenuProps, theme, Typography } from 'antd';
 import { CalendarOutlined, LineChartOutlined, LockOutlined, SmileOutlined, TeamOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons';
 import PlayerTable from './tables/PlayerTable';
@@ -36,9 +36,9 @@ const App: React.FC = () => {
     const { data, refetch } = useQuery("Players", getAllPlayers);
     const { mutateAsync: createPlayerMutation } = useMutation(createPlayer);
 
-    const checkIfPlayerExists = (input: string) => {
+    const checkIfPlayerExists = useCallback((input: string) => {
         return data && data.some((player: Player) => player.nameTag.toUpperCase() === input.toUpperCase());
-    }
+    }, [data]);
 
     const handleMenuClick = (menuItem: string) => {
         setSelectedMenuItem(menuItem);
@@ -81,7 +81,7 @@ const App: React.FC = () => {
                 refetch()
             }
         }
-    }, [userName])
+    }, [userName, checkIfPlayerExists, createPlayerMutation, refetch])
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
