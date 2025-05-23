@@ -194,7 +194,7 @@ const App: React.FC = () => {
             >
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <img
-                        src="/JNbold.png"
+                        src="/JNbold.webp"
                         alt="Logo"
                         style={{ width: '100px', height: '100px' }}
                     />
