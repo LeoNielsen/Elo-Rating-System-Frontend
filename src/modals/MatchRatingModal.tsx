@@ -1,7 +1,7 @@
 import { Modal, Typography } from "antd";
 import { useQuery } from "react-query";
 import { getMatchRatings, getSoloMatchRatings } from "../API/Api";
-import { ArrowDownOutlined, ArrowUpOutlined, CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
+import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
 import { MatchRating } from "../Types/Types";
 
 function MatchRatingModal({ modalVisible, setModalVisible, matchId, soloMatch }:
