@@ -1,7 +1,7 @@
-import { Modal } from "antd";
+import { Modal, Typography } from "antd";
 import { useQuery } from "react-query";
 import { getMatchRatings, getSoloMatchRatings } from "../API/Api";
-import { ArrowDownOutlined, ArrowUpOutlined } from "@ant-design/icons";
+import { ArrowDownOutlined, ArrowUpOutlined, CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
 import { MatchRating } from "../Types/Types";
 
 function MatchRatingModal({ modalVisible, setModalVisible, matchId, soloMatch }:
@@ -21,7 +21,7 @@ function MatchRatingModal({ modalVisible, setModalVisible, matchId, soloMatch }:
     if (isLoading) {
         return <></>
     }
-
+    const { Text } = Typography
     return data ? (<Modal
         title="Match Ratings"
         open={modalVisible}
@@ -44,10 +44,10 @@ function MatchRatingModal({ modalVisible, setModalVisible, matchId, soloMatch }:
                             </p>
                         </div>
                         <div style={{ flex: '1', textAlign: 'right' }}>
-                            <strong><p style={{ margin: '5px 0', color: rating.newRating - rating.oldRating >= 0 ? 'green' : 'red' }}>
+                            <Text strong type={rating.newRating - rating.oldRating >= 0 ? 'success' : 'danger'} style={{ margin: '5px 0' }}>
                                 {rating.newRating - rating.oldRating} {' '}
-                                {rating.newRating - rating.oldRating >= 0 ? <ArrowUpOutlined style={{ color: 'green' }} /> : <ArrowDownOutlined style={{ color: 'red' }} />}
-                            </p></strong>
+                                {rating.newRating - rating.oldRating >= 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
+                            </Text>
                         </div>
                     </div>
                 </div>

@@ -58,7 +58,7 @@ const Admin = () => {
             loading={regeneratePlayerStatsMutation.isLoading}
             onClick={() => showConfirm('Regenerate player stats??', () => regeneratePlayerStatsMutation.mutate())}
           >
-            Regenerate Player Stats
+            Regenerate 2v2 Stats
           </Button>
           <Button
             variant='solid'
@@ -68,7 +68,7 @@ const Admin = () => {
             loading={regenerateSoloPlayerStatsMutation.isLoading}
             onClick={() => showConfirm('Regenerate solo player stats?', () => regenerateSoloPlayerStatsMutation.mutate())}
           >
-            Regenerate Solo Stats
+            Regenerate 1v1 Stats
           </Button>
           <Button
             variant='solid'
@@ -88,7 +88,7 @@ const Admin = () => {
             loading={deleteMatchMutation.isLoading}
             onClick={() => showConfirm('Delete latest match?', () => deleteMatchMutation.mutate())}
           >
-            Delete Latest Match
+            Delete Latest 2v2 Match
           </Button>
           <Button
             type="primary"
@@ -100,7 +100,7 @@ const Admin = () => {
               showConfirm('Delete latest solo match?', () => deleteSoloMatchMutation.mutate())
             }
           >
-            Delete Latest Solo Match
+            Delete Latest 1v1 Match
           </Button>
         </Space>
       </Card>
