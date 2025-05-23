@@ -55,12 +55,11 @@ function PlayerAchievementTabs({ playerId }: { playerId: number }) {
                                 }}
                             >
                                 <Image
-                                    src={`/badgesWebp/${achv.code}.webp`}
+                                    src={`/badgesWebp/${achv.code}_128.webp`}
                                     alt={achv.name}
                                     width={64}
                                     height={64}
-                                    preview={unlocked}
-                                    loading="lazy"
+                                    preview={unlocked ? { src: `/badgesWebp/${achv.code}.webp` } : false}
                                 />
                                 <Text style={{
                                     whiteSpace: 'normal',
