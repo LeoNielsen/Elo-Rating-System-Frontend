@@ -68,7 +68,7 @@ function PlayerMonthlyRankingTable() {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                     <span>{player.attackerWins + player.defenderWins}</span>
 
-                    {player.currentWinStreak > 3 && (
+                    {player.currentWinStreak >= 3 && (
                         <Typography.Text strong>
                             {!isSmallScreen && ` ${Math.abs(player.currentWinStreak)}`}
                             {"🔥"}
