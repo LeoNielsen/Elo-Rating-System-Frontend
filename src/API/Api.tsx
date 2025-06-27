@@ -91,6 +91,14 @@ const getRecentMatches = async () => {
         throw error;
     }
 };
+const getMatches = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/match/all`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 const getRecentSoloMatches = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/match/solo`);
@@ -304,6 +312,7 @@ export {
     getAllPlayerSoloStatistics,
     getAllTeams,
     getRecentMatches,
+    getMatches,
     getRecentSoloMatches,
     getMatchRatings,
     getSoloMatchRatings,

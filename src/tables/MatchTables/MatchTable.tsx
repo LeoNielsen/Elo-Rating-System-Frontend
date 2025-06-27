@@ -36,27 +36,27 @@ function MatchTable({ isLoading, data }: { isLoading: boolean, data: Match[] | u
         ,
         {
             title: 'Red Attacker',
-            dataIndex: ['redTeam', "attacker", "nameTag"],
-            key: 'redTeamId',
-            sorter: (a: Match, b: Match) => a.redTeam.attacker.nameTag.localeCompare(b.redTeam.attacker.nameTag),
+            dataIndex: "redAttacker",
+            key: 'redAttacker',
+            sorter: (a: Match, b: Match) => a.redAttacker.localeCompare(b.redAttacker),
         },
         {
             title: 'Red Defender',
-            dataIndex: ['redTeam', "defender", "nameTag"],
-            key: 'redTeamId',
-            sorter: (a: Match, b: Match) => a.redTeam.defender.nameTag.localeCompare(b.redTeam.defender.nameTag),
+            dataIndex: "redDefender",
+            key: 'redDefenderId',
+            sorter: (a: Match, b: Match) => a.redDefender.localeCompare(b.redDefender),
         },
         {
             title: 'Blue Attacker',
-            dataIndex: ['blueTeam', "attacker", "nameTag"],
-            key: 'blueTeamId',
-            sorter: (a: Match, b: Match) => a.blueTeam.attacker.nameTag.localeCompare(b.blueTeam.attacker.nameTag),
+            dataIndex: "blueAttacker",
+            key: 'blueAttackerId',
+            sorter: (a: Match, b: Match) => a.blueAttacker.localeCompare(b.blueAttacker),
         },
         {
             title: 'Blue Defender',
-            dataIndex: ['blueTeam', "defender", "nameTag"],
-            key: 'blueTeamId',
-            sorter: (a: Match, b: Match) => a.blueTeam.defender.nameTag.localeCompare(b.blueTeam.defender.nameTag),
+            dataIndex: "blueDefender",
+            key: 'blueDefenderId',
+            sorter: (a: Match, b: Match) => a.blueDefender.localeCompare(b.blueDefender),
         }
     ];
 

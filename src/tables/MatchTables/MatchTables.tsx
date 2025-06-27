@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import { Button, Tabs, TabsProps } from 'antd';
 import { useState } from 'react';
-import { getRecentMatches, getRecentSoloMatches } from '../../API/Api';
+import { getMatches, getRecentMatches, getRecentSoloMatches } from '../../API/Api';
 import NewMatchModal from '../../modals/NewMatchModal';
 import { Match, SoloMatch } from '../../Types/Types';
 import SoloMatchTable from './SoloMatchTable';
@@ -9,7 +9,7 @@ import MatchTable from './MatchTable';
 
 function MatchTables() {
 
-  const match = useQuery<Match[]>("matches", getRecentMatches);
+  const match = useQuery<Match[]>("matches", getMatches);
   const soloMatch = useQuery<SoloMatch[]>("soloMatches", getRecentSoloMatches);
 
 

@@ -1,8 +1,10 @@
 interface Match {
     id: number;
     date: Date;
-    redTeam: Team;
-    blueTeam: Team;
+    redAttacker: string;
+    redDefender: string;
+    blueAttacker: string;
+    blueDefender: string;
     redTeamScore: number;
     blueTeamScore: number;
 }
