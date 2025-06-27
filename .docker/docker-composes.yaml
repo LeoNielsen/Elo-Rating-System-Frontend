@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./backend/Elo-Rating-System
+    restart: always
+    depends_on:
+      - db
+      - keycloak
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+
+      KEYCLOAK_CLIENT_ID: ELO-Front
+      KEYCLOAK_ISSUER_URI: http://keycloak:8080/realms/demo-realm
+    ports:
+      - "8080:8080"
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.2.1
+    restart: always
+    command: start-dev
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://db:5432/keycloak_db
+      KC_DB_USERNAME: user
+      KC_DB_PASSWORD: password
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
+      KC_PROXY: edge
+      KC_HOSTNAME: jnbold.dk
+      KC_HOSTNAME_STRICT: 'true'
+      KC_HOSTNAME_STRICT_HTTPS: 'true'
+      KC_HTTP_RELATIVE_PATH: /auth
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+  frontend:
+    build: ./frontend/Elo-Rating-System-Frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./certs:/etc/letsencrypt
+      - ./frontend/Elo-Rating-System-Frontend/.docker/nginx.conf:/etc/nginx/nginx.conf
+      - ./letsencrypt-webroot:/var/www/certbot
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./certs:/etc/letsencrypt
+      - ./certbot-logs:/var/log/letsencrypt
+      - ./certbot-config:/etc/letsencrypt/config
+      - ./letsencrypt-webroot:/var/www/certbot
+    entrypoint: sh -c "certbot certonly --webroot -w /var/www/certbot -d jnbold.dk --email leo.nielsen21@gmail.com --agree-tos --no-eff-email --force-renewal"
+volumes:
+  postgres_data:
