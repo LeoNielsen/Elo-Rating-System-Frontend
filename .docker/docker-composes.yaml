@@ -21,13 +21,9 @@ services:
       - keycloak
     environment:
       SPRING_PROFILES_ACTIVE: prod
-
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydb
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: password
-
-      KEYCLOAK_CLIENT_ID: ELO-Front
-      KEYCLOAK_ISSUER_URI: http://keycloak:8080/realms/demo-realm
     ports:
       - "8080:8080"
 
