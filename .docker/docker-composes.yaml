@@ -39,12 +39,11 @@ services:
       KC_DB_PASSWORD: password
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-
-      KC_PROXY: edge
-      KC_HOSTNAME: jnbold.dk
+      KC_HOSTNAME: https://jnbold.dk/auth
       KC_HOSTNAME_STRICT: 'true'
       KC_HOSTNAME_STRICT_HTTPS: 'true'
-      KC_HTTP_RELATIVE_PATH: /auth
+      KC_PROXY: edge
+      
     ports:
       - "8081:8080"
     depends_on:
