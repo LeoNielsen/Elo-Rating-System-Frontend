@@ -41,9 +41,8 @@ interface MatchRating {
 }
 
 interface chartData {
-    matchId: number,
-    player: Player,
-    newRating: number,
+    playerTag: string,
+    rating: number,
     date: string
 }
 

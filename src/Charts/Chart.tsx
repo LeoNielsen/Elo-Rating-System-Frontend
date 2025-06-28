@@ -8,25 +8,21 @@ import { Card } from 'antd';
 const calculateLastRatingPerDay = (data: chartData[]) => {
   if (!data) return [];
 
-  const groupedData: Record<string, { matchId: number; date: string; player: string; rating: number }> = {};
+  const groupedData: Record<string, { date: string; playerTag: string; rating: number }> = {};
 
   data.forEach((rating) => {
-    const key = `${rating.date}-${rating.player.nameTag}`;
-
-    // If this is the first match for the day, or if the new match has a higher matchId, update the record
-    if (!groupedData[key] || rating.matchId > groupedData[key].matchId) {
-      groupedData[key] = {
-        matchId: rating.matchId,
-        date: rating.date,
-        player: rating.player.nameTag,
-        rating: rating.newRating,
-      };
-    }
+    const key = `${rating.date}-${rating.playerTag}`;
+    groupedData[key] = {
+      date: rating.date,
+      playerTag: rating.playerTag,
+      rating: rating.rating,
+    };
   });
 
-  // Convert the object values to an array
-  return Object.values(groupedData);
+  // Convert the object values to an array and sort by date
+  return Object.values(groupedData).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 };
+
 
 function Chart() {
 
@@ -41,7 +37,7 @@ function Chart() {
     data: matchData,
     xField: 'date',
     yField: 'rating',
-    seriesField: 'player',
+    seriesField: 'playerTag',
     lineStyle: {
       lineWidth: 2,
     },
@@ -54,7 +50,7 @@ function Chart() {
     data: matchDataSolo,
     xField: 'date',
     yField: 'rating',
-    seriesField: 'player',
+    seriesField: 'playerTag',
     lineStyle: {
       lineWidth: 2,
     },
