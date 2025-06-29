@@ -9,7 +9,6 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, ac
 
   const { data, isLoading } = useQuery("Players", getAllPlayers);
 
-  const { mutateAsync: createTeamMutation } = useMutation(createTeam);
   const { mutateAsync: createMatchMutation } = useMutation(createMatch);
   const { mutateAsync: createSoloMatchMutation } = useMutation(createSoloMatch);
 
@@ -75,19 +74,13 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, ac
   };
 
   const onFinish = async () => {
-    const redTeam = await createTeamMutation({
-      attackerId: form.getFieldValue("RedAttacker"),
-      defenderId: form.getFieldValue("RedDefender")
-    });
-    const blueTeam = await createTeamMutation({
-      attackerId: form.getFieldValue("BlueAttacker"),
-      defenderId: form.getFieldValue("BlueDefender")
-    });
     await createMatchMutation({
-      redTeamId: redTeam.id,
-      blueTeamId: blueTeam.id,
-      redTeamScore: form.getFieldValue("RedGoalScore"),
-      blueTeamScore: form.getFieldValue("BlueGoalScore")
+      redAtkId: form.getFieldValue("RedAttacker"),
+      redDefId: form.getFieldValue("RedDefender"),
+      blueAtkId: form.getFieldValue("BlueAttacker"),
+      blueDefId: form.getFieldValue("BlueDefender"),
+      redScore: form.getFieldValue("RedGoalScore"),
+      blueScore: form.getFieldValue("BlueGoalScore")
     })
 
     refetch()

@@ -137,10 +137,12 @@ const createTeam = async (teamData: {
 };
 
 const createMatch = async (matchData: {
-    redTeamId: number,
-    blueTeamId: number,
-    redTeamScore: number,
-    blueTeamScore: number
+    redAtkId: number,
+    redDefId: number,
+    blueAtkId: number,
+    blueDefId: number,
+    redScore: number,
+    blueScore: number
 }) => {
     try {
         const response = await axios.post(`${BASE_URL}/match`, matchData);
