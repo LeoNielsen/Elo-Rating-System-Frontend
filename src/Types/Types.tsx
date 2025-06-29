@@ -1,21 +1,21 @@
 interface Match {
     id: number;
     date: Date;
-    redAttacker: string;
-    redDefender: string;
-    blueAttacker: string;
-    blueDefender: string;
-    redTeamScore: number;
-    blueTeamScore: number;
+    redAtk: string;
+    redDef: string;
+    blueAtk: string;
+    blueDef: string;
+    redScore: number;
+    blueScore: number;
 }
 
 interface SoloMatch {
     id: number;
     date: Date;
-    redPlayer: Player;
-    bluePlayer: Player;
-    redTeamScore: number;
-    blueTeamScore: number;
+    redPlayer: string;
+    bluePlayer: string;
+    redScore: number;
+    blueScore: number;
 }
 
 interface Player {
@@ -27,8 +27,8 @@ interface Player {
 
 interface Team {
     id: number,
-    attacker: Player,
-    defender: Player,
+    attacker: string,
+    defender: string,
     won: number,
     lost: number
 }

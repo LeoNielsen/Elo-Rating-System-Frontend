@@ -11,15 +11,15 @@ function TeamTable() {
   const columns = [
     {
       title: 'Attacker',
-      dataIndex: ['attacker', 'nameTag'],
+      dataIndex: 'attacker',
       key: 'attacker',
-      sorter: (a: Team, b: Team) => a.attacker.nameTag.localeCompare(b.attacker.nameTag),
+      sorter: (a: Team, b: Team) => a.attacker.localeCompare(b.attacker),
     },
     {
       title: 'Defender',
-      dataIndex: ['defender', 'nameTag'],
+      dataIndex: 'defender',
       key: 'defender',
-      sorter: (a: Team, b: Team) => a.defender.nameTag.localeCompare(b.defender.nameTag),
+      sorter: (a: Team, b: Team) => a.defender.localeCompare(b.defender),
     },
     {
       title: 'Won',

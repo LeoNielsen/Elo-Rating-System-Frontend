@@ -22,28 +22,28 @@ function SoloMatchTable({ isLoading, data }: { isLoading: boolean, data: SoloMat
         },
         {
             title: 'Red Score',
-            dataIndex: 'redTeamScore',
-            key: 'redTeamScore',
-            sorter: (a: SoloMatch, b: SoloMatch) => a.redTeamScore - b.redTeamScore,
+            dataIndex: 'redScore',
+            key: 'redScore',
+            sorter: (a: SoloMatch, b: SoloMatch) => a.redScore - b.redScore,
         },
         {
             title: 'Blue Score',
-            dataIndex: 'blueTeamScore',
-            key: 'blueTeamScore',
-            sorter: (a: SoloMatch, b: SoloMatch) => a.blueTeamScore - b.blueTeamScore,
+            dataIndex: 'blueScore',
+            key: 'blueScore',
+            sorter: (a: SoloMatch, b: SoloMatch) => a.blueScore - b.blueScore,
         }
         ,
         {
             title: 'Red Player',
-            dataIndex: ['redPlayer', "nameTag"],
+            dataIndex: 'redPlayer',
             key: 'redPlayerId',
-            sorter: (a: SoloMatch, b: SoloMatch) => a.redPlayer.nameTag.localeCompare(b.redPlayer.nameTag),
+            sorter: (a: SoloMatch, b: SoloMatch) => a.redPlayer.localeCompare(b.redPlayer),
         },
         {
             title: 'Blue Player',
-            dataIndex: ['bluePlayer', "nameTag"],
+            dataIndex: 'bluePlayer',
             key: 'bluePlayerId',
-            sorter: (a: SoloMatch, b: SoloMatch) => a.bluePlayer.nameTag.localeCompare(b.bluePlayer.nameTag),
+            sorter: (a: SoloMatch, b: SoloMatch) => a.bluePlayer.localeCompare(b.bluePlayer),
         }
     ];
 
