@@ -18,6 +18,13 @@ interface SoloMatch {
     blueScore: number;
 }
 
+interface monthlyWinner {
+    nameTag: string;
+    year: number,
+    month: number,
+    monthlyRating: number;
+}
+
 interface Player {
     id: number;
     nameTag: string;
@@ -100,6 +107,7 @@ export type {
     Match,
     SoloMatch,
     Player,
+    monthlyWinner,
     Team,
     MatchRating,
     PlayerStatistics,

@@ -20,6 +20,14 @@ const getPlayer = async (name: string) => {
         throw error;
     }
 };
+const getMonthlyWinner = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/player/monthly/winner/last`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
 
 const getPlayerStatistics = async (id: number) => {
     try {
@@ -306,6 +314,7 @@ const regenerateMonthlyPlayerStats = async () => {
 export {
     getAllPlayers,
     getPlayer,
+    getMonthlyWinner,
     getPlayerStatistics,
     getAllPlayerStatistics,
     getAllMonthlyStatistics,

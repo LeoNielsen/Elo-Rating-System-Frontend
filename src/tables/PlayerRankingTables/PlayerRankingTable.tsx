@@ -1,20 +1,21 @@
 import { useQuery } from "react-query";
-import { PlayerStatistics } from "../../Types/Types";
-import { getAllPlayerStatistics } from "../../API/Api";
+import { monthlyWinner, PlayerStatistics } from "../../Types/Types";
+import { getAllPlayerStatistics, getMonthlyWinner } from "../../API/Api";
 import { useState } from "react";
 import Table, { ColumnType } from "antd/es/table";
 import PlayerStatisticsModal from "../../modals/PlayerStatisticsModal";
 import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
-import { Grid, Typography } from "antd";
+import { Grid, Tooltip, Typography } from "antd";
 
 
 function PlayerRankingTable() {
 
     const { isLoading, data } = useQuery<PlayerStatistics[]>("allPlayerStatistics", getAllPlayerStatistics);
+    const monthlyWinner = useQuery<monthlyWinner>("monthlyWinner", getMonthlyWinner);
 
     const [modalStatisticsVisible, setModalStatisticsVisible] = useState(false);
     const [rowId, setRowId] = useState(NaN);
-   
+
     const { useBreakpoint } = Grid;
     const screens = useBreakpoint();
     const isSmallScreen = !screens.md;
@@ -38,6 +39,12 @@ function PlayerRankingTable() {
             title: 'Name',
             dataIndex: 'nameTag',
             key: 'name',
+            render: (nameTag: string) => (
+                <>
+                    {nameTag}
+                    {nameTag === monthlyWinner.data?.nameTag ? <Tooltip title={`Winner of Monthly ${new Date(0, monthlyWinner.data.month - 1).toLocaleString('default', { month: 'long' })} ${monthlyWinner.data.year}`}>🏆</Tooltip> : ''}
+                </>
+            ),
         },
         {
             title: (
