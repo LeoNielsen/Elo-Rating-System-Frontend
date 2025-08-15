@@ -64,7 +64,7 @@ function MatchTable({ isLoading, data }: { isLoading: boolean, data: Match[] | u
 
     return (
         <>
-            <Table style={{ marginTop: '-15px' }}
+            <Table
                 scroll={{ x: 350 }}
                 dataSource={sortedData}
                 columns={columns}

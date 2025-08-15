@@ -51,7 +51,7 @@ function SoloMatchTable({ isLoading, data }: { isLoading: boolean, data: SoloMat
 
     return (
         <>
-            <Table style={{ marginTop: '-15px' }}
+            <Table
                 scroll={{ x: 350 }}
                 dataSource={sortedData}
                 columns={columns}

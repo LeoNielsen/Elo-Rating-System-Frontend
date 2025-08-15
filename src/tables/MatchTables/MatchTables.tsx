@@ -38,15 +38,26 @@ function MatchTables() {
 
 
   return (
-    <div className="App" style={{ position: 'relative' }}>
-      <Tabs items={tabs} defaultActiveKey='1' onChange={handleActiveTab} />
-      <Button
-        type="primary"
-        onClick={handleNewMatchClick}
-        style={{ position: 'absolute', top: '0', right: '0', zIndex: '1' }}>
-        New Match
-      </Button>
-      {modalVisible && <NewMatchModal modalVisible={modalVisible} setModalVisible={setModalVisible} refetch={match.refetch} soloRefetch={soloMatch.refetch} activeTab={activeTab} />}
+    <div className="App">
+      <Tabs
+        items={tabs}
+        defaultActiveKey="1"
+        onChange={handleActiveTab}
+        tabBarExtraContent={
+          <Button type="primary" onClick={handleNewMatchClick}>
+            New Match
+          </Button>
+        }
+      />
+      {modalVisible && (
+        <NewMatchModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          refetch={match.refetch}
+          soloRefetch={soloMatch.refetch}
+          activeTab={activeTab}
+        />
+      )}
     </div>
   );
 }

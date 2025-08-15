@@ -51,7 +51,7 @@ function PlayerAchievementTabs({ playerId }: { playerId: number }) {
                                     display: 'flex',
                                     flexDirection: 'column',
                                     alignItems: 'center',
-                                    width: 65
+                                    width: 70
                                 }}
                             >
                                 <Image

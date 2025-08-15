@@ -12,6 +12,8 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - internal_net
 
   backend:
     build: ./backend/Elo-Rating-System
@@ -27,6 +29,10 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
     ports:
       - "8080:8080"
+    extra_hosts:
+      - "jnbold.dk:192.168.1.11"
+    networks:
+      - internal_net
 
   keycloak:
     image: quay.io/keycloak/keycloak:26.2.1
@@ -46,6 +52,8 @@ services:
       
     ports:
       - "8081:8080"
+    networks:
+      - internal_net
     depends_on:
       - db
   frontend:
@@ -60,6 +68,8 @@ services:
       - ./certs:/etc/letsencrypt
       - ./frontend/Elo-Rating-System-Frontend/.docker/nginx.conf:/etc/nginx/nginx.conf
       - ./letsencrypt-webroot:/var/www/certbot
+    networks:
+      - internal_net
 
   certbot:
     image: certbot/certbot
@@ -71,3 +81,7 @@ services:
     entrypoint: sh -c "certbot certonly --webroot -w /var/www/certbot -d jnbold.dk --email leo.nielsen21@gmail.com --agree-tos --no-eff-email --force-renewal"
 volumes:
   postgres_data:
+
+networks:
+  internal_net:
+    driver: bridge

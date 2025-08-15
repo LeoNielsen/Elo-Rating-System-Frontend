@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { Table } from 'antd';
+import { Table, Tabs, TabsProps } from 'antd';
 import '../Style.css'
 import { getAllTeams } from '../API/Api';
 import { Team } from '../Types/Types';
@@ -35,10 +35,24 @@ function TeamTable() {
     }
   ];
 
+  const tabs: TabsProps['items'] = [
+    {
+      key: '1',
+      label: 'Teams',
+      children: <Table
+        dataSource={data}
+        columns={columns}
+        scroll={{ x: 350 }}
+        rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''}
+        bordered={true}
+        loading={isLoading} />
+
+    },
+  ]
 
   return (
     <div className="App">
-      <Table dataSource={data} columns={columns} scroll={{ x: 350 }} rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''} bordered={true} loading={isLoading} />
+      <Tabs items={tabs} defaultActiveKey='1' />
     </div>
   );
 }
