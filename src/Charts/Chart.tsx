@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { Line } from '@ant-design/plots';
 import { chartData } from '../Types/Types';
-import { useQuery } from 'react-query';
-import { getChartData } from '../API/Api';
 import { Card, Select, Spin } from 'antd';
 
 const calculateLastRatingPerDay = (data: chartData[]) => {
@@ -24,21 +22,20 @@ const calculateLastRatingPerDay = (data: chartData[]) => {
   );
 };
 
-function Chart() {
-  const ratings = useQuery<chartData[]>('ratings', getChartData);
-
-  const matchData = calculateLastRatingPerDay(ratings.data || []);
+function Chart({ name, data, isLoading }: { name: string, data: chartData[] | undefined, isLoading: Boolean }) {
+  const matchData = calculateLastRatingPerDay(data || []);
 
   const allPlayers = Array.from(new Set(matchData.map((item) => item.playerTag)));
 
-  const [selectedPlayers, setSelectedPlayers2v2] = useState<string[]>([]);
+  const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
+
 
   const filteredMatchData =
     selectedPlayers.length > 0
       ? matchData.filter((item) => selectedPlayers.includes(item.playerTag))
       : matchData;
 
-  const config2v2 = {
+  const config = {
     data: filteredMatchData,
     xField: 'date',
     yField: 'rating',
@@ -57,9 +54,8 @@ function Chart() {
         padding: 20,
       }}
     >
-      {/* 2v2 Performance */}
       <Card
-        title="2v2 Performance"
+        title={`${name} Performance`}
         style={{
           borderRadius: 10,
           boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
@@ -71,10 +67,10 @@ function Chart() {
           placeholder="Select players"
           style={{ marginBottom: 20, width: 300 }}
           value={selectedPlayers}
-          onChange={(values) => setSelectedPlayers2v2(values)}
+          onChange={(values) => setSelectedPlayers(values)}
           options={allPlayers.map((tag) => ({ value: tag, label: tag }))}
         />
-        {ratings.isLoading ? <Spin /> : <Line {...config2v2} />}
+        {isLoading ? <Spin /> : <Line {...config} />}
       </Card>
     </div>
   );

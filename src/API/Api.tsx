@@ -202,6 +202,16 @@ const getSoloChartData = async () => {
         throw error;
     }
 };
+const getMonthlyChartData = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/rating/monthly/chart`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+
 
 const getAdminTest = async () => {
     const token = UserService.getToken();
@@ -333,6 +343,7 @@ export {
     createPlayer,
     getChartData,
     getSoloChartData,
+    getMonthlyChartData,
     getAdminTest,
     deleteLatestMatch,
     deleteLatestSoloMatch,
