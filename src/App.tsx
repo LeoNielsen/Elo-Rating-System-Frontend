@@ -14,6 +14,7 @@ import { useMutation, useQuery } from 'react-query';
 import { createPlayer, getAllPlayers } from './API/Api';
 import { Player } from './Types/Types';
 import UserProfilModal from './modals/UserProfilModal';
+import ChartTabs from './Charts/ChartTabs';
 
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -156,7 +157,7 @@ const App: React.FC = () => {
             pageTitle = 'Players'
             break;
         case '5':
-            contentComponent = <Chart />;
+            contentComponent = <ChartTabs />;
             pageTitle = 'Stats'
             break;
         case '6':
@@ -239,7 +240,7 @@ const App: React.FC = () => {
                     <UserProfilModal setModalVisible={setShowUserProfile} modalVisible={showUserProfile} ></UserProfilModal>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>
-                    Foosball Elo Rating System ©2024 Created by Leo
+                    Foosball Elo Rating System Anno 2024 Created by Leo
                 </Footer>
             </Layout>
         </Layout >

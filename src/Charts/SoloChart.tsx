@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Line } from '@ant-design/plots';
 import { chartData } from '../Types/Types';
 import { useQuery } from 'react-query';
-import { getChartData } from '../API/Api';
+import { getSoloChartData } from '../API/Api';
 import { Card, Select, Spin } from 'antd';
 
 const calculateLastRatingPerDay = (data: chartData[]) => {
@@ -25,21 +25,21 @@ const calculateLastRatingPerDay = (data: chartData[]) => {
 };
 
 function Chart() {
-  const ratings = useQuery<chartData[]>('ratings', getChartData);
+  const ratingsSolo = useQuery<chartData[]>('ratingsSolo', getSoloChartData);
 
-  const matchData = calculateLastRatingPerDay(ratings.data || []);
+  const matchDataSolo = calculateLastRatingPerDay(ratingsSolo.data || []);
 
-  const allPlayers = Array.from(new Set(matchData.map((item) => item.playerTag)));
+  const allPlayers = Array.from(new Set(matchDataSolo.map((item) => item.playerTag)));
 
-  const [selectedPlayers, setSelectedPlayers2v2] = useState<string[]>([]);
+  const [selectedPlayers1v1, setSelectedPlayers1v1] = useState<string[]>([]);
 
-  const filteredMatchData =
-    selectedPlayers.length > 0
-      ? matchData.filter((item) => selectedPlayers.includes(item.playerTag))
-      : matchData;
+  const filteredMatchDataSolo =
+    selectedPlayers1v1.length > 0
+      ? matchDataSolo.filter((item) => selectedPlayers1v1.includes(item.playerTag))
+      : matchDataSolo;
 
-  const config2v2 = {
-    data: filteredMatchData,
+  const config1v1 = {
+    data: filteredMatchDataSolo,
     xField: 'date',
     yField: 'rating',
     seriesField: 'playerTag',
@@ -57,9 +57,8 @@ function Chart() {
         padding: 20,
       }}
     >
-      {/* 2v2 Performance */}
       <Card
-        title="2v2 Performance"
+        title="1v1 Performance"
         style={{
           borderRadius: 10,
           boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)',
@@ -70,11 +69,11 @@ function Chart() {
           allowClear
           placeholder="Select players"
           style={{ marginBottom: 20, width: 300 }}
-          value={selectedPlayers}
-          onChange={(values) => setSelectedPlayers2v2(values)}
+          value={selectedPlayers1v1}
+          onChange={(values) => setSelectedPlayers1v1(values)}
           options={allPlayers.map((tag) => ({ value: tag, label: tag }))}
         />
-        {ratings.isLoading ? <Spin /> : <Line {...config2v2} />}
+        {ratingsSolo.isLoading ? <Spin /> : <Line {...config1v1} />}
       </Card>
     </div>
   );
