@@ -29,6 +29,24 @@ const getMonthlyWinner = async () => {
     }
 };
 
+const getMonthlyWinners = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/player/monthly/winner/all`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const getRecords = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/player/records`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const getPlayerStatistics = async (id: number) => {
     try {
         const response = await axios.get(`${BASE_URL}/player/statistics/${id}`);
@@ -325,6 +343,8 @@ export {
     getAllPlayers,
     getPlayer,
     getMonthlyWinner,
+    getMonthlyWinners,
+    getRecords,
     getPlayerStatistics,
     getAllPlayerStatistics,
     getAllMonthlyStatistics,

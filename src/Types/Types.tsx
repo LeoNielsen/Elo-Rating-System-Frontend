@@ -18,7 +18,7 @@ interface SoloMatch {
     blueScore: number;
 }
 
-interface monthlyWinner {
+interface MonthlyWinner {
     nameTag: string;
     year: number,
     month: number,
@@ -85,6 +85,32 @@ interface PlayerSoloStatistics {
     shutouts: number
 }
 
+interface Record {
+    nameTag: string,
+    amount: number,
+}
+
+interface PlayerRecords {
+   highestRating2v2: Record,
+   lowestRating2v2: Record,
+   highestRating1v1: Record,
+   lowestRating1v1: Record,
+   mostGames2v2: Record,
+   mostGames1v1: Record,
+   mostWins2v2: Record,
+   mostAttackerWins: Record,
+   mostDefenderWins: Record,
+   mostWins1v1: Record,
+   mostLost2v2: Record,
+   mostAttackerLost: Record,
+   mostDefenderLost: Record,
+   mostLost1v1: Record,
+   mostGoals2v2: Record,
+   mostGoals1v1: Record,
+   longestWinStreak2v2: Record,
+   longestWinStreak1v1: Record
+}
+
 interface achievement {
     id: number,
     code: string,
@@ -107,11 +133,13 @@ export type {
     Match,
     SoloMatch,
     Player,
-    monthlyWinner,
+    MonthlyWinner,
     Team,
     MatchRating,
     PlayerStatistics,
     PlayerSoloStatistics,
+    Record,
+    PlayerRecords,
     chartData,
     achievement,
     playerAchievement,

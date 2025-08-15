@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { monthlyWinner, PlayerStatistics } from "../../Types/Types";
+import { MonthlyWinner, PlayerStatistics } from "../../Types/Types";
 import { getAllPlayerStatistics, getMonthlyWinner } from "../../API/Api";
 import { useState } from "react";
 import Table, { ColumnType } from "antd/es/table";
@@ -11,7 +11,7 @@ import { Grid, Tooltip, Typography } from "antd";
 function PlayerRankingTable() {
 
     const { isLoading, data } = useQuery<PlayerStatistics[]>("allPlayerStatistics", getAllPlayerStatistics);
-    const monthlyWinner = useQuery<monthlyWinner>("monthlyWinner", getMonthlyWinner);
+    const monthlyWinner = useQuery<MonthlyWinner>("monthlyWinner", getMonthlyWinner);
 
     const [modalStatisticsVisible, setModalStatisticsVisible] = useState(false);
     const [rowId, setRowId] = useState(NaN);

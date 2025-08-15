@@ -3,6 +3,7 @@ import Chart from './Chart'
 import { getChartData, getMonthlyChartData, getSoloChartData } from '../API/Api'
 import { chartData } from '../Types/Types'
 import { useQuery } from 'react-query'
+import Records from './Records'
 
 function ChartTabs() {
 
@@ -23,6 +24,10 @@ function ChartTabs() {
             key: '3',
             label: 'Monthly 2v2',
             children: <Chart name={"Monthly 2v2"} data={ratingsMonthly.data} isLoading={ratingsMonthly.isLoading} />
+        },{
+            key: '4',
+            label: 'Records',
+            children: <Records />
         },
     ]
 
