@@ -50,8 +50,6 @@ function Chart({ name, data, isLoading }: { name: string, data: chartData[] | un
       style={{
         display: 'flex',
         flexDirection: 'column',
-        gap: 20,
-        padding: 20,
       }}
     >
       <Card
@@ -65,7 +63,11 @@ function Chart({ name, data, isLoading }: { name: string, data: chartData[] | un
           mode="multiple"
           allowClear
           placeholder="Select players"
-          style={{ marginBottom: 20, width: 300 }}
+          style={{
+            marginBottom: 20,
+            width: "100%",  
+            maxWidth: 300        
+          }}
           value={selectedPlayers}
           onChange={(values) => setSelectedPlayers(values)}
           options={allPlayers.map((tag) => ({ value: tag, label: tag }))}

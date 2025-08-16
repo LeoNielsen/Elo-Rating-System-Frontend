@@ -24,43 +24,43 @@ function Records() {
 
     // Define which keys are 2v2 and 1v1
     const records2v2Keys = [
-        'highestRating2v2',
-        'lowestRating2v2',
-        'mostGames2v2',
-        'mostWins2v2',
-        'mostAttackerWins',
-        'mostDefenderWins',
-        'mostLost2v2',
-        'mostAttackerLost',
-        'mostDefenderLost',
-        'mostGoals2v2',
-        'longestWinStreak2v2'
-    ];
+        { key: 'highestRating2v2', label: 'Highest Player Rating 📈' },
+        { key: 'lowestRating2v2', label: 'Lowest Player Rating 📉' },
+        { key: 'mostGames2v2', label: 'Most Games Played 📅' },
+        { key: 'mostWins2v2', label: 'Most Games Won 🏆' },
+        { key: 'mostAttackerWins', label: 'Most Games Won as Attacker 🎯' },
+        { key: 'mostDefenderWins', label: 'Most Games Won as Defender 🥅' },
+        { key: 'mostLost2v2', label: 'Most Games Lost 😢' },
+        { key: 'mostAttackerLost', label: 'Most Games Lost as Attacker 😡' },
+        { key: 'mostDefenderLost', label: 'Most Games Lost as Defender 🥹' },
+        { key: 'mostGoals2v2', label: 'Most Goals ⚽' },
+        { key: 'longestWinStreak2v2', label: 'Longest Win Streak 🔥' }
+      ];
+      
+      const records1v1Keys = [
+        { key: 'highestRating1v1', label: 'Highest Player Rating 📈' },
+        { key: 'lowestRating1v1', label: 'Lowest Player Rating 📉' },
+        { key: 'mostGames1v1', label: 'Most Games Played 📅' },
+        { key: 'mostWins1v1', label: 'Most Games Won Wins 🏆' },
+        { key: 'mostLost1v1', label: 'Most Games Lost Losses 😢' },
+        { key: 'mostGoals1v1', label: 'Most Goals ⚽' },
+        { key: 'longestWinStreak1v1', label: 'Longest Win Streak 🔥' }
+      ];    
 
-    const records1v1Keys = [
-        'highestRating1v1',
-        'lowestRating1v1',
-        'mostGames1v1',
-        'mostWins1v1',
-        'mostLost1v1',
-        'mostGoals1v1',
-        'longestWinStreak1v1'
-    ];
-
-    const prepareTableData = (keys: string[]) => {
-        return keys
-            .map((key, index) => {
-                const record = records?.[key as keyof PlayerRecords];
-                if (!record) return null;
-                return {
-                    key: index,
-                    recordName: formatRecordName(key),
-                    nameTag: record.nameTag,
-                    amount: record.amount
-                };
-            })
-            .filter(Boolean);
-    };
+      const prepareTableData = (recordsWithLabels: { key: string; label: string }[]) => {
+        return recordsWithLabels
+          .map(({ key, label }, index) => {
+            const record = records?.[key as keyof PlayerRecords];
+            if (!record) return null;
+            return {
+              key: index,
+              recordName: label,
+              nameTag: record.nameTag,
+              amount: record.amount
+            };
+          })
+          .filter(Boolean);
+      };
 
     const columns = [
         {
@@ -87,7 +87,7 @@ function Records() {
     ];
 
     return (
-        <Row gutter={24} style={{ padding: '2rem' }}>
+        <Row gutter={24}>
             {/* Left side: Records Tables */}
             <Col xs={24} lg={12}>
                 <Table
