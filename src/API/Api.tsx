@@ -47,6 +47,24 @@ const getRecords = async () => {
     }
 };
 
+const getMatchStatistics = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/match/statistics`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const getSoloMatchStatistics = async () => {
+    try {
+        const response = await axios.get(`${BASE_URL}/match/solo/statistics`);
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const getPlayerStatistics = async (id: number) => {
     try {
         const response = await axios.get(`${BASE_URL}/player/statistics/${id}`);
@@ -345,6 +363,8 @@ export {
     getMonthlyWinner,
     getMonthlyWinners,
     getRecords,
+    getMatchStatistics,
+    getSoloMatchStatistics,
     getPlayerStatistics,
     getAllPlayerStatistics,
     getAllMonthlyStatistics,
