@@ -108,7 +108,11 @@ interface PlayerRecords {
     mostGoals2v2: Record,
     mostGoals1v1: Record,
     longestWinStreak2v2: Record,
-    longestWinStreak1v1: Record
+    longestWinStreak1v1: Record,
+    highestDailyEloChange2v2: Record,
+    lowestDailyEloChange2v2: Record,
+    highestDailyEloChange1v1: Record,
+    lowestDailyEloChange1v1: Record,
 }
 
 interface MatchStatistics {

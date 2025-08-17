@@ -29,13 +29,15 @@ function Records() {
         { key: 'lowestRating2v2', label: 'Lowest Player Rating 📉' },
         { key: 'mostGames2v2', label: 'Most Games Played 📅' },
         { key: 'mostWins2v2', label: 'Most Games Won 🏆' },
-        { key: 'mostAttackerWins', label: 'Most Games Won as Attacker 🎯' },
-        { key: 'mostDefenderWins', label: 'Most Games Won as Defender 🥅' },
+        { key: 'mostAttackerWins', label: 'Most Games Won As Attacker 🎯' },
+        { key: 'mostDefenderWins', label: 'Most Games Won As Defender 🥅' },
         { key: 'mostLost2v2', label: 'Most Games Lost 😢' },
-        { key: 'mostAttackerLost', label: 'Most Games Lost as Attacker 😡' },
-        { key: 'mostDefenderLost', label: 'Most Games Lost as Defender 🥹' },
+        { key: 'mostAttackerLost', label: 'Most Games Lost As Attacker 😡' },
+        { key: 'mostDefenderLost', label: 'Most Games Lost As Defender 🥹' },
         { key: 'mostGoals2v2', label: 'Most Goals ⚽' },
-        { key: 'longestWinStreak2v2', label: 'Longest Win Streak 🔥' }
+        { key: 'longestWinStreak2v2', label: 'Longest Win Streak 🔥' },
+        { key: 'highestDailyEloChange2v2', label: 'Most Rating Gain In One Day 🔼' },
+        { key: 'lowestDailyEloChange2v2', label: 'Most Rating Lost In One Day 🔽' }
     ];
 
     const records1v1Keys = [
@@ -45,7 +47,9 @@ function Records() {
         { key: 'mostWins1v1', label: 'Most Games Won 🏆' },
         { key: 'mostLost1v1', label: 'Most Games Lost 😢' },
         { key: 'mostGoals1v1', label: 'Most Goals ⚽' },
-        { key: 'longestWinStreak1v1', label: 'Longest Win Streak 🔥' }
+        { key: 'longestWinStreak1v1', label: 'Longest Win Streak 🔥' },
+        { key: 'highestDailyEloChange1v1', label: 'Most Rating Gain In One Day 🔼' },
+        { key: 'lowestDailyEloChange1v1', label: 'Most Rating Lost In One Day 🔽' }
     ];
 
     const prepareTableData = (recordsWithLabels: { key: string; label: string }[], dataSource?: PlayerRecords) => {
