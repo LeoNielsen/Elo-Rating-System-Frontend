@@ -237,7 +237,7 @@ const App: React.FC = () => {
                 </Header>
                 <Content style={{ margin: '24px 16px 0' }}>
                     <div style={contentStyle}>{contentComponent}</div>
-                    <UserProfilModal setModalVisible={setShowUserProfile} modalVisible={showUserProfile} ></UserProfilModal>
+                    <UserProfilModal setModalVisible={setShowUserProfile} modalVisible={showUserProfile} />
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>
                     Foosball Elo Rating System Anno 2024 Created by Leo
