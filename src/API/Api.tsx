@@ -20,6 +20,21 @@ const getPlayer = async (name: string) => {
         throw error;
     }
 };
+
+const deactivatePlayer = async (name: string) => {
+    const token = UserService.getToken();
+    try {
+        const response = await axios.put(`${BASE_URL}/admin/player/activation/${name}`,{}, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const getMonthlyWinner = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/player/monthly/winner/last`);
@@ -360,6 +375,7 @@ const regenerateMonthlyPlayerStats = async () => {
 export {
     getAllPlayers,
     getPlayer,
+    deactivatePlayer,
     getMonthlyWinner,
     getMonthlyWinners,
     getRecords,
