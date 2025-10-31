@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { Line } from '@ant-design/plots';
 import { chartData } from '../Types/Types';
-import { Card, Select, Spin } from 'antd';
+import { Card, Select, Spin, DatePicker } from 'antd';
+import dayjs, { Dayjs } from 'dayjs';
+
+const { RangePicker } = DatePicker;
 
 const calculateLastRatingPerDay = (data: chartData[]) => {
   if (!data) return [];
@@ -28,12 +31,19 @@ function Chart({ name, data, isLoading }: { name: string, data: chartData[] | un
   const allPlayers = Array.from(new Set(matchData.map((item) => item.playerTag)));
 
   const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
+  const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null]>([null, null]);
 
+  const filteredMatchData = matchData.filter((item) => {
+    const inPlayerSelection =
+      selectedPlayers.length === 0 || selectedPlayers.includes(item.playerTag);
 
-  const filteredMatchData =
-    selectedPlayers.length > 0
-      ? matchData.filter((item) => selectedPlayers.includes(item.playerTag))
-      : matchData;
+    const date = dayjs(item.date);
+    const inDateRange =
+      (!dateRange[0] || date.isAfter(dateRange[0].startOf('day'))) &&
+      (!dateRange[1] || date.isBefore(dateRange[1].endOf('day')));
+
+    return inPlayerSelection && inDateRange;
+  });
 
   const config = {
     data: filteredMatchData,
@@ -65,12 +75,24 @@ function Chart({ name, data, isLoading }: { name: string, data: chartData[] | un
           placeholder="Select players"
           style={{
             marginBottom: 20,
-            width: "100%",  
-            maxWidth: 300        
+            marginRight: 50,
+            width: "100%",
+            maxWidth: 250
           }}
           value={selectedPlayers}
           onChange={(values) => setSelectedPlayers(values)}
           options={allPlayers.map((tag) => ({ value: tag, label: tag }))}
+        />
+        <RangePicker
+          style={{ marginBottom: 20, width: "100%", maxWidth: 250 }}
+          onChange={(dates) => {
+            if (!dates || dates.length !== 2 || !dates[0] || !dates[1]) {
+              setDateRange([null, null]); // reset to show all data
+            } else {
+              setDateRange([dates[0], dates[1]]);
+            }
+          }}
+          allowClear
         />
         {isLoading ? <Spin /> : <Line {...config} />}
       </Card>
