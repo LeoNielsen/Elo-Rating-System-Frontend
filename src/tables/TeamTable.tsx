@@ -42,6 +42,10 @@ function TeamTable() {
       children: <Table
         dataSource={data}
         columns={columns}
+        pagination={{
+          hideOnSinglePage: true,
+          pageSize: 20,
+        }}
         scroll={{ x: 350 }}
         rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''}
         bordered={true}

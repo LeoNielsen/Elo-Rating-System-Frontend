@@ -17,7 +17,7 @@ function PlayerRankingTable() {
     const [rowId, setRowId] = useState(NaN);
 
     const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(20);
 
     const { useBreakpoint } = Grid;
     const screens = useBreakpoint();
@@ -102,6 +102,7 @@ function PlayerRankingTable() {
             <Table dataSource={sortedData} columns={columns} scroll={{ x: 350 }} onRow={(record) => ({
                 onClick: () => handleRowClick(record),
             })} pagination={{
+                hideOnSinglePage: true,
                 current: page,
                 pageSize,
                 onChange: (p, ps) => {

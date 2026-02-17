@@ -51,6 +51,10 @@ function PlayerTable() {
       key: '1',
       label: 'Players',
       children: <Table dataSource={data}
+        pagination={{
+          hideOnSinglePage: true,
+          pageSize: 20,
+        }}
         columns={columns}
         scroll={{ x: 350 }}
         onRow={(record) => ({
@@ -67,6 +71,7 @@ function PlayerTable() {
       <Tabs
         items={tabs}
         defaultActiveKey="1"
+
         tabBarExtraContent={
           <Button type="primary" onClick={handleNewPlayerClick}>
             New Player

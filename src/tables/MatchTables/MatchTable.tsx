@@ -67,6 +67,10 @@ function MatchTable({ isLoading, data }: { isLoading: boolean, data: Match[] | u
             <Table
                 scroll={{ x: 350 }}
                 dataSource={sortedData}
+                 pagination={{
+                    hideOnSinglePage: true,
+                    pageSize: 20,
+                }}
                 columns={columns}
                 rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''}
                 onRow={(record) => ({

@@ -16,7 +16,7 @@ function PlayerMonthlyRankingTable() {
     const [rowId, setRowId] = useState(NaN);
 
     const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(20);
 
     const { useBreakpoint } = Grid;
     const screens = useBreakpoint();
@@ -97,6 +97,7 @@ function PlayerMonthlyRankingTable() {
             })} pagination={{
                 current: page,
                 pageSize,
+                hideOnSinglePage: true,
                 onChange: (p, ps) => {
                     setPage(p);
                     setPageSize(ps);
