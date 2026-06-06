@@ -32,8 +32,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
-          context: ./frontend/Elo-Rating-System-Frontend
-          file: ./frontend/Elo-Rating-System-Frontend/Dockerfile
+          context: .
+          file: ./Dockerfile
           push: true
           tags: |
             ${{ steps.vars.outputs.IMAGE }}:latest
