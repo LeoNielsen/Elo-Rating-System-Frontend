@@ -49,13 +49,17 @@ services:
       KC_HOSTNAME_STRICT: 'true'
       KC_HOSTNAME_STRICT_HTTPS: 'true'
       KC_PROXY: edge
-      
+      KC_HTTP_RELATIVE_PATH: /auth
+      KC_THEME: my-login-theme
     ports:
       - "8081:8080"
-    networks:
-      - internal_net
     depends_on:
       - db
+    networks:
+      - internal_net
+    volumes:
+      - ./keycloak:/opt/keycloak/themes
+
   frontend:
     build: ./frontend/Elo-Rating-System-Frontend
     restart: always

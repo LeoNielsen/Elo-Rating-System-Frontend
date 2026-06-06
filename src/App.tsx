@@ -166,7 +166,7 @@ const App: React.FC = () => {
             break;
         case '7':
             contentComponent = <AdminProtectedRoute children={<Admin />} />;
-            pageTitle = 'admin'
+            pageTitle = 'Admin'
             break;
         default:
             contentComponent = null;
