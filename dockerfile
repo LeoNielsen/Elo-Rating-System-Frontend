@@ -1,4 +1,3 @@
-# Build stage
 FROM node:18 AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
@@ -6,10 +5,9 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# Serve med Nginx
-FROM nginx:alpine
-COPY .docker/nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /app/build /usr/share/nginx/html
-EXPOSE 80 443
-CMD ["nginx", "-g", "daemon off;"]
-
+FROM node:18
+WORKDIR /app
+RUN npm install -g serve
+COPY --from=build /app/build .
+EXPOSE 3000
+CMD ["serve", "-s", ".", "-l", "3000"]
