@@ -1,8 +1,8 @@
-name: Build and push frontend image (prod)
+name: Build and push frontend image (test)
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "test" ]
 
 jobs:
   build-and-push:
@@ -41,7 +41,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and push Docker image (prod)
+      - name: Build and push Docker image (test)
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -49,7 +49,7 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           build-args: |
-            MODE=production
+            MODE=test
           tags: |
-            ${{ steps.vars.outputs.IMAGE }}:latest
-            ${{ steps.vars.outputs.IMAGE }}:${{ github.sha }}
+            ${{ steps.vars.outputs.IMAGE }}-test:latest
+            ${{ steps.vars.outputs.IMAGE }}-test:${{ github.sha }}
