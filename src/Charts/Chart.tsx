@@ -1,8 +1,11 @@
-import { useState } from 'react';
-import { Line } from '@ant-design/plots';
+import React, { useState, Suspense } from 'react';
+const Line = React.lazy(() =>
+  import('@ant-design/plots').then(m => ({ default: m.Line }))
+);
 import { chartData } from '../Types/Types';
 import { Card, Select, Spin, DatePicker } from 'antd';
 import dayjs, { Dayjs } from 'dayjs';
+
 
 const { RangePicker } = DatePicker;
 
