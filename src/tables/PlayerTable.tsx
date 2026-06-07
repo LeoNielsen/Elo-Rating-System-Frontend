@@ -1,6 +1,5 @@
 import { useQuery } from 'react-query';
 import { Button, Table, Tabs, TabsProps } from 'antd';
-import '../Style.css'
 import { getAllPlayers } from '../API/Api';
 import { useState } from 'react';
 import NewPlayerModal from '../modals/NewPlayerModal';
