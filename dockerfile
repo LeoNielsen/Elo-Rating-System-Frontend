@@ -3,7 +3,7 @@ FROM node:18 AS build
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
 RUN npm run build
@@ -13,13 +13,9 @@ RUN npm run build
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 
-# Copy Vite build output
 COPY --from=build /app/dist .
 
-# Remove default nginx config
 RUN rm /etc/nginx/conf.d/default.conf
-
-# Add optimized static server config
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
