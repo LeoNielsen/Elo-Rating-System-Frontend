@@ -1,29 +1,25 @@
-# --- Build stage ---
-FROM node:20-alpine AS build
+FROM eclipse-temurin:21-jdk AS build
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm ci
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+RUN ./mvnw dependency:go-offline
 
-COPY . .
+COPY src src
+RUN ./mvnw clean package -DskipTests
 
-# MODE kan være: production, test, development
-ARG MODE=production
-ENV MODE=$MODE
+FROM eclipse-temurin:21-jre
 
-# Vite loader .env.$MODE automatisk
-RUN npm run build -- --mode $MODE
+WORKDIR /app
 
-# --- Production stage ---
-FROM nginx:alpine
-WORKDIR /usr/share/nginx/html
+# Modtag profil fra GitHub Actions
+ARG SPRING_PROFILES_ACTIVE=production
+ENV SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE
 
-COPY --from=build /app/build .
+COPY --from=build /app/target/*.jar app.jar
 
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 8080
 
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=${SPRING_PROFILES_ACTIVE}"]
