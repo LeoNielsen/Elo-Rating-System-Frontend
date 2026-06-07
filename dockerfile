@@ -1,20 +1,16 @@
-# Build stage
 FROM node:18 AS build
 WORKDIR /app
 
 COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy the rest of the app INCLUDING public/
+# Copy everything INCLUDING public/
 COPY . .
 
-# Make sure public/ is included (silent-check-sso.html lives here)
-COPY public ./public
-
+# Build
 RUN npm run build
 
 
-# Serve stage
 FROM node:18
 WORKDIR /app
 
@@ -25,4 +21,4 @@ COPY --from=build /app/build .
 
 EXPOSE 3000
 
-CMD ["serve", "-s", ".", "-l", "3000"]
+CMD ["serve", ".", "-l", "3000"]
