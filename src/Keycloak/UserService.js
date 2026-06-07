@@ -1,8 +1,8 @@
 import Keycloak from "keycloak-js";
 
-const baseUrl = process.env.REACT_APP_KEYCLOAK_URL
-const realm = process.env.REACT_APP_KEYCLOAK_REALM
-const client = process.env.REACT_APP_KEYCLOAK_CLIENT
+const baseUrl = import.meta.env.VITE_KEYCLOAK_URL
+const realm = import.meta.env.VITE_KEYCLOAK_REALM
+const client = import.meta.env.VITE_KEYCLOAK_CLIENT
 
 const KC = new Keycloak({
   realm: realm,

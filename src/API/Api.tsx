@@ -1,7 +1,7 @@
 import axios from 'axios';
 import UserService from '../Keycloak/UserService';
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const getAllPlayers = async () => {
     try {

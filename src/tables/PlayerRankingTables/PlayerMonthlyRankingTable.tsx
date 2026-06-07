@@ -33,7 +33,7 @@ function PlayerMonthlyRankingTable() {
             dataIndex: 'rank',
             key: 'rank',
             fixed: 'left',
-            width: 65,
+            width: 66,
             align: 'center',
             render: (_, __, index) => (page - 1) * pageSize + index + 1,
         },

@@ -151,7 +151,7 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
                                 margin: '0 8px',
                                 alignSelf: 'stretch',
                                 height: 'auto',
-                                marginLeft: '-40px'
+                                marginLeft: '-60px'
                             }}
                         />
                     )}
@@ -164,13 +164,13 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
                                 display: 'flex',
                                 flexDirection: 'row',
                                 alignItems: 'center',
-                                justifyContent: 'space-between',
+                                justifyContent: 'flex-start',
                                 gap: 8,
                                 paddingLeft: 0,
                             }}
                         >
                             {/* Compared player value + sub */}
-                            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                                 {val2}
                                 {subKey && p2[subKey] && (
                                     <div
@@ -178,8 +178,8 @@ function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, 
                                             color: '#999',
                                             fontSize: 12,
                                             marginTop: 4,
-                                            whiteSpace: 'normal',
-                                            wordBreak: 'break-word',
+                                            whiteSpace: comparedPlayer ? 'normal' : 'nowrap',
+                                            overflowWrap: comparedPlayer ? 'break-word' : 'normal',
                                             maxWidth: comparedPlayer ? 100 : 'none',
                                         }}>{p2[subKey]}</div>
                                 )}

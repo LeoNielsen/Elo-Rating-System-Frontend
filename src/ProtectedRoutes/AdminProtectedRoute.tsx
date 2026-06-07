@@ -1,9 +1,14 @@
 import UserService from '../Keycloak/UserService'
 
-function AdminProtectedRoute({ children }:{ children: JSX.Element }) {
+function AdminProtectedRoute({ children }: { children: JSX.Element }) {
     const isAdmin = UserService.hasRole('admin')
 
-    return isAdmin ? children : UserService.doLogin()
+    if (!isAdmin) {
+        UserService.doLogin()
+        return null
+    }
+
+    return children
 }
 
 export default AdminProtectedRoute

@@ -1,24 +1,27 @@
+# --- Build stage ---
 FROM node:18 AS build
 WORKDIR /app
 
 COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy everything INCLUDING public/
 COPY . .
-
-# Build
 RUN npm run build
 
 
-FROM node:18
-WORKDIR /app
+# --- Production stage ---
+FROM nginx:alpine
+WORKDIR /usr/share/nginx/html
 
-RUN npm install -g serve
+# Copy Vite build output
+COPY --from=build /app/dist .
 
-# Copy build output
-COPY --from=build /app/build .
+# Remove default nginx config
+RUN rm /etc/nginx/conf.d/default.conf
 
-EXPOSE 3000
+# Add optimized static server config
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-CMD ["serve", ".", "-l", "3000"]
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
