@@ -25,9 +25,9 @@ const deactivatePlayer = async (name: string) => {
     const token = UserService.getToken();
     try {
         const response = await axios.put(`${BASE_URL}/admin/player/activation/${name}`,{}, {
-            headers: {
+           headers: {
                 Authorization: `Bearer ${token}`,
-            }
+            } 
         });
         return response.data;
     } catch (error) {
@@ -203,8 +203,19 @@ const createMatch = async (matchData: {
     redScore: number,
     blueScore: number
 }) => {
+    const token = UserService.getToken();
+
     try {
-        const response = await axios.post(`${BASE_URL}/match`, matchData);
+        const response = await axios.post(
+            `${BASE_URL}/match`,
+            matchData,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            }
+        );
+
         return response.data;
     } catch (error) {
         throw error;
@@ -269,6 +280,21 @@ const getAdminTest = async () => {
 
     try {
         const response = await axios.get(`${BASE_URL}/admin/test`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const deleteMatchById = async (id: number) => {
+    const token = UserService.getToken();
+
+    try {
+        const response = await axios.delete(`${BASE_URL}/match/delete/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -401,6 +427,7 @@ export {
     getSoloChartData,
     getMonthlyChartData,
     getAdminTest,
+    deleteMatchById,
     deleteLatestMatch,
     deleteLatestSoloMatch,
     getAllAchievements,

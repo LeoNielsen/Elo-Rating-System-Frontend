@@ -7,6 +7,7 @@ interface Match {
     blueDef: string;
     redScore: number;
     blueScore: number;
+    createdBy: string;
 }
 
 interface SoloMatch {

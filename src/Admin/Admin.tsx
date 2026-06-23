@@ -20,7 +20,7 @@ const Admin = () => {
   const deactivatePlayerMutation = useMutation(deactivatePlayer, {
     onSuccess: () => {
       message.success('Player status updated successfully!');
-      setPlayerName(''); // ✅ Clear text field after success
+      setPlayerName(''); 
     },
     onError: () => {
       message.error('Failed to update player status.');
