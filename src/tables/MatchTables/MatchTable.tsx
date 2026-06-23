@@ -5,8 +5,9 @@ import { ColumnType } from "antd/es/table";
 import MatchRatingModal from "../../modals/MatchRatingModal";
 import { ExclamationCircleOutlined, MoreOutlined } from "@ant-design/icons";
 import UserService from "../../Keycloak/UserService";
-import { deleteMatchById } from "../../API/Api";
+import { deleteMatchById, updateMatchById } from "../../API/Api";
 import { useMutation, useQueryClient } from "react-query";
+import NewMatchModal from "../../modals/NewMatchModal";
 
 function MatchTable({ isLoading, data }: { isLoading: boolean, data: Match[] | undefined }) {
 
@@ -15,9 +16,15 @@ function MatchTable({ isLoading, data }: { isLoading: boolean, data: Match[] | u
 
     const [openMenuRow, setOpenMenuRow] = useState<number | null>(null);
 
+    const [editModalVisible, setEditModalVisible] = useState(false);
+    const [matchToEdit, setMatchToEdit] = useState<Match | null>(null);
+
     const queryClient = useQueryClient();
     const deleteMatchMutation = useMutation({
         mutationFn: deleteMatchById,
+        onMutate: () => {
+            message.loading("Deleting match...");
+        },
         onSuccess: () => {
             message.success("Match deleted");
             queryClient.invalidateQueries(["matches"]);
@@ -26,6 +33,15 @@ function MatchTable({ isLoading, data }: { isLoading: boolean, data: Match[] | u
             message.error("Could not delete match");
         }
     });
+
+    const handleUpdate = (id: number) => {
+        const match = data?.find(m => m.id === id);
+        if (!match) return;
+
+        setMatchToEdit(match);
+        setEditModalVisible(true);
+    };
+
 
     const { confirm } = Modal;
     const showConfirm = (title: string, onConfirm: () => void) => {
@@ -44,7 +60,7 @@ function MatchTable({ isLoading, data }: { isLoading: boolean, data: Match[] | u
     const isAdmin: boolean = UserService.hasRole("admin");
 
     const handleDelete = (id: number) => {
-        showConfirm('Delete latest 2v2 match?', () =>
+        showConfirm('Delete 2v2 match?', () =>
             deleteMatchMutation.mutate(id)
         );
     };
@@ -112,6 +128,7 @@ function MatchTable({ isLoading, data }: { isLoading: boolean, data: Match[] | u
                         {
                             key: "view",
                             label: "View Ratings",
+                            disabled: deleteMatchMutation.isLoading,
                             onClick: (e: any) => {
                                 e.domEvent.stopPropagation();
                                 setRowId(record.id);
@@ -120,16 +137,28 @@ function MatchTable({ isLoading, data }: { isLoading: boolean, data: Match[] | u
                             }
                         },
                         ...(((record.createdBy === userName && isToday(record.date)) || isAdmin)
-                            ? [{
-                                key: "delete",
-                                label: "Delete Match",
-                                danger: true,
-                                onClick: (e: any) => {
-                                    e.domEvent.stopPropagation();
-                                    handleDelete(record.id);
-                                    setOpenMenuRow(null);
-                                }
-                            }]
+                            ? [
+                                {
+                                    key: "edit",
+                                    label: "Edit Match",
+                                    disabled: deleteMatchMutation.isLoading,
+                                    onClick: (e: any) => {
+                                        e.domEvent.stopPropagation();
+                                        handleUpdate(record.id);
+                                        setOpenMenuRow(null);
+                                    }
+                                },
+                                {
+                                    key: "delete",
+                                    label: "Delete Match",
+                                    disabled: deleteMatchMutation.isLoading,
+                                    danger: true,
+                                    onClick: (e: any) => {
+                                        e.domEvent.stopPropagation();
+                                        handleDelete(record.id);
+                                        setOpenMenuRow(null);
+                                    }
+                                }]
                             : [])
                     ]
                 };
@@ -180,6 +209,16 @@ function MatchTable({ isLoading, data }: { isLoading: boolean, data: Match[] | u
                     soloMatch={false}
                 />
             )}
+            <NewMatchModal
+                modalVisible={editModalVisible}
+                setModalVisible={setEditModalVisible}
+                refetch={() => queryClient.invalidateQueries(["matches"])}
+                soloRefetch={() => queryClient.invalidateQueries(["soloMatches"])}
+                activeTab="1"
+                mode={"update"}
+                matchToEdit={matchToEdit!}
+            />
+
         </>
     );
 }

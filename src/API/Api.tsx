@@ -1,5 +1,6 @@
 import axios from 'axios';
 import UserService from '../Keycloak/UserService';
+import { Match } from '../Types/Types';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
@@ -290,6 +291,28 @@ const getAdminTest = async () => {
     }
 };
 
+const updateMatchById = async (id: number, matchData: {
+    redAtkId: number,
+    redDefId: number,
+    blueAtkId: number,
+    blueDefId: number,
+    redScore: number,
+    blueScore: number
+}) => {
+    const token = UserService.getToken();
+
+    try {
+        const response = await axios.put(`${BASE_URL}/match/update/${id}`, matchData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const deleteMatchById = async (id: number) => {
     const token = UserService.getToken();
 
@@ -427,6 +450,7 @@ export {
     getSoloChartData,
     getMonthlyChartData,
     getAdminTest,
+    updateMatchById,
     deleteMatchById,
     deleteLatestMatch,
     deleteLatestSoloMatch,

@@ -56,6 +56,7 @@ function MatchTables() {
           refetch={match.refetch}
           soloRefetch={soloMatch.refetch}
           activeTab={activeTab}
+          mode="create"
         />
       )}
     </div>
