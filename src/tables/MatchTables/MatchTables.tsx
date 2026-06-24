@@ -6,6 +6,7 @@ import NewMatchModal from '../../modals/NewMatchModal';
 import { Match, SoloMatch } from '../../Types/Types';
 import SoloMatchTable from './SoloMatchTable';
 import MatchTable from './MatchTable';
+import UserService from '../../Keycloak/UserService';
 
 function MatchTables() {
 
@@ -18,6 +19,9 @@ function MatchTables() {
 
 
   const handleNewMatchClick = () => {
+    if (!UserService.isLoggedIn()) {
+      UserService.doLogin();
+    }
     setModalVisible(true);
   };
   const handleActiveTab = (key: string) => {
