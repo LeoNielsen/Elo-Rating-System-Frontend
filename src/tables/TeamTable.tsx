@@ -1,6 +1,5 @@
 import { useQuery } from 'react-query';
 import { Table, Tabs, TabsProps } from 'antd';
-import '../Style.css'
 import { getAllTeams } from '../API/Api';
 import { Team } from '../Types/Types';
 
