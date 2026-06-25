@@ -25,10 +25,10 @@ const getPlayer = async (name: string) => {
 const deactivatePlayer = async (name: string) => {
     const token = UserService.getToken();
     try {
-        const response = await axios.put(`${BASE_URL}/admin/player/activation/${name}`,{}, {
-           headers: {
+        const response = await axios.put(`${BASE_URL}/admin/player/activation/${name}`, {}, {
+            headers: {
                 Authorization: `Bearer ${token}`,
-            } 
+            }
         });
         return response.data;
     } catch (error) {
@@ -205,7 +205,6 @@ const createMatch = async (matchData: {
     blueScore: number
 }) => {
     const token = UserService.getToken();
-
     try {
         const response = await axios.post(
             `${BASE_URL}/match`,
@@ -230,7 +229,13 @@ const createSoloMatch = async (matchData: {
     blueScore: number
 }) => {
     try {
-        const response = await axios.post(`${BASE_URL}/match/solo/new`, matchData);
+        const token = UserService.getToken();
+        const response = await axios.post(`${BASE_URL}/match/solo/new`, matchData,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
         return response.data;
     } catch (error) {
         throw error;
@@ -328,6 +333,41 @@ const deleteMatchById = async (id: number) => {
     }
 };
 
+const updateSoloMatchById = async (id: number, matchData: {
+    redId: number,
+    blueId: number,
+    redScore: number,
+    blueScore: number
+}) => {
+    const token = UserService.getToken();
+
+    try {
+        const response = await axios.put(`${BASE_URL}/match/solo/update/${id}`, matchData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const deleteSoloMatchById = async (id: number) => {
+    const token = UserService.getToken();
+
+    try {
+        const response = await axios.delete(`${BASE_URL}/match/solo/delete/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const deleteLatestMatch = async () => {
     const token = UserService.getToken();
 
@@ -361,26 +401,26 @@ const deleteLatestSoloMatch = async () => {
 const getAllAchievements = async () => {
     try {
         const response = await axios.get(`${BASE_URL}/achievement/all`);
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
 };
 
 const getPlayerAchievements = async (id: number) => {
     try {
         const response = await axios.get(`${BASE_URL}/achievement/${id}`);
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
 };
 
 const regeneratePlayerStats = async () => {
     const token = UserService.getToken();
 
     try {
-        const response = await axios.post(`${BASE_URL}/admin/player/statgen`,{}, {
+        const response = await axios.post(`${BASE_URL}/admin/player/statgen`, {}, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -395,7 +435,7 @@ const regenerateSoloPlayerStats = async () => {
     const token = UserService.getToken();
 
     try {
-        const response = await axios.post(`${BASE_URL}/admin/solo/player/statgen`,{}, {
+        const response = await axios.post(`${BASE_URL}/admin/solo/player/statgen`, {}, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -410,7 +450,7 @@ const regenerateMonthlyPlayerStats = async () => {
     const token = UserService.getToken();
 
     try {
-        const response = await axios.post(`${BASE_URL}/admin/monthly/player/statgen`,{}, {
+        const response = await axios.post(`${BASE_URL}/admin/monthly/player/statgen`, {}, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -451,7 +491,9 @@ export {
     getMonthlyChartData,
     getAdminTest,
     updateMatchById,
+    updateSoloMatchById,
     deleteMatchById,
+    deleteSoloMatchById,
     deleteLatestMatch,
     deleteLatestSoloMatch,
     getAllAchievements,

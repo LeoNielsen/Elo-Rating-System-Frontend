@@ -17,6 +17,7 @@ interface SoloMatch {
     bluePlayer: string;
     redScore: number;
     blueScore: number;
+    createdBy: string;
 }
 
 interface MonthlyWinner {

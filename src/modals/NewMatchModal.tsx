@@ -1,11 +1,11 @@
 import { Modal, Form, Input, Select, Typography, Button, Row, Col, Tabs, TabsProps, message } from 'antd';
-import { createMatch, createSoloMatch, getAllPlayers, updateMatchById } from '../API/Api';
+import { createMatch, createSoloMatch, getAllPlayers, updateMatchById, updateSoloMatchById } from '../API/Api';
 import { useMutation, useQuery } from 'react-query'
-import { Match, Player } from '../Types/Types';
+import { Match, Player, SoloMatch } from '../Types/Types';
 import { useEffect, useState } from 'react';
 
 function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, activeTab, mode, matchToEdit }:
-  { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, refetch: any, soloRefetch: any, activeTab: string, mode: "create" | "update", matchToEdit?: Match }) {
+  { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, refetch: any, soloRefetch: any, activeTab: string, mode: "create" | "update", matchToEdit?: Match | SoloMatch }) {
 
   const { data, isLoading } = useQuery("Players", getAllPlayers);
 
@@ -39,14 +39,42 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, ac
   });
 
 
+  const { mutateAsync: updateSoloMatchMutation } = useMutation({
+    mutationFn: ({ id, matchData }: { id: number, matchData: any }) => updateSoloMatchById(id, matchData),
+    onMutate: () => {
+      message.loading({
+        content: "Updating match...",
+        key: "update",
+        duration: 0
+      });
+    },
+    onSuccess: () => {
+      message.success({
+        content: "Match updated",
+        key: "update"
+      });
+      soloRefetch();
+    },
+
+    onError: () => {
+      message.error({
+        content: "Could not update match",
+        key: "update"
+      });
+    }
+  });
+
+
 
   const [form] = Form.useForm();
   const [soloForm] = Form.useForm();
   const [filteredOptions, setFilteredOptions] = useState<{ [key: string]: Player[] }>({});
 
   useEffect(() => {
-    if (mode === "update" && matchToEdit && data) {
+    if (!data || mode !== "update" || !matchToEdit) return;
 
+    // 2v2 MATCH
+    if ("redAtk" in matchToEdit) {
       const redAtkId = data.find((p: Player) => p.nameTag === matchToEdit.redAtk)?.id;
       const redDefId = data.find((p: Player) => p.nameTag === matchToEdit.redDef)?.id;
       const blueAtkId = data.find((p: Player) => p.nameTag === matchToEdit.blueAtk)?.id;
@@ -57,6 +85,19 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, ac
         RedDefender: redDefId,
         BlueAttacker: blueAtkId,
         BlueDefender: blueDefId,
+        RedGoalScore: matchToEdit.redScore,
+        BlueGoalScore: matchToEdit.blueScore
+      });
+    }
+
+    // SOLO MATCH
+    if ("redPlayer" in matchToEdit) {
+      const redId = data.find((p: Player) => p.nameTag === matchToEdit.redPlayer)?.id;
+      const blueId = data.find((p: Player) => p.nameTag === matchToEdit.bluePlayer)?.id;
+
+      soloForm.setFieldsValue({
+        Red: redId,
+        Blue: blueId,
         RedGoalScore: matchToEdit.redScore,
         BlueGoalScore: matchToEdit.blueScore
       });
@@ -151,13 +192,24 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, ac
   }
 
   const onFinishSolo = async () => {
-    await createSoloMatchMutation({
-      redPlayerId: soloForm.getFieldValue("Red"),
-      bluePlayerId: soloForm.getFieldValue("Blue"),
-      redScore: soloForm.getFieldValue("RedGoalScore"),
-      blueScore: soloForm.getFieldValue("BlueGoalScore")
-    })
-
+    if (mode === "create") {
+      await createSoloMatchMutation({
+        redPlayerId: soloForm.getFieldValue("Red"),
+        bluePlayerId: soloForm.getFieldValue("Blue"),
+        redScore: soloForm.getFieldValue("RedGoalScore"),
+        blueScore: soloForm.getFieldValue("BlueGoalScore")
+      })
+    } else if (mode === "update" && matchToEdit) {
+      await updateSoloMatchMutation({
+        id: matchToEdit!.id,
+        matchData: {
+          redPlayerId: soloForm.getFieldValue("Red"),
+          bluePlayerId: soloForm.getFieldValue("Blue"),
+          redScore: soloForm.getFieldValue("RedGoalScore"),
+          blueScore: soloForm.getFieldValue("BlueGoalScore")
+        }
+      });
+    }
     soloRefetch()
     form.resetFields()
     soloForm.resetFields()
