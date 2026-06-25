@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import { Button, Tabs, TabsProps } from 'antd';
 import { useState } from 'react';
-import { getMatches, getRecentMatches, getRecentSoloMatches } from '../../API/Api';
+import { getMatches, getRecentSoloMatches } from '../../API/Api';
 import NewMatchModal from '../../modals/NewMatchModal';
 import { Match, SoloMatch } from '../../Types/Types';
 import SoloMatchTable from './SoloMatchTable';

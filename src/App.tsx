@@ -5,7 +5,6 @@ import PlayerTable from './tables/PlayerTable';
 import MatchTables from './tables/MatchTables/MatchTables';
 import TeamTable from './tables/TeamTable';
 import PlayerRankingTables from './tables/PlayerRankingTables/PlayerRankingTables';
-import Chart from './Charts/Chart';
 import MatchRandomizer from './MatchRandomizer/MatchRandomizer';
 import Admin from './Admin/Admin';
 import UserService from './Keycloak/UserService';

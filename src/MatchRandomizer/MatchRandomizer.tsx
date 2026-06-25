@@ -30,7 +30,7 @@ function MatchRandomizer() {
         }));
     };
 
-    const handleBlur = (field: string, solo: boolean) => {
+    const handleBlur = (field: string) => {
         const checkForm = form;
         if (filteredOptions[field]?.length > 0) {
             checkForm.setFieldValue(field, filteredOptions[field][0].nameTag);
@@ -79,7 +79,7 @@ function MatchRandomizer() {
                                         optionFilterProp="label"
                                         options={options}
                                         onSearch={(value) => handleSearch(value, "player1")}
-                                        onBlur={() => handleBlur("player1", true)}
+                                        onBlur={() => handleBlur("player1")}
                                         onSelect={(value) => handleSelect(value, "player1")}
                                         placeholder="player 1"
                                     />
@@ -92,7 +92,7 @@ function MatchRandomizer() {
                                         optionFilterProp="label"
                                         options={options}
                                         onSearch={(value) => handleSearch(value, "player2")}
-                                        onBlur={() => handleBlur("player2", true)}
+                                        onBlur={() => handleBlur("player2")}
                                         onSelect={(value) => handleSelect(value, "player2")}
                                         placeholder="player 2"
                                     />
@@ -105,7 +105,7 @@ function MatchRandomizer() {
                                         optionFilterProp="label"
                                         options={options}
                                         onSearch={(value) => handleSearch(value, "player3")}
-                                        onBlur={() => handleBlur("player3", true)}
+                                        onBlur={() => handleBlur("player3")}
                                         onSelect={(value) => handleSelect(value, "player3")}
                                         placeholder="player 3"
                                     />
@@ -118,7 +118,7 @@ function MatchRandomizer() {
                                         optionFilterProp="label"
                                         options={options}
                                         onSearch={(value) => handleSearch(value, "player4")}
-                                        onBlur={() => handleBlur("player4", true)}
+                                        onBlur={() => handleBlur("player4")}
                                         onSelect={(value) => handleSelect(value, "player4")}
                                         placeholder="player 4"
                                     />

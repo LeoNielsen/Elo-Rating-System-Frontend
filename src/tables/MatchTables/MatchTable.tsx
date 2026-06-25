@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Match } from "../../Types/Types";
-import { Button, Dropdown, Menu, message, Modal, Table } from "antd";
+import { Button, Dropdown, message, Modal, Table } from "antd";
 import { ColumnType } from "antd/es/table";
 import MatchRatingModal from "../../modals/MatchRatingModal";
 import { ExclamationCircleOutlined, MoreOutlined } from "@ant-design/icons";
 import UserService from "../../Keycloak/UserService";
-import { deleteMatchById, updateMatchById } from "../../API/Api";
+import { deleteMatchById } from "../../API/Api";
 import { useMutation, useQueryClient } from "react-query";
 import NewMatchModal from "../../modals/NewMatchModal";
 

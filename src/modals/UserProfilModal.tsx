@@ -1,12 +1,10 @@
-import { Avatar, Button, Card, Descriptions, Divider, message, Modal, Tabs, TabsProps, Upload, } from 'antd'
+import { Avatar, Button, Descriptions, Divider, Modal, Tabs, TabsProps, } from 'antd'
 import UserService from '../Keycloak/UserService';
 import { useQuery } from 'react-query';
 import { Player } from '../Types/Types';
 import { getPlayer } from '../API/Api';
 import PlayerAchievementTabs from '../Tabs/PlayerAchievementTabs';
 import { UserOutlined } from '@ant-design/icons';
-import { useState } from 'react';
-import { UploadChangeParam, UploadFile } from 'antd/es/upload';
 
 function UserProfilModal({ modalVisible, setModalVisible }:
     { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>> }) {
