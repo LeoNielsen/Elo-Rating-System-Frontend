@@ -2,10 +2,10 @@ import { Modal, Form, Input, Select, Typography, Button, Row, Col, Tabs, TabsPro
 import { createMatch, createSoloMatch, getAllPlayers, updateMatchById, updateSoloMatchById } from '../API/Api';
 import { useMutation, useQuery } from 'react-query'
 import { Match, Player, SoloMatch } from '../Types/Types';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, activeTab, mode, matchToEdit }:
-  { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, refetch: any, soloRefetch: any, activeTab: string, mode: "create" | "update", matchToEdit?: Match | SoloMatch }) {
+  { modalVisible: boolean, setModalVisible: Dispatch<SetStateAction<boolean>>, refetch: any, soloRefetch: any, activeTab: string, mode: "create" | "update", matchToEdit?: Match | SoloMatch }) {
 
   const { data, isLoading } = useQuery("Players", getAllPlayers);
 

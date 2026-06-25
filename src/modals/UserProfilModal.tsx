@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react'
 import { Avatar, Button, Descriptions, Divider, Modal, Tabs, TabsProps, } from 'antd'
 import UserService from '../Keycloak/UserService';
 import { useQuery } from 'react-query';
@@ -7,7 +8,7 @@ import PlayerAchievementTabs from '../Tabs/PlayerAchievementTabs';
 import { UserOutlined } from '@ant-design/icons';
 
 function UserProfilModal({ modalVisible, setModalVisible }:
-    { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>> }) {
+    { modalVisible: boolean, setModalVisible: Dispatch<SetStateAction<boolean>> }) {
 
     const { data } = useQuery<Player>("User",
         () => getPlayer(UserService.getUsername()),

@@ -3,9 +3,10 @@ import { useQuery } from "react-query";
 import { getMatchRatings, getSoloMatchRatings } from "../API/Api";
 import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
 import { MatchRating } from "../Types/Types";
+import { Dispatch, SetStateAction } from "react";
 
 function MatchRatingModal({ modalVisible, setModalVisible, matchId, soloMatch }:
-    { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, matchId: number, soloMatch: boolean, }) {
+    { modalVisible: boolean, setModalVisible: Dispatch<SetStateAction<boolean>>, matchId: number, soloMatch: boolean, }) {
 
     const fetchMatchRatings = soloMatch ? getSoloMatchRatings : getMatchRatings;
 
