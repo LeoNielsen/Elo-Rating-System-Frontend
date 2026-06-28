@@ -30,14 +30,14 @@ const deactivatePlayer = async (name: string) => {
 
 const getMonthlyWinner = async () => {
 
-        const response = await axios.get(`${BASE_URL}/player/monthly/winner/last`);
+        const response = await axios.get(`${BASE_URL}/monthly/winner/last`);
         return response.data;
 
 };
 
 const getMonthlyWinners = async () => {
 
-        const response = await axios.get(`${BASE_URL}/player/monthly/winner/all`);
+        const response = await axios.get(`${BASE_URL}/monthly/winner/all`);
         return response.data;
 
 };
@@ -111,6 +111,13 @@ const getAllTeams = async () => {
 
 };
 
+const getAllPairTeams = async () => {
+
+        const response = await axios.get(`${BASE_URL}/team/pair/all`);
+        return response.data;
+
+};
+
 const getRecentMatches = async () => {
 
         const response = await axios.get(`${BASE_URL}/match`);
@@ -138,16 +145,6 @@ const getMatchRatings = async (id: number) => {
 const getSoloMatchRatings = async (id: number) => {
 
         const response = await axios.get(`${BASE_URL}/rating/solo/match/${id}`);
-        return response.data;
-
-};
-
-const createTeam = async (teamData: {
-    attackerId: number,
-    defenderId: number
-}) => {
-
-        const response = await axios.post(`${BASE_URL}/team`, teamData);
         return response.data;
 
 };
@@ -227,15 +224,12 @@ const getMonthlyChartData = async () => {
 
 const getAdminTest = async () => {
     const token = UserService.getToken();
-
-
-        const response = await axios.get(`${BASE_URL}/admin/test`, {
+        const response = await axios.get(`${BASE_URL}/admin`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
         return response.data;
-
 };
 
 const updateMatchById = async (id: number, matchData: {
@@ -294,32 +288,6 @@ const deleteSoloMatchById = async (id: number) => {
 
 
         const response = await axios.delete(`${BASE_URL}/match/solo/delete/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        });
-        return response.data;
-
-};
-
-const deleteLatestMatch = async () => {
-    const token = UserService.getToken();
-
-
-        const response = await axios.delete(`${BASE_URL}/admin/match/latest`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        });
-        return response.data;
-
-};
-
-const deleteLatestSoloMatch = async () => {
-    const token = UserService.getToken();
-
-
-        const response = await axios.delete(`${BASE_URL}/admin/match/solo/latest`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
@@ -397,12 +365,12 @@ export {
     getPlayerSoloStatistics,
     getAllPlayerSoloStatistics,
     getAllTeams,
+    getAllPairTeams,
     getRecentMatches,
     getMatches,
     getRecentSoloMatches,
     getMatchRatings,
     getSoloMatchRatings,
-    createTeam,
     createMatch,
     createSoloMatch,
     createPlayer,
@@ -414,8 +382,6 @@ export {
     updateSoloMatchById,
     deleteMatchById,
     deleteSoloMatchById,
-    deleteLatestMatch,
-    deleteLatestSoloMatch,
     getAllAchievements,
     getPlayerAchievements,
     regenerateMonthlyPlayerStats,

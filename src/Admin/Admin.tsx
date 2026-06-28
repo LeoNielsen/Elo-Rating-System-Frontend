@@ -4,8 +4,6 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useMutation, useQuery } from 'react-query';
 import {
   deactivatePlayer,
-  deleteLatestMatch,
-  deleteLatestSoloMatch,
   getAdminTest,
   regenerateMonthlyPlayerStats,
   regeneratePlayerStats,
@@ -27,8 +25,6 @@ const Admin = () => {
     },
   });
 
-  const deleteMatchMutation = useMutation(deleteLatestMatch);
-  const deleteSoloMatchMutation = useMutation(deleteLatestSoloMatch);
   const regeneratePlayerStatsMutation = useMutation(regeneratePlayerStats);
   const regenerateSoloPlayerStatsMutation = useMutation(regenerateSoloPlayerStats);
   const regenerateMonthlyPlayerStatsMutation = useMutation(regenerateMonthlyPlayerStats);
@@ -39,8 +35,6 @@ const Admin = () => {
     regeneratePlayerStatsMutation.isLoading ||
     regenerateSoloPlayerStatsMutation.isLoading ||
     regenerateMonthlyPlayerStatsMutation.isLoading ||
-    deleteMatchMutation.isLoading ||
-    deleteSoloMatchMutation.isLoading ||
     deactivatePlayerMutation.isLoading;
 
   const showConfirm = (title: string, onConfirm: () => void) => {
@@ -128,37 +122,6 @@ const Admin = () => {
             }
           >
             Regenerate Monthly Stats
-          </Button>
-
-          {/* 🔹 Delete Matches */}
-          <Button
-            type="primary"
-            danger
-            block
-            disabled={isAnyLoading}
-            loading={deleteMatchMutation.isLoading}
-            onClick={() =>
-              showConfirm('Delete latest 2v2 match?', () =>
-                deleteMatchMutation.mutate()
-              )
-            }
-          >
-            Delete Latest 2v2 Match
-          </Button>
-
-          <Button
-            type="primary"
-            danger
-            block
-            disabled={isAnyLoading}
-            loading={deleteSoloMatchMutation.isLoading}
-            onClick={() =>
-              showConfirm('Delete latest 1v1 match?', () =>
-                deleteSoloMatchMutation.mutate()
-              )
-            }
-          >
-            Delete Latest 1v1 Match
           </Button>
 
           <Card

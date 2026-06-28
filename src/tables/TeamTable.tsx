@@ -1,36 +1,49 @@
 import { useQuery } from 'react-query';
 import { Table, Tabs, TabsProps } from 'antd';
-import { getAllTeams } from '../API/Api';
-import { Team } from '../Types/Types';
+import { getAllPairTeams } from '../API/Api';
+import { TeamPair } from '../Types/Types';
 
 function TeamTable() {
 
-  const { isLoading, data } = useQuery<Team[]>("teams", getAllTeams);
+  const { isLoading, data } = useQuery<TeamPair[]>("teams", getAllPairTeams);
 
   const columns = [
     {
-      title: 'Attacker',
-      dataIndex: 'attacker',
-      key: 'attacker',
-      sorter: (a: Team, b: Team) => a.attacker.localeCompare(b.attacker),
+      title: 'Player',
+      dataIndex: 'playerA',
+      key: 'playerA',
+      sorter: (a: TeamPair, b: TeamPair) => a.playerA.localeCompare(b.playerA),
     },
     {
-      title: 'Defender',
-      dataIndex: 'defender',
-      key: 'defender',
-      sorter: (a: Team, b: Team) => a.defender.localeCompare(b.defender),
+      title: 'Player',
+      dataIndex: 'playerB',
+      key: 'playerB',
+      sorter: (a: TeamPair, b: TeamPair) => a.playerB.localeCompare(b.playerB),
+    },
+    {
+      title: 'Total Games',
+      dataIndex: 'totalGames',
+      key: 'totalGames',
+      sorter: (a: TeamPair, b: TeamPair) => (a.won + a.lost) - (b.won + b.lost),
+      render: (_: any, record: TeamPair) => record.won + record.lost,
     },
     {
       title: 'Won',
       dataIndex: 'won',
       key: 'won',
-      sorter: (a: Team, b: Team) => a.won - b.won,
+      sorter: (a: TeamPair, b: TeamPair) => a.won - b.won,
     },
     {
       title: 'Lost',
       dataIndex: 'lost',
       key: 'lost',
-      sorter: (a: Team, b: Team) => a.lost - b.lost,
+      sorter: (a: TeamPair, b: TeamPair) => a.lost - b.lost,
+    },
+    {
+      title: 'Goals',
+      dataIndex: 'goals',
+      key: 'goals',
+      sorter: (a: TeamPair, b: TeamPair) => a.goals - b.goals,
     }
   ];
 

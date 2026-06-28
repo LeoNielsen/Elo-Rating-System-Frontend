@@ -39,7 +39,18 @@ interface Team {
     attacker: string,
     defender: string,
     won: number,
-    lost: number
+    lost: number,
+    goals: number,
+}
+
+interface TeamPair {
+    id: number,
+    playerA: string,
+    playerB: string,
+    won: number,
+    lost: number,
+    goals: number,
+    teams: Team[]
 }
 
 interface MatchRating {
@@ -150,6 +161,7 @@ export type {
     Player,
     MonthlyWinner,
     Team,
+    TeamPair,
     MatchRating,
     PlayerStatistics,
     PlayerSoloStatistics,
