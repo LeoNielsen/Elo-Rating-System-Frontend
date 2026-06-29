@@ -44,6 +44,12 @@ const PlayerStatsTable = ({ playerName, stats }: { playerName: string, stats: Te
             attacker: AttackerStats?.goals !== undefined ? AttackerStats.goals : 0,
             defender: DefenderStats?.goals !== undefined ? DefenderStats.goals : 0,
         },
+        {
+            key: "shutouts",
+            label: "Shutouts",
+            attacker: AttackerStats?.shutouts !== undefined ? AttackerStats.shutouts : 0,
+            defender: DefenderStats?.shutouts !== undefined ? DefenderStats.shutouts : 0,
+        }
     ];
 
     return (

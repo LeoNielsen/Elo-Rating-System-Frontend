@@ -30,7 +30,10 @@ function TeamStatisticsModal({ modalVisible, setModalVisible, teamId }:
             <Descriptions.Item label="Player">{data.playerB}</Descriptions.Item>
             <Descriptions.Item label="Won">{data.won}</Descriptions.Item>
             <Descriptions.Item label="Lost">{data.lost}</Descriptions.Item>
+            <Descriptions.Item label="Winning Percentage">{(data.won / (data.won + data.lost) * 100).toFixed(0)}%</Descriptions.Item>
             <Descriptions.Item label="Goals">{data.goals}</Descriptions.Item>
+            <Descriptions.Item label="Goals Per Game">{(data.goals / (data.won + data.lost)).toFixed(2)}</Descriptions.Item>
+            <Descriptions.Item label="Shutouts">{data.shutouts}</Descriptions.Item>
         </Descriptions>
         <PlayerStatsTable playerName={data.playerA} stats={data.teams} />
         <PlayerStatsTable playerName={data.playerB} stats={data.teams} />

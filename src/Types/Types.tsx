@@ -41,6 +41,7 @@ interface Team {
     won: number,
     lost: number,
     goals: number,
+    shutouts: number,
 }
 
 interface TeamPair {
@@ -50,6 +51,7 @@ interface TeamPair {
     won: number,
     lost: number,
     goals: number,
+    shutouts: number,
     teams: Team[]
 }
 
