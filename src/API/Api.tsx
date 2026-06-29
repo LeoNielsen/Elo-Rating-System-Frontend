@@ -118,6 +118,13 @@ const getAllPairTeams = async () => {
 
 };
 
+const getTeamPairById = async (id: number) => {
+
+        const response = await axios.get(`${BASE_URL}/team/pair/${id}`);
+        return response.data;
+
+};
+
 const getRecentMatches = async () => {
 
         const response = await axios.get(`${BASE_URL}/match`);
@@ -366,6 +373,7 @@ export {
     getAllPlayerSoloStatistics,
     getAllTeams,
     getAllPairTeams,
+    getTeamPairById,
     getRecentMatches,
     getMatches,
     getRecentSoloMatches,

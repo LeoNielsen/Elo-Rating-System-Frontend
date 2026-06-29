@@ -2,10 +2,19 @@ import { useQuery } from 'react-query';
 import { Table, Tabs, TabsProps } from 'antd';
 import { getAllPairTeams } from '../API/Api';
 import { TeamPair } from '../Types/Types';
+import TeamStatisticsModal from '../modals/TeamStatisticsModal';
+import { useState } from 'react';
 
 function TeamTable() {
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [rowId, setRowId] = useState(NaN);
   const { isLoading, data } = useQuery<TeamPair[]>("teams", getAllPairTeams);
+
+  const handleRowClick = (record: TeamPair) => {
+    setModalVisible(true);
+    setRowId(record.id)
+  };
 
   const columns = [
     {
@@ -58,6 +67,9 @@ function TeamTable() {
           hideOnSinglePage: true,
           pageSize: 20,
         }}
+        onRow={(record) => ({
+          onClick: () => handleRowClick(record),
+        })}
         scroll={{ x: 350 }}
         rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''}
         bordered={true}
@@ -69,6 +81,7 @@ function TeamTable() {
   return (
     <div className="App">
       <Tabs items={tabs} defaultActiveKey='1' />
+      {modalVisible && (<TeamStatisticsModal modalVisible={modalVisible} setModalVisible={setModalVisible} teamId={rowId} />)}
     </div>
   );
 }

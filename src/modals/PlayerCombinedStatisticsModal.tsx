@@ -37,7 +37,9 @@ function PlayerCombinedStatisticsModal({ modalVisible, setModalVisible, playerId
             >
                 <Descriptions.Item label="Name Tag">{player.nameTag}</Descriptions.Item>
 
-                <Descriptions.Item label="Rating">{player.rating}</Descriptions.Item>
+                <Descriptions.Item label="2v2 Rating">{player.rating}</Descriptions.Item>
+
+                <Descriptions.Item label="1v1 Rating">{solo.rating}</Descriptions.Item>
 
                 <Descriptions.Item label="Total Games">{totalGames}</Descriptions.Item>
 

@@ -42,6 +42,11 @@ function MatchTable({ isLoading, data }: { isLoading: boolean, data: Match[] | u
         setEditModalVisible(true);
     };
 
+    const handleRowClick = (record: Match) => {
+        setModalRatingsVisible(true);
+        setRowId(record.id)
+    };
+
 
     const { confirm } = Modal;
     const showConfirm = (title: string, onConfirm: () => void) => {
@@ -122,6 +127,14 @@ function MatchTable({ isLoading, data }: { isLoading: boolean, data: Match[] | u
             title: '',
             key: 'actions',
             width: '1%',
+            onCell: () => ({
+                onClick: (e) => {
+                    e.stopPropagation();
+                },
+                style: {
+                    cursor: "default"
+                }
+            }),
             render: (_, record) => {
                 const menu = {
                     items: [
@@ -197,7 +210,7 @@ function MatchTable({ isLoading, data }: { isLoading: boolean, data: Match[] | u
                 bordered={true}
                 loading={isLoading}
                 onRow={(record) => ({
-                    onClick: () => setOpenMenuRow(record.id),
+                    onClick: () => handleRowClick(record),
                 })}
             />
 
