@@ -42,6 +42,13 @@ const getMonthlyWinners = async () => {
 
 };
 
+const getMatchDays = async () => {
+
+        const response = await axios.get(`${BASE_URL}/match/days`);
+        return response.data;
+
+};
+
 const getRecords = async () => {
 
         const response = await axios.get(`${BASE_URL}/player/records`);
@@ -362,6 +369,7 @@ export {
     deactivatePlayer,
     getMonthlyWinner,
     getMonthlyWinners,
+    getMatchDays,
     getRecords,
     getMatchStatistics,
     getSoloMatchStatistics,
