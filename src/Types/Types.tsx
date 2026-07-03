@@ -48,6 +48,7 @@ interface TeamPair {
     id: number,
     playerA: string,
     playerB: string,
+    rating: number,
     won: number,
     lost: number,
     goals: number,
@@ -98,6 +99,21 @@ interface PlayerSoloStatistics {
     longestWinStreak: number,
     currentWinStreak: number,
     shutouts: number
+}
+
+interface TeamStatistics {
+    id: number
+    teamName: string,
+    rating: number,
+    wins: number,
+    lost: number,
+    totalGoals: number,
+    todayRatingChance: number,
+    highestELO: number,
+    lowestELO: number,
+    longestWinStreak: number,
+    currentWinStreak: number,
+    shutouts: number,
 }
 
 interface Record {
@@ -167,6 +183,7 @@ export type {
     MatchRating,
     PlayerStatistics,
     PlayerSoloStatistics,
+    TeamStatistics,
     Record,
     MatchStatistics,
     PlayerRecords,

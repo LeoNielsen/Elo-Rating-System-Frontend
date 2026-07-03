@@ -125,6 +125,20 @@ const getAllPairTeams = async () => {
 
 };
 
+const getAllTeamStatistics = async () => {
+
+        const response = await axios.get(`${BASE_URL}/stat/team/all`);
+        return response.data;
+
+};
+
+const getTeamStatisticsById = async (id: number) => {
+
+        const response = await axios.get(`${BASE_URL}/stat/team/${id}`);
+        return response.data;
+
+};
+
 const getTeamPairById = async (id: number) => {
 
         const response = await axios.get(`${BASE_URL}/team/pair/${id}`);
@@ -379,6 +393,8 @@ export {
     getMonthlyStatistics,
     getPlayerSoloStatistics,
     getAllPlayerSoloStatistics,
+    getAllTeamStatistics,
+    getTeamStatisticsById,
     getAllTeams,
     getAllPairTeams,
     getTeamPairById,
