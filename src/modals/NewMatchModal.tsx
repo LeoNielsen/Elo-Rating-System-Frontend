@@ -9,8 +9,57 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, ac
 
   const { data, isLoading } = useQuery("Players", getAllPlayers);
 
-  const { mutateAsync: createMatchMutation } = useMutation(createMatch);
-  const { mutateAsync: createSoloMatchMutation } = useMutation(createSoloMatch);
+  const { mutateAsync: createMatchMutation } = useMutation({
+    mutationFn: createMatch,
+    onMutate: () => {
+      message.loading({
+        content: "Creating match...",
+        key: "create",
+        duration: 0
+      });
+    },
+
+    onSuccess: () => {
+      message.success({
+        content: "Match created",
+        key: "create"
+      });
+      refetch();
+    },
+
+    onError: () => {
+      message.error({
+        content: "Could not create match",
+        key: "create"
+      });
+    }
+  });
+
+  const { mutateAsync: createSoloMatchMutation } = useMutation({
+    mutationFn: createSoloMatch,
+    onMutate: () => {
+      message.loading({
+        content: "Creating solo match...",
+        key: "create",
+        duration: 0
+      });
+    },
+
+    onSuccess: () => {
+      message.success({
+        content: "Solo match created",
+        key: "create"
+      });
+      soloRefetch();
+    },
+
+    onError: () => {
+      message.error({
+        content: "Could not create solo match",
+        key: "create"
+      });
+    }
+  });
   const { mutateAsync: updateMatchMutation } = useMutation({
     mutationFn: ({ id, matchData }: { id: number, matchData: any }) => updateMatchById(id, matchData),
 
@@ -103,6 +152,19 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, ac
       });
     }
   }, [mode, matchToEdit, data]);
+
+  const getAvailableOptions = (field: string, solo: boolean) => {
+  const checkForm = solo ? soloForm : form;
+  const values = checkForm.getFieldsValue();
+
+  const usedIds = Object.keys(values)
+    .filter(key => key !== field) 
+    .map(key => values[key])   
+    .filter(Boolean);            
+
+  return options.filter((opt : any ) => !usedIds.includes(opt.value));
+};
+
 
   const handleModalCancel = () => {
     setModalVisible(false);
@@ -234,14 +296,14 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, ac
           <Col span={12}>
             <Typography.Title level={5}>Red Team</Typography.Title>
             <Form.Item label="Attacker" name="RedAttacker" rules={[{ required: true, message: 'Please input!' }]}>
-              <Select showSearch optionFilterProp="label" options={options}
+              <Select showSearch optionFilterProp="label" options={getAvailableOptions("RedAttacker", false)}
                 onSearch={(value) => handleSearch(value, "RedAttacker")}
                 onBlur={() => handleBlur("RedAttacker", false)}
                 onSelect={(value => handleSelect(value, "RedAttacker"))}
                 placeholder="Red Attacker" />
             </Form.Item>
             <Form.Item label="Defender" name="RedDefender" rules={[{ required: true, message: 'Please input!' }]}>
-              <Select showSearch optionFilterProp="label" options={options}
+              <Select showSearch optionFilterProp="label" options={getAvailableOptions("RedDefender", false)}
                 onSearch={(value) => handleSearch(value, "RedDefender")}
                 onBlur={() => handleBlur("RedDefender", false)}
                 onSelect={(value => handleSelect(value, "RedDefender"))}
@@ -254,14 +316,14 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, ac
           <Col span={12}>
             <Typography.Title level={5}>Blue Team</Typography.Title>
             <Form.Item label="Attacker" name="BlueAttacker" rules={[{ required: true, message: 'Please input!' }]}>
-              <Select showSearch optionFilterProp="label" options={options}
+              <Select showSearch optionFilterProp="label" options={getAvailableOptions("BlueAttacker", false)}
                 onSearch={(value) => handleSearch(value, "BlueAttacker")}
                 onBlur={() => handleBlur("BlueAttacker", false)}
                 onSelect={(value => handleSelect(value, "BlueAttacker"))}
                 placeholder="Blue Attacker" />
             </Form.Item>
             <Form.Item label="Defender" name="BlueDefender" rules={[{ required: true, message: 'Please input!' }]}>
-              <Select showSearch optionFilterProp="label" options={options}
+              <Select showSearch optionFilterProp="label" options={getAvailableOptions("BlueDefender", false)}
                 onSearch={(value) => handleSearch(value, "BlueDefender")}
                 onBlur={() => handleBlur("BlueDefender", false)}
                 onSelect={(value => handleSelect(value, "BlueDefender"))}
@@ -286,7 +348,7 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, ac
           <Col span={12}>
             <Typography.Title level={5}>Red</Typography.Title>
             <Form.Item label="Red Player" name="Red" rules={[{ required: true, message: 'Please input!' }]}>
-              <Select showSearch optionFilterProp="label" options={options}
+              <Select showSearch optionFilterProp="label" options={getAvailableOptions("Red", true)}
                 onSearch={(value) => handleSearch(value, "Red")}
                 onBlur={() => handleBlur("Red", true)}
                 onSelect={(value => handleSelect(value, "Red"))}
@@ -299,7 +361,7 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, ac
           <Col span={12}>
             <Typography.Title level={5}>Blue</Typography.Title>
             <Form.Item label="Blue Player" name="Blue" rules={[{ required: true, message: 'Please input!' }]}>
-              <Select showSearch optionFilterProp="label" options={options}
+              <Select showSearch optionFilterProp="label" options={getAvailableOptions("Blue", true)}
                 onSearch={(value) => handleSearch(value, "Blue")}
                 onBlur={() => handleBlur("Blue", true)}
                 onSelect={(value => handleSelect(value, "Blue"))}

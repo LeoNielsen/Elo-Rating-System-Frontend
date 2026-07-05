@@ -8,6 +8,7 @@ import {
   regenerateMonthlyPlayerStats,
   regeneratePlayerStats,
   regenerateSoloPlayerStats,
+  regenerateTeamStats,
 } from '../API/Api';
 
 const { confirm } = Modal;
@@ -18,7 +19,7 @@ const Admin = () => {
   const deactivatePlayerMutation = useMutation(deactivatePlayer, {
     onSuccess: () => {
       message.success('Player status updated successfully!');
-      setPlayerName(''); 
+      setPlayerName('');
     },
     onError: () => {
       message.error('Failed to update player status.');
@@ -26,6 +27,7 @@ const Admin = () => {
   });
 
   const regeneratePlayerStatsMutation = useMutation(regeneratePlayerStats);
+  const regenerateTeamStatsMutation = useMutation(regenerateTeamStats);
   const regenerateSoloPlayerStatsMutation = useMutation(regenerateSoloPlayerStats);
   const regenerateMonthlyPlayerStatsMutation = useMutation(regenerateMonthlyPlayerStats);
 
@@ -33,6 +35,7 @@ const Admin = () => {
 
   const isAnyLoading =
     regeneratePlayerStatsMutation.isLoading ||
+    regenerateTeamStatsMutation.isLoading ||
     regenerateSoloPlayerStatsMutation.isLoading ||
     regenerateMonthlyPlayerStatsMutation.isLoading ||
     deactivatePlayerMutation.isLoading;
@@ -94,6 +97,8 @@ const Admin = () => {
             Regenerate 2v2 Stats
           </Button>
 
+
+
           <Button
             variant="solid"
             color="orange"
@@ -107,6 +112,21 @@ const Admin = () => {
             }
           >
             Regenerate 1v1 Stats
+          </Button>
+
+          <Button
+            variant="solid"
+            color="orange"
+            block
+            disabled={isAnyLoading}
+            loading={regenerateTeamStatsMutation.isLoading}
+            onClick={() =>
+              showConfirm('Regenerate team stats?', () =>
+                regenerateTeamStatsMutation.mutate()
+              )
+            }
+          >
+            Regenerate Team Stats
           </Button>
 
           <Button

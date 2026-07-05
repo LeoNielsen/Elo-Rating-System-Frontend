@@ -351,6 +351,19 @@ const regeneratePlayerStats = async () => {
 
 };
 
+const regenerateTeamStats = async () => {
+    const token = UserService.getToken();
+
+
+        const response = await axios.post(`${BASE_URL}/admin/team/statgen`, {}, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+
+};
+
 const regenerateSoloPlayerStats = async () => {
     const token = UserService.getToken();
 
@@ -418,5 +431,6 @@ export {
     getPlayerAchievements,
     regenerateMonthlyPlayerStats,
     regeneratePlayerStats,
+    regenerateTeamStats,
     regenerateSoloPlayerStats
 };
