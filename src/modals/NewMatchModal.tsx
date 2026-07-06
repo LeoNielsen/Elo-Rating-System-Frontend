@@ -154,16 +154,18 @@ function NewMatchModal({ modalVisible, setModalVisible, refetch, soloRefetch, ac
   }, [mode, matchToEdit, data]);
 
   const getAvailableOptions = (field: string, solo: boolean) => {
-  const checkForm = solo ? soloForm : form;
-  const values = checkForm.getFieldsValue();
+    const checkForm = solo ? soloForm : form;
+    const values = checkForm.getFieldsValue();
 
-  const usedIds = Object.keys(values)
-    .filter(key => key !== field) 
-    .map(key => values[key])   
-    .filter(Boolean);            
+    const usedIds = Object.keys(values)
+      .filter(key => key !== field)
+      .map(key => values[key])
+      .filter(Boolean);
 
-  return options.filter((opt : any ) => !usedIds.includes(opt.value));
-};
+    return options
+      .filter((opt: any) => !usedIds.includes(opt.value))
+      .sort((a: any, b: any) => a.label.localeCompare(b.label));;
+  };
 
 
   const handleModalCancel = () => {
