@@ -49,6 +49,13 @@ const getMatchDays = async () => {
 
 };
 
+const getSoloMatchDays = async () => {
+
+        const response = await axios.get(`${BASE_URL}/match/solo/days`);
+        return response.data;
+
+};
+
 const getRecords = async () => {
 
         const response = await axios.get(`${BASE_URL}/player/records`);
@@ -397,6 +404,7 @@ export {
     getMonthlyWinner,
     getMonthlyWinners,
     getMatchDays,
+    getSoloMatchDays,
     getRecords,
     getMatchStatistics,
     getSoloMatchStatistics,

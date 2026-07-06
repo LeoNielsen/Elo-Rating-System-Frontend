@@ -11,7 +11,7 @@ import { Grid, Tooltip, Typography } from "antd";
 function PlayerRankingTable() {
 
     const { isLoading, data } = useQuery<PlayerStatistics[]>("allPlayerStatistics", getAllPlayerStatistics);
-    const monthlyWinner = useQuery<MonthlyWinner>("monthlyWinner", getMonthlyWinner);
+    const monthlyWinner = useQuery<MonthlyWinner[]>("monthlyWinner", getMonthlyWinner);
 
     const [modalStatisticsVisible, setModalStatisticsVisible] = useState(false);
     const [rowId, setRowId] = useState(NaN);
@@ -45,7 +45,7 @@ function PlayerRankingTable() {
             render: (nameTag: string) => (
                 <>
                     {nameTag}
-                    {nameTag === monthlyWinner.data?.nameTag ? <Tooltip title={`Winner of Monthly ${new Date(0, monthlyWinner.data.month - 1).toLocaleString('default', { month: 'long' })} ${monthlyWinner.data.year}`}>🏆</Tooltip> : ''}
+                    {monthlyWinner.data?.some((winner) => winner.nameTag === nameTag) ? <Tooltip title={`Winner of Monthly ${new Date(0, monthlyWinner.data[0].month - 1).toLocaleString('default', { month: 'long' })} ${monthlyWinner.data[0].year}`}>🏆</Tooltip> : ''}
                 </>
             ),
         },
