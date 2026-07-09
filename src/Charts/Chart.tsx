@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from 'react';
+import React, { useState } from 'react';
 const Line = React.lazy(() =>
   import('@ant-design/plots').then(m => ({ default: m.Line }))
 );

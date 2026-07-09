@@ -7,6 +7,7 @@ interface Match {
     blueDef: string;
     redScore: number;
     blueScore: number;
+    createdBy: string;
 }
 
 interface SoloMatch {
@@ -16,6 +17,7 @@ interface SoloMatch {
     bluePlayer: string;
     redScore: number;
     blueScore: number;
+    createdBy: string;
 }
 
 interface MonthlyWinner {
@@ -37,7 +39,21 @@ interface Team {
     attacker: string,
     defender: string,
     won: number,
-    lost: number
+    lost: number,
+    goals: number,
+    shutouts: number,
+}
+
+interface TeamPair {
+    id: number,
+    playerA: string,
+    playerB: string,
+    rating: number,
+    won: number,
+    lost: number,
+    goals: number,
+    shutouts: number,
+    teams: Team[]
 }
 
 interface MatchRating {
@@ -83,6 +99,21 @@ interface PlayerSoloStatistics {
     longestWinStreak: number,
     currentWinStreak: number,
     shutouts: number
+}
+
+interface TeamStatistics {
+    id: number
+    teamName: string,
+    rating: number,
+    wins: number,
+    lost: number,
+    totalGoals: number,
+    todayRatingChance: number,
+    highestELO: number,
+    lowestELO: number,
+    longestWinStreak: number,
+    currentWinStreak: number,
+    shutouts: number,
 }
 
 interface Record {
@@ -148,9 +179,11 @@ export type {
     Player,
     MonthlyWinner,
     Team,
+    TeamPair,
     MatchRating,
     PlayerStatistics,
     PlayerSoloStatistics,
+    TeamStatistics,
     Record,
     MatchStatistics,
     PlayerRecords,

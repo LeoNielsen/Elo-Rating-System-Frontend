@@ -1,6 +1,7 @@
 import UserService from '../Keycloak/UserService'
+import { ReactNode } from 'react'
 
-function ProtectedRoute({ children }:{ children: JSX.Element }) {
+function ProtectedRoute({ children }:{ children: ReactNode }) {
   
     const isLoggedIn = UserService.isLoggedIn()
 

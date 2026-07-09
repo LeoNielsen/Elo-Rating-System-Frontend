@@ -1,8 +1,8 @@
 import { useQuery } from 'react-query';
 import { Table, List, Card, Row, Col, Spin, Typography, Tabs } from 'antd';
 import { MatchStatistics, MonthlyWinner, PlayerRecords } from '../Types/Types';
-import { getMatchStatistics, getMonthlyWinners, getRecords, getSoloMatchStatistics } from '../API/Api';
-import { Pie } from '@ant-design/plots';
+import { getMatchDays, getSoloMatchDays, getMatchStatistics, getMonthlyWinners, getRecords, getSoloMatchStatistics } from '../API/Api';
+import { Column, Pie } from '@ant-design/plots';
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -13,13 +13,17 @@ function Records() {
 
     const { data: records, isLoading: loadingRecords, error: errorRecords } = useQuery<PlayerRecords>('records', getRecords);
     const { data: monthlyWinnersRaw, isLoading: loadingWinners, error: errorWinners } = useQuery<MonthlyWinner[]>('monthlyWinners', getMonthlyWinners);
+    const { data: MatchDays, isLoading: loadingMatchDays, error: errorMatchDays } = useQuery<Map<string, number>[]>('matchDays', getMatchDays);
+    const { data: SoloMatchDays, isLoading: loadingSoloMatchDays, error: errorSoloMatchDays } = useQuery<Map<string, number>[]>('soloMatchDays', getSoloMatchDays);
+
+
 
     const monthlyWinners = monthlyWinnersRaw ? [...monthlyWinnersRaw].reverse() : [];
 
-    if (loadingRecords || loadingWinners || loadingMatchStatistics || loadingMatchSoloStatistics) {
+    if (loadingRecords || loadingWinners || loadingMatchStatistics || loadingMatchSoloStatistics || loadingMatchDays || loadingSoloMatchDays) {
         return <Spin size="large" style={{ display: 'block', margin: '2rem auto' }} />;
     }
-    if (errorRecords || errorWinners || errorMatchStatistics || errorMatchSoloStatistics) {
+    if (errorRecords || errorWinners || errorMatchStatistics || errorMatchSoloStatistics || errorMatchDays || errorSoloMatchDays) {
         return <div>Error loading data</div>;
     }
 
@@ -146,6 +150,42 @@ function Records() {
         interactions: [{ type: 'element-active' }], // Optional: hover effect
     });
 
+    const weekdayOrder = [
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
+    ];
+
+    const sortedDays = Object.entries(MatchDays!)
+        .sort(([dayA], [dayB]) => weekdayOrder.indexOf(dayA) - weekdayOrder.indexOf(dayB))
+        .map(([day, count]) => ({
+            day,
+            count: Number(count)
+        }));
+
+    const sortedSoloDays = Object.entries(SoloMatchDays!)
+        .sort(([dayA], [dayB]) => weekdayOrder.indexOf(dayA) - weekdayOrder.indexOf(dayB))
+        .map(([day, count]) => ({
+            day,
+            count: Number(count)
+        }));
+
+    const columnConfig = (data: typeof sortedDays) => ({
+        data,
+        xField: "day",
+        yField: "count",
+        columnWidthRatio: 0.6,
+
+        color: "#1677ff"
+    });
+
+
+
+
 
     return (
         <Row gutter={24}>
@@ -183,6 +223,9 @@ function Records() {
                             bordered
                             showHeader={false}
                         />
+                        <Card title={<Title level={4}>Most Played Days</Title>}>
+                            <Column {...columnConfig(sortedDays)} />
+                        </Card>
                         <Card title={<Title level={4}>Win Ratio</Title>} >
                             <Pie {...pieConfig(winsPieData)} />
                         </Card>
@@ -200,6 +243,9 @@ function Records() {
                             bordered
                             showHeader={false}
                         />
+                        <Card title={<Title level={4}>Most Played Days</Title>}>
+                            <Column {...columnConfig(sortedSoloDays)} />
+                        </Card>
                         <Card title={<Title level={4}>Win Ratio</Title>} >
                             <Pie {...pieConfig(winsSoloPieData)} />
                         </Card>

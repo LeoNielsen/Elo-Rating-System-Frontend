@@ -1,17 +1,16 @@
 import { useQuery } from "react-query";
-import { MonthlyWinner, PlayerStatistics } from "../../Types/Types";
-import { getAllPlayerStatistics, getMonthlyWinner } from "../../API/Api";
+import { TeamStatistics } from "../../Types/Types";
+import { getAllTeamStatistics } from "../../API/Api";
 import { useState } from "react";
 import Table, { ColumnType } from "antd/es/table";
-import PlayerStatisticsModal from "../../modals/PlayerStatisticsModal";
 import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
-import { Grid, Tooltip, Typography } from "antd";
+import { Grid, Typography } from "antd";
+import TeamStatisticsModal from "../../modals/TeamStatisticsModal";
 
 
-function PlayerRankingTable() {
+function TeamRankingTable() {
 
-    const { isLoading, data } = useQuery<PlayerStatistics[]>("allPlayerStatistics", getAllPlayerStatistics);
-    const monthlyWinner = useQuery<MonthlyWinner[]>("monthlyWinner", getMonthlyWinner);
+    const { isLoading, data } = useQuery<TeamStatistics[]>("teams", getAllTeamStatistics);
 
     const [modalStatisticsVisible, setModalStatisticsVisible] = useState(false);
     const [rowId, setRowId] = useState(NaN);
@@ -23,12 +22,12 @@ function PlayerRankingTable() {
     const screens = useBreakpoint();
     const isSmallScreen = !screens.md;
 
-    const handleRowClick = (record: PlayerStatistics) => {
+    const handleRowClick = (record: TeamStatistics) => {
         setModalStatisticsVisible(true);
         setRowId(record.id)
     };
 
-    const columns: ColumnType<PlayerStatistics>[] = [
+    const columns: ColumnType<TeamStatistics>[] = [
         {
             title: 'Rank',
             dataIndex: 'rank',
@@ -40,12 +39,11 @@ function PlayerRankingTable() {
         },
         {
             title: 'Name',
-            dataIndex: 'nameTag',
+            dataIndex: 'teamName',
             key: 'name',
-            render: (nameTag: string) => (
+            render: (teamName: string) => (
                 <>
-                    {nameTag}
-                    {monthlyWinner.data?.some((winner) => winner.nameTag === nameTag) ? <Tooltip title={`Winner of Monthly ${new Date(0, monthlyWinner.data[0].month - 1).toLocaleString('default', { month: 'long' })} ${monthlyWinner.data[0].year}`}>🏆</Tooltip> : ''}
+                    {teamName}
                 </>
             ),
         },
@@ -57,14 +55,14 @@ function PlayerRankingTable() {
             ),
             dataIndex: 'rating',
             key: 'rating',
-            render: (_, player: PlayerStatistics) => (
+            render: (_, team: TeamStatistics) => (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                    <span>{player.rating}</span>
+                    <span>{team.rating}</span>
 
-                    {player.todayRatingChance !== 0 && (
-                        <Typography.Text type={player.todayRatingChance > 0 ? 'success' : 'danger'}>
-                            {player.todayRatingChance > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
-                            {!isSmallScreen && ` ${Math.abs(player.todayRatingChance)}`}
+                    {team.todayRatingChance !== 0 && (
+                        <Typography.Text type={team.todayRatingChance > 0 ? 'success' : 'danger'}>
+                            {team.todayRatingChance > 0 ? <CaretUpOutlined /> : <CaretDownOutlined />}
+                            {!isSmallScreen && ` ${Math.abs(team.todayRatingChance)}`}
                         </Typography.Text>
                     )}
                 </div>
@@ -74,13 +72,13 @@ function PlayerRankingTable() {
             title: 'Total Wins',
             dataIndex: 'totalWins',
             key: 'totalWins',
-            render: (_, player: PlayerStatistics) => (
+            render: (_, team: TeamStatistics) => (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                    <span>{player.attackerWins + player.defenderWins}</span>
+                    <span>{team.wins}</span>
 
-                    {player.currentWinStreak >= 3 && (
+                    {team.currentWinStreak >= 3 && (
                         <Typography.Text strong>
-                            {!isSmallScreen && ` ${Math.abs(player.currentWinStreak)}`}
+                            {!isSmallScreen && ` ${Math.abs(team.currentWinStreak)}`}
                             {"🔥"}
                         </Typography.Text>
                     )}
@@ -91,11 +89,11 @@ function PlayerRankingTable() {
             title: 'Total Lost',
             dataIndex: 'totalLost',
             key: 'totalLost',
-            render: (_, a: PlayerStatistics) => a.attackerLost + a.defenderLost
+            render: (_, a: TeamStatistics) => a.lost
         },
     ];
 
-    const sortedData = data?.filter((player) => player.attackerLost + player.attackerWins + player.defenderLost + player.defenderWins > 0).slice().sort((a, b) => b.rating - a.rating);
+    const sortedData = data?.filter((team) => team.wins + team.lost > 0).slice().sort((a, b) => b.rating - a.rating);
 
     return (
         <>
@@ -110,9 +108,9 @@ function PlayerRankingTable() {
                     setPageSize(ps);
                 },
             }} rowClassName={(record, index) => index % 2 === 1 ? 'dark-row' : ''} bordered={true} loading={isLoading} />
-            {modalStatisticsVisible && <PlayerStatisticsModal modalVisible={modalStatisticsVisible} setModalVisible={setModalStatisticsVisible} playerId={rowId} monthly={false} solo={false} />}
+            {modalStatisticsVisible && <TeamStatisticsModal modalVisible={modalStatisticsVisible} setModalVisible={setModalStatisticsVisible} teamId={rowId} />}
         </>
     )
 }
 
-export default PlayerRankingTable
+export default TeamRankingTable

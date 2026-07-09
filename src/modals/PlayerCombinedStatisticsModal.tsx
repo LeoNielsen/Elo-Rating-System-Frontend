@@ -3,9 +3,10 @@ import { useQuery } from "react-query";
 import { getPlayerSoloStatistics, getPlayerStatistics } from "../API/Api";
 import { PlayerSoloStatistics, PlayerStatistics } from "../Types/Types";
 import PlayerAchievementTabs from "../Tabs/PlayerAchievementTabs";
+import { Dispatch, SetStateAction } from "react";
 
 function PlayerCombinedStatisticsModal({ modalVisible, setModalVisible, playerId }:
-    { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, playerId: number }) {
+    { modalVisible: boolean, setModalVisible: Dispatch<SetStateAction<boolean>>, playerId: number }) {
 
     const playerStats = useQuery<PlayerStatistics>("PlayersStats", () => getPlayerStatistics(playerId));
     const soloStats = useQuery<PlayerSoloStatistics>("PlayersSoloStats", () => getPlayerSoloStatistics(playerId));
@@ -36,7 +37,9 @@ function PlayerCombinedStatisticsModal({ modalVisible, setModalVisible, playerId
             >
                 <Descriptions.Item label="Name Tag">{player.nameTag}</Descriptions.Item>
 
-                <Descriptions.Item label="Rating">{player.rating}</Descriptions.Item>
+                <Descriptions.Item label="2v2 Rating">{player.rating}</Descriptions.Item>
+
+                <Descriptions.Item label="1v1 Rating">{solo.rating}</Descriptions.Item>
 
                 <Descriptions.Item label="Total Games">{totalGames}</Descriptions.Item>
 

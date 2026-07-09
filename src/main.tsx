@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
+// @ts-ignore: imported CSS file without type declarations
 import './index.css'
 
 import { QueryClient, QueryClientProvider } from 'react-query'

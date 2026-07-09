@@ -1,11 +1,11 @@
 import { Button, Form, Input, Modal } from "antd";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { createPlayer, getAllPlayers } from "../API/Api";
 import { Player } from "../Types/Types";
 
 function NewPlayerModal({ modalVisible, setModalVisible }:
-    { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>> }) {
+    { modalVisible: boolean, setModalVisible: Dispatch<SetStateAction<boolean>> }) {
 
     const { isLoading, data, refetch } = useQuery("Players", getAllPlayers);
 

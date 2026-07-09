@@ -5,7 +5,6 @@ import PlayerTable from './tables/PlayerTable';
 import MatchTables from './tables/MatchTables/MatchTables';
 import TeamTable from './tables/TeamTable';
 import PlayerRankingTables from './tables/PlayerRankingTables/PlayerRankingTables';
-import Chart from './Charts/Chart';
 import MatchRandomizer from './MatchRandomizer/MatchRandomizer';
 import Admin from './Admin/Admin';
 import UserService from './Keycloak/UserService';
@@ -108,7 +107,7 @@ const App: React.FC = () => {
     }, [collapsed, broken]);
 
     const menuItems = [
-        { key: '1', icon: <TrophyOutlined />, label: 'Player Ranking' },
+        { key: '1', icon: <TrophyOutlined />, label: 'Leaderboard' },
         { key: '2', icon: <CalendarOutlined />, label: 'Matches' },
         { key: '3', icon: <TeamOutlined />, label: 'Teams' },
         { key: '4', icon: <UserOutlined />, label: 'Players' },
@@ -142,7 +141,7 @@ const App: React.FC = () => {
     switch (selectedMenuItem) {
         case '1':
             contentComponent = <PlayerRankingTables />;
-            pageTitle = 'Players'
+            pageTitle = 'Leaderboard'
             break;
         case '2':
             contentComponent = <MatchTables />;

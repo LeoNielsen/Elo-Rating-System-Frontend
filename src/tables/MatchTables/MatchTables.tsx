@@ -1,11 +1,12 @@
 import { useQuery } from 'react-query';
 import { Button, Tabs, TabsProps } from 'antd';
 import { useState } from 'react';
-import { getMatches, getRecentMatches, getRecentSoloMatches } from '../../API/Api';
+import { getMatches, getRecentSoloMatches } from '../../API/Api';
 import NewMatchModal from '../../modals/NewMatchModal';
 import { Match, SoloMatch } from '../../Types/Types';
 import SoloMatchTable from './SoloMatchTable';
 import MatchTable from './MatchTable';
+import UserService from '../../Keycloak/UserService';
 
 function MatchTables() {
 
@@ -18,6 +19,9 @@ function MatchTables() {
 
 
   const handleNewMatchClick = () => {
+    if (!UserService.isLoggedIn()) {
+      UserService.doLogin();
+    }
     setModalVisible(true);
   };
   const handleActiveTab = (key: string) => {
@@ -56,6 +60,7 @@ function MatchTables() {
           refetch={match.refetch}
           soloRefetch={soloMatch.refetch}
           activeTab={activeTab}
+          mode="create"
         />
       )}
     </div>

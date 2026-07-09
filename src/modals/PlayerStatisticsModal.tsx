@@ -3,10 +3,10 @@ import { useQuery } from "react-query";
 import { getAllPlayers, getMonthlyStatistics, getPlayerSoloStatistics, getPlayerStatistics } from "../API/Api";
 import { Player, PlayerSoloStatistics, PlayerStatistics } from "../Types/Types";
 import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 function PlayerStatisticsModal({ modalVisible, setModalVisible, playerId, solo, monthly }:
-    { modalVisible: boolean, setModalVisible: React.Dispatch<React.SetStateAction<boolean>>, playerId: number, solo: boolean, monthly: boolean }) {
+    { modalVisible: boolean, setModalVisible: Dispatch<SetStateAction<boolean>>, playerId: number, solo: boolean, monthly: boolean }) {
 
     const [comparedPlayerId, setComparedPlayerId] = useState<number | null>(null);
     const [showCompareSelect, setShowCompareSelect] = useState(false);

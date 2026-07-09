@@ -4,195 +4,184 @@ import UserService from '../Keycloak/UserService';
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const getAllPlayers = async () => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/player/all`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
 };
 
 const getPlayer = async (name: string) => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/player/${name}`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 const deactivatePlayer = async (name: string) => {
     const token = UserService.getToken();
-    try {
-        const response = await axios.put(`${BASE_URL}/admin/player/activation/${name}`,{}, {
+
+        const response = await axios.put(`${BASE_URL}/admin/player/activation/${name}`, {}, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 const getMonthlyWinner = async () => {
-    try {
-        const response = await axios.get(`${BASE_URL}/player/monthly/winner/last`);
+
+        const response = await axios.get(`${BASE_URL}/monthly/winner/last`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 const getMonthlyWinners = async () => {
-    try {
-        const response = await axios.get(`${BASE_URL}/player/monthly/winner/all`);
+
+        const response = await axios.get(`${BASE_URL}/monthly/winner/all`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
+};
+
+const getMatchDays = async () => {
+
+        const response = await axios.get(`${BASE_URL}/match/days`);
+        return response.data;
+
+};
+
+const getSoloMatchDays = async () => {
+
+        const response = await axios.get(`${BASE_URL}/match/solo/days`);
+        return response.data;
+
 };
 
 const getRecords = async () => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/player/records`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 const getMatchStatistics = async () => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/match/statistics`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 const getSoloMatchStatistics = async () => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/match/solo/statistics`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 const getPlayerStatistics = async (id: number) => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/player/statistics/${id}`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 const getAllPlayerStatistics = async () => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/player/statistics/all`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 const getAllMonthlyStatistics = async () => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/player/statistics/monthly/all`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 const getMonthlyStatistics = async (id: number) => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/player/statistics/monthly/${id}`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 const getPlayerSoloStatistics = async (id: number) => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/player/statistics/solo/${id}`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 const getAllPlayerSoloStatistics = async () => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/player/statistics/solo/all`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 const getAllTeams = async () => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/team/all`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
+};
+
+const getAllPairTeams = async () => {
+
+        const response = await axios.get(`${BASE_URL}/team/pair/all`);
+        return response.data;
+
+};
+
+const getAllTeamStatistics = async () => {
+
+        const response = await axios.get(`${BASE_URL}/stat/team/all`);
+        return response.data;
+
+};
+
+const getTeamStatisticsById = async (id: number) => {
+
+        const response = await axios.get(`${BASE_URL}/stat/team/${id}`);
+        return response.data;
+
+};
+
+const getTeamPairById = async (id: number) => {
+
+        const response = await axios.get(`${BASE_URL}/team/pair/${id}`);
+        return response.data;
+
 };
 
 const getRecentMatches = async () => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/match`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 const getMatches = async () => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/match/all`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 const getRecentSoloMatches = async () => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/match/solo`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 const getMatchRatings = async (id: number) => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/rating/match/${id}`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 const getSoloMatchRatings = async (id: number) => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/rating/solo/match/${id}`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
-};
 
-const createTeam = async (teamData: {
-    attackerId: number,
-    defenderId: number
-}) => {
-    try {
-        const response = await axios.post(`${BASE_URL}/team`, teamData);
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
 };
 
 const createMatch = async (matchData: {
@@ -203,12 +192,20 @@ const createMatch = async (matchData: {
     redScore: number,
     blueScore: number
 }) => {
-    try {
-        const response = await axios.post(`${BASE_URL}/match`, matchData);
+    const token = UserService.getToken();
+
+        const response = await axios.post(
+            `${BASE_URL}/match`,
+            matchData,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            }
+        );
+
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 const createSoloMatch = async (matchData: {
@@ -217,159 +214,187 @@ const createSoloMatch = async (matchData: {
     redScore: number,
     blueScore: number
 }) => {
-    try {
-        const response = await axios.post(`${BASE_URL}/match/solo/new`, matchData);
+
+        const token = UserService.getToken();
+        const response = await axios.post(`${BASE_URL}/match/solo/new`, matchData,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 const createPlayer = async (playerData: {
     nameTag: string
 }) => {
-    try {
+
         const response = await axios.post(`${BASE_URL}/player`, playerData);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 const getChartData = async () => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/rating/chart`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 const getSoloChartData = async () => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/rating/solo/chart`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 const getMonthlyChartData = async () => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/rating/monthly/chart`);
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 
 
 const getAdminTest = async () => {
     const token = UserService.getToken();
-
-    try {
-        const response = await axios.get(`${BASE_URL}/admin/test`, {
+        const response = await axios.get(`${BASE_URL}/admin`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
         return response.data;
-    } catch (error) {
-        throw error;
-    }
 };
 
-const deleteLatestMatch = async () => {
+const updateMatchById = async (id: number, matchData: {
+    redAtkId: number,
+    redDefId: number,
+    blueAtkId: number,
+    blueDefId: number,
+    redScore: number,
+    blueScore: number
+}) => {
     const token = UserService.getToken();
 
-    try {
-        const response = await axios.delete(`${BASE_URL}/admin/match/latest`, {
+
+        const response = await axios.put(`${BASE_URL}/match/update/${id}`, matchData, {
             headers: {
                 Authorization: `Bearer ${token}`,
-            }
+            },
         });
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
-const deleteLatestSoloMatch = async () => {
+const deleteMatchById = async (id: number) => {
     const token = UserService.getToken();
 
-    try {
-        const response = await axios.delete(`${BASE_URL}/admin/match/solo/latest`, {
+
+        const response = await axios.delete(`${BASE_URL}/match/delete/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
+};
+
+const updateSoloMatchById = async (id: number, matchData: {
+    redId: number,
+    blueId: number,
+    redScore: number,
+    blueScore: number
+}) => {
+    const token = UserService.getToken();
+
+
+        const response = await axios.put(`${BASE_URL}/match/solo/update/${id}`, matchData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return response.data;
+
+};
+
+const deleteSoloMatchById = async (id: number) => {
+    const token = UserService.getToken();
+
+
+        const response = await axios.delete(`${BASE_URL}/match/solo/delete/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+
 };
 
 const getAllAchievements = async () => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/achievement/all`);
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
+        return response.data;
+
 };
 
 const getPlayerAchievements = async (id: number) => {
-    try {
+
         const response = await axios.get(`${BASE_URL}/achievement/${id}`);
-            return response.data;
-        } catch (error) {
-            throw error;
-        }
+        return response.data;
+
 };
 
 const regeneratePlayerStats = async () => {
     const token = UserService.getToken();
 
-    try {
-        const response = await axios.post(`${BASE_URL}/admin/player/statgen`,{}, {
+
+        const response = await axios.post(`${BASE_URL}/admin/player/statgen`, {}, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
+};
+
+const regenerateTeamStats = async () => {
+    const token = UserService.getToken();
+
+
+        const response = await axios.post(`${BASE_URL}/admin/team/statgen`, {}, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        return response.data;
+
 };
 
 const regenerateSoloPlayerStats = async () => {
     const token = UserService.getToken();
 
-    try {
-        const response = await axios.post(`${BASE_URL}/admin/solo/player/statgen`,{}, {
+
+        const response = await axios.post(`${BASE_URL}/admin/solo/player/statgen`, {}, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 const regenerateMonthlyPlayerStats = async () => {
     const token = UserService.getToken();
 
-    try {
-        const response = await axios.post(`${BASE_URL}/admin/monthly/player/statgen`,{}, {
+
+        const response = await axios.post(`${BASE_URL}/admin/monthly/player/statgen`, {}, {
             headers: {
                 Authorization: `Bearer ${token}`,
             }
         });
         return response.data;
-    } catch (error) {
-        throw error;
-    }
+
 };
 
 export {
@@ -378,6 +403,8 @@ export {
     deactivatePlayer,
     getMonthlyWinner,
     getMonthlyWinners,
+    getMatchDays,
+    getSoloMatchDays,
     getRecords,
     getMatchStatistics,
     getSoloMatchStatistics,
@@ -387,13 +414,16 @@ export {
     getMonthlyStatistics,
     getPlayerSoloStatistics,
     getAllPlayerSoloStatistics,
+    getAllTeamStatistics,
+    getTeamStatisticsById,
     getAllTeams,
+    getAllPairTeams,
+    getTeamPairById,
     getRecentMatches,
     getMatches,
     getRecentSoloMatches,
     getMatchRatings,
     getSoloMatchRatings,
-    createTeam,
     createMatch,
     createSoloMatch,
     createPlayer,
@@ -401,11 +431,14 @@ export {
     getSoloChartData,
     getMonthlyChartData,
     getAdminTest,
-    deleteLatestMatch,
-    deleteLatestSoloMatch,
+    updateMatchById,
+    updateSoloMatchById,
+    deleteMatchById,
+    deleteSoloMatchById,
     getAllAchievements,
     getPlayerAchievements,
     regenerateMonthlyPlayerStats,
     regeneratePlayerStats,
+    regenerateTeamStats,
     regenerateSoloPlayerStats
 };
