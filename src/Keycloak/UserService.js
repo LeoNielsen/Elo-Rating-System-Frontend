@@ -69,7 +69,7 @@ const changePassword = () => {
 
 const getFreshToken = async () => {
   try {
-    await KC.updateToken(30); // forny hvis < 30 sek tilbage
+    await KC.updateToken(30);
     return KC.token;
   } catch {
     KC.login();
