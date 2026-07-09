@@ -17,7 +17,7 @@ const getPlayer = async (name: string) => {
 };
 
 const deactivatePlayer = async (name: string) => {
-    const token = UserService.getToken();
+    const token = UserService.getFreshToken();
 
         const response = await axios.put(`${BASE_URL}/admin/player/activation/${name}`, {}, {
             headers: {
@@ -192,7 +192,7 @@ const createMatch = async (matchData: {
     redScore: number,
     blueScore: number
 }) => {
-    const token = UserService.getToken();
+    const token = UserService.getFreshToken();
 
         const response = await axios.post(
             `${BASE_URL}/match`,
@@ -215,7 +215,7 @@ const createSoloMatch = async (matchData: {
     blueScore: number
 }) => {
 
-        const token = UserService.getToken();
+        const token = UserService.getFreshToken();
         const response = await axios.post(`${BASE_URL}/match/solo/new`, matchData,
             {
                 headers: {
@@ -258,7 +258,7 @@ const getMonthlyChartData = async () => {
 
 
 const getAdminTest = async () => {
-    const token = UserService.getToken();
+    const token = UserService.getFreshToken();
         const response = await axios.get(`${BASE_URL}/admin`, {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -275,7 +275,7 @@ const updateMatchById = async (id: number, matchData: {
     redScore: number,
     blueScore: number
 }) => {
-    const token = UserService.getToken();
+    const token = UserService.getFreshToken();
 
 
         const response = await axios.put(`${BASE_URL}/match/update/${id}`, matchData, {
@@ -288,7 +288,7 @@ const updateMatchById = async (id: number, matchData: {
 };
 
 const deleteMatchById = async (id: number) => {
-    const token = UserService.getToken();
+    const token = UserService.getFreshToken();
 
 
         const response = await axios.delete(`${BASE_URL}/match/delete/${id}`, {
@@ -306,7 +306,7 @@ const updateSoloMatchById = async (id: number, matchData: {
     redScore: number,
     blueScore: number
 }) => {
-    const token = UserService.getToken();
+    const token = UserService.getFreshToken();
 
 
         const response = await axios.put(`${BASE_URL}/match/solo/update/${id}`, matchData, {
@@ -319,7 +319,7 @@ const updateSoloMatchById = async (id: number, matchData: {
 };
 
 const deleteSoloMatchById = async (id: number) => {
-    const token = UserService.getToken();
+    const token = UserService.getFreshToken();
 
 
         const response = await axios.delete(`${BASE_URL}/match/solo/delete/${id}`, {
@@ -346,7 +346,7 @@ const getPlayerAchievements = async (id: number) => {
 };
 
 const regeneratePlayerStats = async () => {
-    const token = UserService.getToken();
+    const token = UserService.getFreshToken();
 
 
         const response = await axios.post(`${BASE_URL}/admin/player/statgen`, {}, {
@@ -359,7 +359,7 @@ const regeneratePlayerStats = async () => {
 };
 
 const regenerateTeamStats = async () => {
-    const token = UserService.getToken();
+    const token = UserService.getFreshToken();
 
 
         const response = await axios.post(`${BASE_URL}/admin/team/statgen`, {}, {
@@ -372,7 +372,7 @@ const regenerateTeamStats = async () => {
 };
 
 const regenerateSoloPlayerStats = async () => {
-    const token = UserService.getToken();
+    const token = UserService.getFreshToken();
 
 
         const response = await axios.post(`${BASE_URL}/admin/solo/player/statgen`, {}, {
@@ -385,7 +385,7 @@ const regenerateSoloPlayerStats = async () => {
 };
 
 const regenerateMonthlyPlayerStats = async () => {
-    const token = UserService.getToken();
+    const token = UserService.getFreshToken();
 
 
         const response = await axios.post(`${BASE_URL}/admin/monthly/player/statgen`, {}, {

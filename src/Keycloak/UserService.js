@@ -67,6 +67,17 @@ const changePassword = () => {
   })
 };
 
+const getFreshToken = async () => {
+  try {
+    await KC.updateToken(30); // forny hvis < 30 sek tilbage
+    return KC.token;
+  } catch {
+    KC.login();
+    return null;
+  }
+};
+
+
 const UserService = {
   initKeycloak,
   doLogin,
@@ -79,6 +90,7 @@ const UserService = {
   hasRole,
   isKeycloakInitialized,
   changePassword,
+  getFreshToken
 };
 
 export default UserService;
